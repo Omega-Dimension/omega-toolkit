@@ -3,21 +3,38 @@ import { Outlet } from "react-router-dom";
 import { useState } from "react";
 
 import Header from "./Header";
-import Sidebar, { drawerWidth } from "./Sidebar";
+import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 
 export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const handleToggleCollapse = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+  };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
       <CssBaseline />
 
-      <Header onMenuClick={() => setMobileOpen(!mobileOpen)} />
+      {/* Header */}
+      <Header 
+        onMenuClick={handleDrawerToggle}
+        sidebarCollapsed={sidebarCollapsed}
+        onToggleSidebar={handleToggleCollapse}
+      />
 
-      <Sidebar
+      {/* Sidebar */}
+      <Sidebar 
         mobileOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={handleToggleCollapse}
       />
 
       {/* Main Content */}
@@ -25,20 +42,28 @@ export default function DashboardLayout() {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
           display: "flex",
           flexDirection: "column",
-          minHeight: "100vh",
+          width: { sm: '100%' }, // Let MUI Drawer handle the width calculation
+          transition: (theme) => theme.transitions.create(['margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
         }}
       >
-        {/* spacer for AppBar */}
+        {/* Spacer for AppBar */}
         <Toolbar />
 
-        <Box sx={{ flexGrow: 1 }}>
+        {/* Page Content */}
+        <Box sx={{ 
+          flexGrow: 1,
+          p: { xs: 2, sm: 3 },
+          minHeight: "calc(100vh - 120px)",
+        }}>
           <Outlet />
         </Box>
 
+        {/* Footer */}
         <Footer />
       </Box>
     </Box>

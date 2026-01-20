@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import {
   Box,
   Drawer,
@@ -10,348 +11,525 @@ import {
   Typography,
   Collapse,
   IconButton,
+  Paper,
   useTheme,
   useMediaQuery,
+  Divider,
+  styled,
+  alpha,
 } from "@mui/material";
-import { Link as RouterLink, useLocation } from "react-router-dom";
 import {
   ExpandLess,
   ExpandMore,
-  Dashboard as DashboardIcon,
-  Code as CodeIcon,
-  Image as ImageIcon,
-  Home as HomeIcon,
   ChevronLeft,
-  Menu as MenuIcon,
+  ChevronRight,
 } from "@mui/icons-material";
+import { sidebarMenuItems, drawerWidth, collapsedDrawerWidth } from '../data/menuItems';
+import type { MenuItem } from '../data/menuItems';
 
-export const drawerWidth = 280;
+// Styled components for hover cards
+const ChildrenCard = styled(Paper)(({ theme }) => ({
+  position: 'absolute',
+  left: '100%',
+  top: 0,
+  marginLeft: theme.spacing(1),
+  zIndex: 1300,
+  minWidth: 200,
+  padding: theme.spacing(1),
+  backgroundColor: theme.palette.mode === 'dark' ? 
+    theme.palette.grey[900] : 
+    theme.palette.background.paper,
+  boxShadow: theme.shadows[8],
+  borderRadius: theme.shape.borderRadius,
+  border: `1px solid ${theme.palette.divider}`,
+}));
 
-export interface MenuItem {
-  label: string;
-  path?: string;
-  icon?: React.ReactNode;
-  children?: MenuItem[];
-}
-
-export const sidebarMenuItems: MenuItem[] = [
-  {
-    label: "Dashboard",
-    path: "/",
-    icon: <DashboardIcon />,
-  },
-  {
-    label: "Development Tools",
-    icon: <CodeIcon />,
-    children: [
-      {
-        label: "JSON Formatter",
-        path: "/tools/json",
-        icon: <CodeIcon />,
-      },
-      {
-        label: "Base64 Encoder/Decoder",
-        path: "/tools/base64",
-        icon: <CodeIcon />,
-      },
-      {
-        label: "Color Converter",
-        path: "/tools/color",
-        icon: <CodeIcon />,
-      },
-    ],
-  },
-  {
-    label: "Media Tools",
-    icon: <ImageIcon />,
-    children: [
-      {
-        label: "Image Compressor",
-        path: "/tools/image/compress",
-        icon: <ImageIcon />,
-      },
-      {
-        label: "Format Converter",
-        path: "/tools/image/convert",
-        icon: <ImageIcon />,
-      },
-      {
-        label: "QR Code Generator",
-        path: "/tools/qr-code",
-        icon: <ImageIcon />,
-      },
-    ],
-  },
-  {
-    label: "Documentation",
-    icon: <HomeIcon />,
-    path: "/docs",
-  },
-];
-
-interface SidebarProps {
-  mobileOpen: boolean;
-  onClose: () => void;
-}
-
+// Sidebar Item Component
 interface SidebarItemProps {
   item: MenuItem;
   level?: number;
   onClose?: () => void;
+  collapsed?: boolean;
+  openParents?: boolean;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ item, level = 0, onClose }) => {
-  const [open, setOpen] = React.useState(false);
+const SidebarItem: React.FC<SidebarItemProps> = ({
+  item,
+  level = 0,
+  onClose,
+  collapsed = false,
+  openParents = false,
+}) => {
+  const [open, setOpen] = useState(false);
+  const [showCard, setShowCard] = useState(false);
   const location = useLocation();
   const theme = useTheme();
-  
-  const isActive = item.path === location.pathname || 
+
+  const isActive = item.path === location.pathname ||
     item.children?.some(child => child.path === location.pathname);
+  const hasChildren = item.children && item.children.length > 0;
+
+  // Auto-expand parent if child is active
+  useEffect(() => {
+    if (hasChildren && isActive && !open) {
+      setOpen(true);
+    }
+  }, [hasChildren, isActive, open]);
 
   const handleClick = () => {
-    if (item.children) {
+    if (hasChildren) {
       setOpen(!open);
     } else if (onClose) {
       onClose();
     }
   };
 
-  const itemContent = (
-    <>
-      {item.icon && (
-        <ListItemIcon sx={{ 
-          minWidth: 40,
-          color: isActive ? theme.palette.primary.main : 'inherit',
-        }}>
-          {item.icon}
-        </ListItemIcon>
-      )}
-      <ListItemText 
-        primary={item.label}
-        primaryTypographyProps={{
-          fontWeight: isActive ? 600 : 400,
-          fontSize: '0.875rem',
-        }}
-      />
-      {item.children && (
-        open ? <ExpandLess /> : <ExpandMore />
-      )}
-    </>
-  );
+  const handleMouseEnter = () => {
+    if (collapsed && hasChildren) {
+      setTimeout(() => {
+        setShowCard(true);
+      }, 150);
+    }
+  };
 
-  if (item.children) {
+  const handleMouseLeave = () => {
+    if (collapsed && hasChildren) {
+      setShowCard(false);
+    }
+  };
+
+  // Collapsed mode with card
+  if (collapsed) {
     return (
-      <>
-        <ListItemButton 
-          onClick={handleClick}
+      <Box
+        sx={{
+          position: 'relative',
+          mb: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {hasChildren ? (
+          <IconButton
+            onClick={handleClick}
+            sx={{
+              width: 40,
+              height: 40,
+              mb: 0.5,
+              backgroundColor: isActive ? 'primary.main' : 'transparent',
+              color: isActive ? 'primary.contrastText' : 'text.secondary',
+              '&:hover': {
+                backgroundColor: isActive ? 'primary.dark' : 'action.hover',
+              },
+            }}
+            title={item.label}
+          >
+            {item.icon}
+            <ChevronRight
+              sx={{
+                position: 'absolute',
+                right: -4,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                fontSize: 16,
+              }}
+            />
+          </IconButton>
+        ) : (
+          <IconButton
+            component={RouterLink}
+            to={item.path || '#'}
+            onClick={onClose}
+            sx={{
+              width: 40,
+              height: 40,
+              mb: 0.5,
+              backgroundColor: isActive ? 'primary.main' : 'transparent',
+              color: isActive ? 'primary.contrastText' : 'text.secondary',
+              '&:hover': {
+                backgroundColor: isActive ? 'primary.dark' : 'action.hover',
+              },
+            }}
+            title={item.label}
+          >
+            {item.icon}
+          </IconButton>
+        )}
+
+        {/* Label under icon for collapsed mode */}
+        <Typography
+          variant="caption"
+          sx={{
+            fontSize: '0.65rem',
+            textAlign: 'center',
+            color: 'text.secondary',
+            width: '100%',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            lineHeight: 1.2,
+            px: 0.5,
+          }}
+        >
+          {item.label.split(' ')[0]}
+        </Typography>
+
+        {/* Children Card for collapsed mode */}
+        {showCard && hasChildren && (
+          <ChildrenCard
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Typography
+              variant="subtitle2"
+              sx={{
+                fontWeight: 600,
+                px: 1,
+                py: 1,
+                borderBottom: 1,
+                borderColor: 'divider',
+              }}
+            >
+              {item.label}
+            </Typography>
+            <List disablePadding>
+              {item.children?.map((child, index) => (
+                <ListItemButton
+                  key={index}
+                  component={RouterLink}
+                  to={child.path || '#'}
+                  onClick={onClose}
+                  sx={{
+                    px: 2,
+                    py: 1,
+                    borderRadius: 1,
+                    my: 0.5,
+                    color: child.path === location.pathname ?
+                      'primary.main' :
+                      'text.primary',
+                    fontWeight: child.path === location.pathname ? 600 : 400,
+                    '&:hover': {
+                      backgroundColor: 'action.hover',
+                    },
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 36 }}>
+                    {child.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={child.label}
+                    primaryTypographyProps={{
+                      fontSize: '0.875rem',
+                      noWrap: true,
+                    }}
+                  />
+                </ListItemButton>
+              ))}
+            </List>
+          </ChildrenCard>
+        )}
+      </Box>
+    );
+  }
+
+  // Expanded mode
+  return (
+    <>
+      {hasChildren ? (
+        <>
+          <ListItemButton
+            onClick={handleClick}
+            sx={{
+              pl: 2 + level * 2,
+              py: 1,
+              borderRadius: 1,
+              mx: 1,
+              mb: 0.5,
+              backgroundColor: isActive ?
+                alpha(theme.palette.primary.main, 0.08) :
+                'transparent',
+              '&:hover': {
+                backgroundColor: isActive ?
+                  alpha(theme.palette.primary.main, 0.12) :
+                  'action.hover',
+              },
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 40,
+                color: isActive ? 'primary.main' : 'text.secondary',
+              }}
+            >
+              {item.icon}
+            </ListItemIcon>
+            <ListItemText
+              primary={item.label}
+              primaryTypographyProps={{
+                fontWeight: isActive ? 600 : 400,
+                fontSize: '0.875rem',
+                noWrap: true,
+              }}
+            />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {item.children?.map((child, index) => (
+                <SidebarItem
+                  key={index}
+                  item={child}
+                  level={level + 1}
+                  onClose={onClose}
+                  collapsed={collapsed}
+                  openParents={open}
+                />
+              ))}
+            </List>
+          </Collapse>
+        </>
+      ) : (
+        <ListItemButton
+          component={RouterLink}
+          to={item.path || '#'}
+          onClick={onClose}
           sx={{
             pl: 2 + level * 2,
             py: 1,
             borderRadius: 1,
             mx: 1,
             mb: 0.5,
-            backgroundColor: isActive ? 
-              theme.palette.mode === 'dark' ? 
-                'rgba(144, 202, 249, 0.08)' : 
-                'rgba(33, 150, 243, 0.04)' : 
-              'transparent',
+            backgroundColor: isActive ? 'primary.main' : 'transparent',
+            color: isActive ? 'primary.contrastText' : 'text.primary',
             '&:hover': {
-              backgroundColor: theme.palette.mode === 'dark' ? 
-                'rgba(144, 202, 249, 0.12)' : 
-                'rgba(33, 150, 243, 0.08)',
+              backgroundColor: isActive ? 'primary.dark' : 'action.hover',
             },
           }}
         >
-          {itemContent}
+          <ListItemIcon
+            sx={{
+              minWidth: 40,
+              color: isActive ? 'primary.contrastText' : 'text.secondary',
+            }}
+          >
+            {item.icon}
+          </ListItemIcon>
+          <ListItemText
+            primary={item.label}
+            primaryTypographyProps={{
+              fontWeight: isActive ? 600 : 400,
+              fontSize: '0.875rem',
+              noWrap: true,
+            }}
+          />
         </ListItemButton>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {item.children.map((child, index) => (
-              <SidebarItem 
-                key={index} 
-                item={child} 
-                level={level + 1}
-                onClose={onClose}
-              />
-            ))}
-          </List>
-        </Collapse>
-      </>
-    );
-  }
-
-  return (
-    <ListItemButton
-      component={RouterLink}
-      to={item.path || '#'}
-      onClick={onClose}
-      sx={{
-        pl: 2 + level * 2,
-        py: 1,
-        borderRadius: 1,
-        mx: 1,
-        mb: 0.5,
-        backgroundColor: isActive ? 
-          theme.palette.primary.main : 
-          'transparent',
-        color: isActive ? 
-          theme.palette.primary.contrastText : 
-          'inherit',
-        '&:hover': {
-          backgroundColor: isActive ? 
-            theme.palette.primary.dark : 
-            theme.palette.mode === 'dark' ? 
-              'rgba(255, 255, 255, 0.08)' : 
-              'rgba(0, 0, 0, 0.04)',
-        },
-        transition: 'all 0.2s ease',
-      }}
-    >
-      {itemContent}
-    </ListItemButton>
+      )}
+    </>
   );
 };
 
-export default function Sidebar({ mobileOpen, onClose }: SidebarProps) {
+// Main Sidebar Component
+interface SidebarProps {
+  mobileOpen: boolean;
+  onClose: () => void;
+  collapsed?: boolean;
+  onToggleCollapse?: () => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({
+  mobileOpen,
+  onClose,
+  collapsed = false,
+  onToggleCollapse,
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const location = useLocation();
 
-  const drawer = (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+  const renderDrawerContent = () => (
+    <Box
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        bgcolor: 'background.default',
+        borderRight: 1,
+        borderColor: 'divider',
+      }}
+    >
       {/* Header */}
-      <Toolbar 
-        sx={{ 
-          borderBottom: 1, 
+      <Box
+        sx={{
+          borderBottom: 1,
           borderColor: 'divider',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          px: 2,
+          px: collapsed ? 1 : 2,
+          py: 2,
+          minHeight: 64,
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box
-            component="img"
-            src="/logo.svg"
-            alt="Logo"
-            sx={{ 
-              width: 32, 
-              height: 32,
-              borderRadius: 1,
-              backgroundColor: theme.palette.primary.main,
-              p: 0.5,
+        {!collapsed ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box
+              component="img"
+              src="/logo.svg"
+              alt="Logo"
+              sx={{
+                width: 32,
+                height: 32,
+                borderRadius: 1,
+                bgcolor: 'primary.main',
+                p: 0.5,
+              }}
+            />
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                color: 'primary.main',
+              }}
+            >
+              DevTools
+            </Typography>
+          </Box>
+        ) : (
+          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <Box
+              component="img"
+              src="/logo.svg"
+              alt="Logo"
+              sx={{
+                width: 32,
+                height: 32,
+                borderRadius: 1,
+                bgcolor: 'primary.main',
+                p: 0.5,
+              }}
+            />
+          </Box>
+        )}
+
+        {/* Collapse Button */}
+        {onToggleCollapse && (
+          <IconButton
+            onClick={onToggleCollapse}
+            size="small"
+            sx={{
+              color: 'text.secondary',
+              '&:hover': {
+                bgcolor: 'action.hover',
+              },
             }}
-          />
-          <Typography variant="h6" fontWeight={700} sx={{ color: theme.palette.primary.main }}>
-            DevTools
-          </Typography>
-        </Box>
-        {isMobile && (
-          <IconButton onClick={onClose} size="small">
-            <ChevronLeft />
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {collapsed ? (
+              <ChevronRight fontSize="small" />
+            ) : (
+              <ChevronLeft fontSize="small" />
+            )}
           </IconButton>
         )}
-      </Toolbar>
+      </Box>
 
       {/* Menu Items */}
-      <List 
-        component="nav" 
-        sx={{ 
-          flex: 1, 
+      <List
+        component="nav"
+        sx={{
+          flex: 1,
           overflowY: 'auto',
-          p: 1,
+          overflowX: 'hidden',
+          p: collapsed ? 1 : 2,
           '&::-webkit-scrollbar': {
-            width: 4,
+            width: 6,
           },
           '&::-webkit-scrollbar-track': {
             background: 'transparent',
           },
           '&::-webkit-scrollbar-thumb': {
-            background: theme.palette.mode === 'dark' ? 
-              'rgba(255, 255, 255, 0.2)' : 
+            background: theme.palette.mode === 'dark' ?
+              'rgba(255, 255, 255, 0.2)' :
               'rgba(0, 0, 0, 0.1)',
-            borderRadius: 2,
+            borderRadius: 3,
           },
         }}
       >
         {sidebarMenuItems.map((item, index) => (
-          <SidebarItem 
-            key={index} 
-            item={item} 
+          <SidebarItem
+            key={index}
+            item={item}
             onClose={isMobile ? onClose : undefined}
+            collapsed={collapsed}
           />
         ))}
       </List>
 
       {/* Footer */}
-      <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
-        <Typography 
-          variant="caption" 
-          sx={{ 
-            color: 'text.secondary',
-            display: 'block',
-            textAlign: 'center',
-          }}
-        >
-          v1.0.0
-        </Typography>
-      </Box>
+      {!collapsed && (
+        <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'text.secondary',
+              display: 'block',
+              textAlign: 'center',
+            }}
+          >
+            v1.0.0
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 
-  return (
-    <Box
-      component="nav"
-      sx={{
-        width: { sm: drawerWidth },
-        flexShrink: { sm: 0 },
-      }}
-    >
-      {/* Mobile Drawer */}
+  if (isMobile) {
+    return (
       <Drawer
         variant="temporary"
         open={mobileOpen}
         onClose={onClose}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile
-        }}
+        ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: 'block', sm: 'none' },
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: drawerWidth,
             border: 'none',
-            background: theme.palette.mode === 'dark' ? 
-              'linear-gradient(195deg, #42424a, #191919)' : 
-              'linear-gradient(195deg, #ffffff, #f8f9fa)',
+            bgcolor: 'background.default',
           },
         }}
       >
-        {drawer}
+        {renderDrawerContent()}
       </Drawer>
+    );
+  }
 
-      {/* Desktop Drawer */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          display: { xs: 'none', sm: 'block' },
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: drawerWidth,
-            border: 'none',
-            background: theme.palette.mode === 'dark' ? 
-              'linear-gradient(195deg, #42424a, #191919)' : 
-              'linear-gradient(195deg, #ffffff, #f8f9fa)',
-            boxShadow: theme.palette.mode === 'dark' ? 
-              'rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px' : 
-              'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px',
-          },
-        }}
-        open
-      >
-        {drawer}
-      </Drawer>
-    </Box>
+  return (
+    <Drawer
+      variant="permanent"
+      sx={{
+        display: { xs: 'none', sm: 'block' },
+        width: collapsed ? collapsedDrawerWidth : drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: collapsed ? collapsedDrawerWidth : drawerWidth,
+          boxSizing: 'border-box',
+          border: 'none',
+          bgcolor: 'background.default',
+          transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
+          overflowX: 'hidden',
+        },
+      }}
+      open
+    >
+      {renderDrawerContent()}
+    </Drawer>
   );
-}
+};
+
+export default Sidebar;
