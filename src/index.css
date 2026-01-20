@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+@import "tailwindcss";
+
+/* 1. Global CSS Variables */
+:root {
+  /* colors */
+  --background: #131720;
+  --foreground: #ffffff;
+  --primary: #ffd700;
+  /* #2f80ed; */
+  --hover: #3e2b14;
+  --footer: #141a25;
+
+  /* Typography */
+  --fs-base: clamp(0.875rem, 0.84rem + 0.5vw, 1rem); /* 14 → 16 */
+  --fs-lg: clamp(1rem, 0.96rem + 0.35vw, 1.25rem); /* 16 → 20 */
+  --fs-xl: clamp(1.125rem, 1.1rem + 2vw, 1.75rem); /* 18 → 28 */
+  --fs-2xl: clamp(1.25rem, 1.1rem + 2vw, 2.5rem); /* 20 → 40 */
+  --fs-3xl: clamp(1.5rem, 1.2rem + 2vw, 3.2rem); /* 24 → 51 */
+  --fs-hero: clamp(1.25rem, 1.1rem + 2vw, 3.2rem);
+
+  /* Line heights */
+  --lh-tight: 1;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.75;
+}
+
+@theme {
+  --font-primary: "Rubik", "sans-serif";
+  --color-primary-co: var(--primary);
+  --color-hover: var(--hover);
+  --color-footer: var(--footer);
+}
+
+/* 2. Base */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+    font-family: var(--font-primary);
+
+    color: var(--foreground);
+  }
+
+  /* Headings */
+  h1 {
+    font-size: var(--fs-3xl);
+    line-height: var(--lh-tight);
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: var(--fs-2xl);
+    line-height: var(--lh-tight);
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: var(--fs-xl);
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: var(--fs-lg);
+    font-weight: 500;
+  }
+
+  h5 {
+    font-size: var(--fs-base);
+    font-weight: 500;
+  }
+
+  /* Text */
+  p,
+  a {
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+
+  span {
+    font-size: inherit;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font-size: var(--fs-base);
+    font-family: inherit;
+  }
+}
+
+/* 1. Utilities */
+
+@layer utilities {
+  .flex-row-center {
+    @apply flex items-center justify-center;
+  }
+  .flex-col-center {
+    @apply flex flex-col items-center justify-center;
+  }
+}
