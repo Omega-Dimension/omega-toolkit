@@ -1,12 +1,10 @@
-import { Box, CssBaseline, Toolbar } from "@mui/material";
+import { Box, Toolbar } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
-
 import Header from "./Header";
-import Sidebar from "./Sidebar";
+import Sidebar from "./Sidebar/Sidebar";
 import Footer from "./Footer";
 import { collapsedDrawerWidth, drawerWidth } from "../data/menuItems";
-import "../index.css"
 
 export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
