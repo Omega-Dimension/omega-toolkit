@@ -7,14 +7,12 @@ import {
   ListItemButton,
   ListItemText,
   ListItemIcon,
-  Toolbar,
   Typography,
   Collapse,
   IconButton,
   Paper,
   useTheme,
   useMediaQuery,
-  Divider,
   styled,
   alpha,
 } from "@mui/material";
@@ -26,6 +24,9 @@ import {
 } from "@mui/icons-material";
 import { sidebarMenuItems, drawerWidth, collapsedDrawerWidth } from '../data/menuItems';
 import type { MenuItem } from '../data/menuItems';
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 
 // Styled components for hover cards
 const ChildrenCard = styled(Paper)(({ theme }) => ({
@@ -44,7 +45,6 @@ const ChildrenCard = styled(Paper)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
 }));
 
-// Sidebar Item Component
 interface SidebarItemProps {
   item: MenuItem;
   level?: number;
@@ -53,21 +53,28 @@ interface SidebarItemProps {
   openParents?: boolean;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({
-  item,
-  level = 0,
-  onClose,
-  collapsed = false,
-  openParents = false,
-}) => {
+function SidebarItem({ item, level = 0, onClose, collapsed }: SidebarItemProps){
+
   const [open, setOpen] = useState(false);
   const [showCard, setShowCard] = useState(false);
   const location = useLocation();
   const theme = useTheme();
-
+  const arrowRef = useRef<HTMLSpanElement>(null);
   const isActive = item.path === location.pathname ||
     item.children?.some(child => child.path === location.pathname);
   const hasChildren = item.children && item.children.length > 0;
+
+
+  useGSAP(() => {
+    if(!arrowRef.current) return;
+
+    gsap.to(arrowRef.current, {
+      rotate : open ? 180 : 0,
+      duration : 0.3,
+      ease : "power2.out"
+    })
+
+  }, [open])
 
   // Auto-expand parent if child is active
   useEffect(() => {
@@ -267,13 +274,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
             </ListItemIcon>
             <ListItemText
               primary={item.label}
-              primaryTypographyProps={{
-                fontWeight: isActive ? 600 : 400,
-                fontSize: '0.875rem',
-                noWrap: true,
-              }}
             />
-            {open ? <ExpandLess /> : <ExpandMore />}
+            <span ref={arrowRef} style={{display : "flex"}}>
+              <ExpandMore />
+            </span>
           </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
@@ -330,7 +334,6 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   );
 };
 
-// Main Sidebar Component
 interface SidebarProps {
   mobileOpen: boolean;
   onClose: () => void;
@@ -338,12 +341,7 @@ interface SidebarProps {
   onToggleCollapse?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
-  mobileOpen,
-  onClose,
-  collapsed = false,
-  onToggleCollapse,
-}) => {
+function Sidebar({mobileOpen, onClose, collapsed = false, onToggleCollapse}: SidebarProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 

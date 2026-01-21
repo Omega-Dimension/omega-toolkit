@@ -47,7 +47,6 @@ export default function Header({
         {isMobile && (
           <IconButton
             color="inherit"
-            aria-label="open drawer"
             edge="start"
             onClick={onMenuClick}
             sx={{ mr: 2 }}
@@ -56,13 +55,11 @@ export default function Header({
           </IconButton>
         )}
 
-        {/* Desktop Sidebar Toggle Button */}
+        {/* Sidebar Collapse/Expand Button */}
         {!isMobile && onToggleSidebar && (
           <IconButton
-            color="inherit"
+            color={"primary"}
             onClick={onToggleSidebar}
-            sx={{ mr: 2 }}
-            aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {sidebarCollapsed ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
