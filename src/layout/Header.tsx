@@ -69,7 +69,7 @@ export default function Header({
         <Typography
           variant="h6"
           noWrap
-          component="div"
+         
           sx={{ 
             flexGrow: 1,
             color: 'var(--foreground)',

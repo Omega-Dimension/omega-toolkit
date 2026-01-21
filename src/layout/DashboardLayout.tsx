@@ -5,6 +5,7 @@ import { useState } from "react";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
+import { collapsedDrawerWidth, drawerWidth } from "../data/menuItems";
 
 export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,14 +24,14 @@ export default function DashboardLayout() {
       <CssBaseline />
 
       {/* Header */}
-      <Header 
+      <Header
         onMenuClick={handleDrawerToggle}
         sidebarCollapsed={sidebarCollapsed}
         onToggleSidebar={handleToggleCollapse}
       />
 
       {/* Sidebar */}
-      <Sidebar 
+      <Sidebar
         mobileOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
         collapsed={sidebarCollapsed}
@@ -41,25 +42,37 @@ export default function DashboardLayout() {
       <Box
         component="main"
         sx={{
+          position: "relative",
+          zIndex: 1,
           flexGrow: 1,
           display: "flex",
           flexDirection: "column",
-          width: { sm: '100%' }, // Let MUI Drawer handle the width calculation
-          transition: (theme) => theme.transitions.create(['margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
+          overflow: "visible",
+
+          width: { sm: "100%" }, // Let MUI Drawer handle the width calculation
+          marginLeft: {
+            sm: sidebarCollapsed
+              ? `${collapsedDrawerWidth}px`
+              : `${drawerWidth}px`,
+          },
+          transition: (theme) =>
+            theme.transitions.create(["margin"], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
         }}
       >
         {/* Spacer for AppBar */}
         <Toolbar />
 
         {/* Page Content */}
-        <Box sx={{ 
-          flexGrow: 1,
-          p: { xs: 2, sm: 3 },
-          minHeight: "calc(100vh - 120px)",
-        }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            p: { xs: 2, sm: 3 },
+            minHeight: "calc(100vh - 120px)",
+          }}
+        >
           <Outlet />
         </Box>
 
