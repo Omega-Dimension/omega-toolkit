@@ -812,9 +812,7 @@ function Sidebar({
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: collapsed ? collapsedDrawerWidth : drawerWidth,
-          boxSizing: "border-box",
           border: "none",
-          bgcolor: "background.default",
           transition: theme.transitions.create("width", {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,

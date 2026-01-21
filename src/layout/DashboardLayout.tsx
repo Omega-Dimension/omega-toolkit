@@ -6,6 +6,7 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import { collapsedDrawerWidth, drawerWidth } from "../data/menuItems";
+import "../index.css"
 
 export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -21,7 +22,7 @@ export default function DashboardLayout() {
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
-      <CssBaseline />
+    
 
       {/* Header */}
       <Header
@@ -48,8 +49,7 @@ export default function DashboardLayout() {
           display: "flex",
           flexDirection: "column",
           overflow: "visible",
-
-          width: { sm: "100%" }, // Let MUI Drawer handle the width calculation
+          width: { sm: "100%" }, 
           marginLeft: {
             sm: sidebarCollapsed
               ? `${collapsedDrawerWidth}px`
