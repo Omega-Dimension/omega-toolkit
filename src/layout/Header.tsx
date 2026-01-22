@@ -18,12 +18,14 @@ interface HeaderProps {
   onMenuClick: () => void;
   sidebarCollapsed?: boolean;
   onToggleSidebar?: () => void;
+  drawerWidth: number;
 }
 
 export default function Header({
   onMenuClick,
   sidebarCollapsed = false,
   onToggleSidebar,
+  drawerWidth,
 }: HeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -31,15 +33,14 @@ export default function Header({
   return (
     <AppBar
       position="fixed"
+      color="default"
       sx={{
-        width: "100%",
-        transition: theme.transitions.create(["margin"], {
+        width: { sm: `calc(100% - ${drawerWidth}px)` },
+        ml: { sm: `${drawerWidth}px` },
+        transition: theme.transitions.create(["margin", "width"], {
           easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
+          duration: theme.transitions.duration.standard,
         }),
-        backgroundColor: "var(--background)",
-        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-        boxShadow: "none",
       }}
     >
       <Toolbar sx={{ px: { xs: 2, sm: 3 } }}>

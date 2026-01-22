@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 export interface SidebarHeaderProps {
@@ -12,16 +12,17 @@ export default function SidebarHeader({
   onToggleCollapse,
   isMobile,
 }: SidebarHeaderProps) {
+
+  const theme = useTheme();
   return (
     <Box
       sx={{
-        borderBottom: 1,
-        borderColor: "divider",
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
-        px: collapsed ? 2 : 3,
-        py: 2.5,
+        borderBottom : 1,
+        justifyContent: collapsed ? "center" : "space-between",
+        px:2,
+        ...theme.mixins.toolbar,
         minHeight: 64,
       }}
     >
@@ -67,23 +68,15 @@ export default function SidebarHeader({
         </Box>
       )}
 
-      {onToggleCollapse && !isMobile && (
-        <IconButton
-          onClick={onToggleCollapse}
-          size="small"
-          sx={{
-            color: "text.secondary",
-            "&:hover": {
-              bgcolor: "action.hover",
-            },
-          }}
-          
-        >
-          {collapsed ? (
-            <ChevronRight fontSize="small" />
-          ) : (
-            <ChevronLeft fontSize="small" />
-          )}
+      {onToggleCollapse && !isMobile && !collapsed && (
+        <IconButton size="small" onClick={onToggleCollapse}>
+          <ChevronLeft fontSize="small" />
+        </IconButton>
+      )}
+
+      {onToggleCollapse && !isMobile && collapsed && (
+        <IconButton size="small" onClick={onToggleCollapse}>
+          <ChevronRight fontSize="small" />
         </IconButton>
       )}
     </Box>

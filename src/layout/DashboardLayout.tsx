@@ -25,6 +25,7 @@ export default function DashboardLayout() {
         onMenuClick={handleDrawerToggle}
         sidebarCollapsed={sidebarCollapsed}
         onToggleSidebar={handleToggleCollapse}
+        drawerWidth = {sidebarCollapsed ? collapsedDrawerWidth : drawerWidth}
       />
 
       {/* Sidebar */}
@@ -46,16 +47,7 @@ export default function DashboardLayout() {
           flexDirection: "column",
           overflow: "visible",
           width: { sm: "100%" },
-          marginLeft: {
-            sm: sidebarCollapsed
-              ? `${collapsedDrawerWidth}px`
-              : `${drawerWidth}px`,
-          },
-          transition: (theme) =>
-            theme.transitions.create(["margin"], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
+        
         }}
       >
         {/* Spacer for AppBar */}
@@ -66,7 +58,7 @@ export default function DashboardLayout() {
           sx={{
             flexGrow: 1,
             p: { xs: 2, sm: 3 },
-            minHeight: "calc(100vh - 120px)",
+           
           }}
         >
           <Outlet />
