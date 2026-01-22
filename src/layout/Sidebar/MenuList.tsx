@@ -1,5 +1,4 @@
-import { Box, List, useTheme } from "@mui/material";
-import { alpha } from "@mui/material/styles";
+import { Box, List } from "@mui/material";
 import type { MenuItem } from "../../data/menuItems";
 import CollapsedMenuItem from "./CollapsedMenuItem";
 import ExpandedMenuItem from "./ExpandedMenuItem";
@@ -21,8 +20,6 @@ export default function ({
   onItemHover,
   onItemLeave,
 }: MenuListProps) {
-  const theme = useTheme();
-
   return (
     <List
       component="nav"
@@ -31,19 +28,6 @@ export default function ({
         overflowY: "auto",
         overflowX: "hidden",
         p: collapsed ? 2 : 2.5,
-        "&::-webkit-scrollbar": {
-          width: 6,
-        },
-        "&::-webkit-scrollbar-track": {
-          background: "transparent",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          background: alpha(theme.palette.text.primary, 0.2),
-          borderRadius: 3,
-        },
-        "&::-webkit-scrollbar-thumb:hover": {
-          background: alpha(theme.palette.text.primary, 0.3),
-        },
       }}
     >
       {items.map((item, index) => (

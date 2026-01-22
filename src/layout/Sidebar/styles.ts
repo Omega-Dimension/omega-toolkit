@@ -66,17 +66,15 @@ export const getMenuItemStyle = (
   isActive: boolean,
   level: number = 0,
 ) => ({
-  paddingLeft: 2 + level * 2,
-  paddingY: 1.5,
+  px: 1.5, 
+  py: 0.7, 
+  pl: 1.5 + level * 2, 
   marginX: 1,
-  marginBottom: 0.5,
+  borderRadius: theme.shape.borderRadius, 
   backgroundColor: isActive
     ? alpha(theme.palette.primary.main, 0.08)
     : "transparent",
-  border: `1px solid ${isActive ? theme.palette.primary.main : "transparent"}`,
   "&:hover": {
-    backgroundColor: isActive
-      ? alpha(theme.palette.primary.main, 0.12)
-      : alpha(theme.palette.action.hover, 0.04),
+    backgroundColor: alpha(theme.palette.primary.main, 0.04),
   },
 });

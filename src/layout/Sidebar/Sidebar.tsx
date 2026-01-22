@@ -67,21 +67,7 @@ export default function Sidebar({
         onItemLeave={handleItemLeave}
       />
 
-      {!collapsed && (
-        <Box sx={{ p: 2.5, borderTop: 1, borderColor: "divider" }}>
-          <Typography
-            variant="caption"
-            sx={{
-              color: "text.secondary",
-              display: "block",
-              textAlign: "center",
-              fontSize: "0.75rem",
-            }}
-          >
-            v1.0.0
-          </Typography>
-        </Box>
-      )}
+  
 
       {hoveredItem && collapsed && !isMobile && (
         <Box

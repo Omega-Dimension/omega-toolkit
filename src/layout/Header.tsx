@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -20,26 +20,26 @@ interface HeaderProps {
   onToggleSidebar?: () => void;
 }
 
-export default function Header({ 
-  onMenuClick, 
+export default function Header({
+  onMenuClick,
   sidebarCollapsed = false,
-  onToggleSidebar 
+  onToggleSidebar,
 }: HeaderProps) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <AppBar
       position="fixed"
       sx={{
-        width: '100%',
-        transition: theme.transitions.create(['margin'], {
+        width: "100%",
+        transition: theme.transitions.create(["margin"], {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-        backgroundColor: 'var(--background)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: 'none',
+        backgroundColor: "var(--background)",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        boxShadow: "none",
       }}
     >
       <Toolbar sx={{ px: { xs: 2, sm: 3 } }}>
@@ -57,10 +57,7 @@ export default function Header({
 
         {/* Sidebar Collapse/Expand Button */}
         {!isMobile && onToggleSidebar && (
-          <IconButton
-            color={"primary"}
-            onClick={onToggleSidebar}
-          >
+          <IconButton color={"primary"} onClick={onToggleSidebar}>
             {sidebarCollapsed ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
         )}
@@ -69,10 +66,9 @@ export default function Header({
         <Typography
           variant="h6"
           noWrap
-         
-          sx={{ 
+          sx={{
             flexGrow: 1,
-            color: 'var(--foreground)',
+            color: "var(--foreground)",
             fontWeight: 600,
           }}
         >
@@ -80,7 +76,7 @@ export default function Header({
         </Typography>
 
         {/* Right side items */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           {/* Add your right side items here */}
         </Box>
       </Toolbar>

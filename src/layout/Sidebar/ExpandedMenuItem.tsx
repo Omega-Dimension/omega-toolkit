@@ -24,82 +24,74 @@ export default function ExpandedMenuItem({
 }: ExpandedMenuItemProps) {
   const theme = useTheme();
   const location = useLocation();
+
   const { open, setOpen, arrowRef, hasChildren, isActive } = useMenuItemState(
     item,
     false,
   );
 
   const handleClick = () => {
-    if (hasChildren) {
-      setOpen(!open);
-    } else if (onClose) {
-      onClose();
-    }
+    if (hasChildren) setOpen(!open);
+    else onClose?.();
   };
 
+  const renderContent = (active: boolean, showArrow = false) => (
+    <>
+      <ListItemIcon
+        sx={{
+          minWidth: 40,
+          color: active
+            ? theme.palette.primary.main
+            : theme.palette.text.secondary,
+        }}
+      >
+        {item.icon}
+      </ListItemIcon>
+
+      <ListItemText
+        primary={item.label}
+        sx={{
+          fontWeight: active ? 600 : 400,
+          color: active
+            ? theme.palette.primary.main
+            : theme.palette.text.primary,
+        }}
+      />
+
+      {showArrow && (
+        <span ref={arrowRef} style={{ display: "flex" }}>
+          <ExpandMore />
+        </span>
+      )}
+    </>
+  );
+
+  // ---------- LEAF ITEM (NO CHILDREN) ----------
   if (!hasChildren) {
-    const isItemActive = isActive;
     return (
       <MenuLink to={item.path || "#"} onClick={onClose}>
-        <MenuItemButton sx={getMenuItemStyle(theme, isItemActive, level)}>
-          <ListItemIcon
-            sx={{
-              minWidth: 40,
-              color: isItemActive
-                ? theme.palette.primary.main
-                : theme.palette.text.secondary,
-            }}
-          >
-            {item.icon}
-          </ListItemIcon>
-          <ListItemText
-            primary={item.label}
-            sx={{
-              fontWeight: isItemActive ? 600 : 400,
-              color: isItemActive
-                ? theme.palette.primary.main
-                : theme.palette.text.primary,
-            }}
-          />
+        <MenuItemButton sx={getMenuItemStyle(theme, isActive, level)}>
+          {renderContent(isActive)}
         </MenuItemButton>
       </MenuLink>
     );
   }
 
+  // ---------- PARENT ITEM ----------
   return (
     <>
       <MenuItemButton
         onClick={handleClick}
         sx={getMenuItemStyle(theme, isActive, level)}
       >
-        <ListItemIcon
-          sx={{
-            minWidth: 40,
-            color: isActive
-              ? theme.palette.primary.main
-              : theme.palette.text.secondary,
-          }}
-        >
-          {item.icon}
-        </ListItemIcon>
-        <ListItemText
-          primary={item.label}
-          sx={{
-            fontWeight: isActive ? 600 : 400,
-            color: isActive
-              ? theme.palette.primary.main
-              : theme.palette.text.primary,
-          }}
-        />
-        <span ref={arrowRef} style={{ display: "flex" }}>
-          <ExpandMore />
-        </span>
+        {renderContent(isActive, true)}
       </MenuItemButton>
 
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {item.children!.map((child, index) => {
             const childIsActive = child.path === location.pathname;
+
             return (
               <MenuLink key={index} to={child.path || "#"} onClick={onClose}>
                 <MenuItemButton
@@ -115,6 +107,7 @@ export default function ExpandedMenuItem({
                   >
                     {child.icon}
                   </ListItemIcon>
+
                   <ListItemText
                     primary={child.label}
                     sx={{
