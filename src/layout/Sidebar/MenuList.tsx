@@ -1,12 +1,10 @@
-// components/sidebar/MenuList.tsx
-import React from "react";
 import { Box, List, useTheme } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import type { MenuItem } from "../../data/menuItems";
-import { CollapsedMenuItem } from "./CollapsedMenuItem";
-import { ExpandedMenuItem } from "./ExpandedMenuItem";
+import CollapsedMenuItem from "./CollapsedMenuItem";
+import ExpandedMenuItem from "./ExpandedMenuItem";
 
-export interface MenuListProps {
+interface MenuListProps {
   items: MenuItem[];
   collapsed: boolean;
   isMobile: boolean;
@@ -15,14 +13,14 @@ export interface MenuListProps {
   onItemLeave: () => void;
 }
 
-export const MenuList: React.FC<MenuListProps> = ({
+export default function ({
   items,
   collapsed,
   isMobile,
   onClose,
   onItemHover,
   onItemLeave,
-}) => {
+}: MenuListProps) {
   const theme = useTheme();
 
   return (
@@ -72,4 +70,4 @@ export const MenuList: React.FC<MenuListProps> = ({
       ))}
     </List>
   );
-};
+}

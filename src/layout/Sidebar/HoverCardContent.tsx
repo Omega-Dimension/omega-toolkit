@@ -1,24 +1,34 @@
-// components/sidebar/HoverCardContent.tsx
-import React, { useRef } from "react";
-import { ListItemIcon, ListItemText, Stack, Typography, useTheme } from "@mui/material";
+import { useRef } from "react";
+import {
+  ListItemIcon,
+  ListItemText,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import type { MenuItem } from "../../data/menuItems";
-import { HoverCardRoot, HoverCardContentRoot, MenuItemButton, MenuLink } from "./styles";
+import {
+  HoverCardRoot,
+  HoverCardContentRoot,
+  MenuItemButton,
+  MenuLink,
+} from "./styles";
 import { alpha } from "@mui/material/styles";
 
-export interface HoverCardContentProps {
+interface HoverCardContentProps {
   item: MenuItem;
   onClose?: () => void;
   anchorEl: HTMLElement | null;
 }
 
-export const HoverCardContent: React.FC<HoverCardContentProps> = ({
+export default function HoverCardContent({
   item,
   onClose,
   anchorEl,
-}) => {
+}: HoverCardContentProps) {
   const location = useLocation();
   const theme = useTheme();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -78,9 +88,7 @@ export const HoverCardContent: React.FC<HoverCardContentProps> = ({
                       ? theme.palette.primary.main
                       : theme.palette.text.primary,
                     border: `1px solid ${
-                      isChildActive
-                        ? theme.palette.primary.main
-                        : "transparent"
+                      isChildActive ? theme.palette.primary.main : "transparent"
                     }`,
                     "&:hover": {
                       backgroundColor: isChildActive
@@ -101,7 +109,7 @@ export const HoverCardContent: React.FC<HoverCardContentProps> = ({
                   </ListItemIcon>
                   <ListItemText
                     primary={child.label}
-                    primaryTypographyProps={{
+                    sx={{
                       fontSize: "0.875rem",
                       fontWeight: isChildActive ? 600 : 400,
                     }}
@@ -114,4 +122,4 @@ export const HoverCardContent: React.FC<HoverCardContentProps> = ({
       </HoverCardContentRoot>
     </HoverCardRoot>
   );
-};
+}

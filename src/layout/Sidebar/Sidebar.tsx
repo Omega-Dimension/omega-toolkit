@@ -1,26 +1,29 @@
-// components/sidebar/Sidebar.tsx
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Box, Drawer, Typography, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { sidebarMenuItems, drawerWidth, collapsedDrawerWidth } from "../../data/menuItems";
-import { SidebarHeader } from "./SidebarHeader";
-import { MenuList } from "./MenuList";
-import { HoverCardContent } from "./HoverCardContent";
+import {
+  sidebarMenuItems,
+  drawerWidth,
+  collapsedDrawerWidth,
+} from "../../data/menuItems";
+import SidebarHeader from "./SidebarHeader";
+import MenuList from "./MenuList";
+import HoverCardContent from "./HoverCardContent";
 import { useHoverCard } from "../../hooks/useHoverCard";
 
-export interface SidebarProps {
+interface SidebarProps {
   mobileOpen: boolean;
   onClose: () => void;
   collapsed?: boolean;
   onToggleCollapse?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
+export default function Sidebar({
   mobileOpen,
   onClose,
   collapsed = false,
   onToggleCollapse,
-}) => {
+}: SidebarProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -146,6 +149,4 @@ const Sidebar: React.FC<SidebarProps> = ({
       {drawerContent}
     </Drawer>
   );
-};
-
-export default Sidebar;
+}

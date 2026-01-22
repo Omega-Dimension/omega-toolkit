@@ -1,4 +1,3 @@
-// components/sidebar/CollapsedMenuItem.tsx
 import React, { useRef } from "react";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import type { MenuItem } from "../../data/menuItems";
@@ -6,19 +5,19 @@ import { getIconButtonStyle } from "./styles";
 import { Link as RouterLink } from "react-router-dom";
 import { useMenuItemState } from "../../hooks/useMenuItemState";
 
-export interface CollapsedMenuItemProps {
+
+interface CollapsedMenuItemProps {
   item: MenuItem;
   onClose?: () => void;
   onHover?: (e: React.MouseEvent<HTMLElement>) => void;
   onLeave?: () => void;
 }
-
-export const CollapsedMenuItem: React.FC<CollapsedMenuItemProps> = ({
+export default function CollapsedMenuItem({
   item,
   onClose,
   onHover,
   onLeave,
-}) => {
+}: CollapsedMenuItemProps) {
   const theme = useTheme();
   const { hasChildren, isActive } = useMenuItemState(item, true);
   const hoverTimer = useRef<number | null>(null);
@@ -87,4 +86,4 @@ export const CollapsedMenuItem: React.FC<CollapsedMenuItemProps> = ({
       </Typography>
     </Box>
   );
-};
+}

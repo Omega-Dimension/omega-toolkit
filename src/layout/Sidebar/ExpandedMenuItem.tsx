@@ -1,23 +1,27 @@
-// components/sidebar/ExpandedMenuItem.tsx
-import React from "react";
-import { Collapse, List, ListItemIcon, ListItemText, useTheme } from "@mui/material";
+import {
+  Collapse,
+  List,
+  ListItemIcon,
+  ListItemText,
+  useTheme,
+} from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import type { MenuItem } from "../../data/menuItems";
 import { MenuItemButton, MenuLink, getMenuItemStyle } from "./styles";
 import { useMenuItemState } from "../../hooks/useMenuItemState";
 
-export interface ExpandedMenuItemProps {
+interface ExpandedMenuItemProps {
   item: MenuItem;
   level?: number;
   onClose?: () => void;
 }
 
-export const ExpandedMenuItem: React.FC<ExpandedMenuItemProps> = ({
+export default function ExpandedMenuItem({
   item,
   level = 0,
   onClose,
-}) => {
+}: ExpandedMenuItemProps) {
   const theme = useTheme();
   const location = useLocation();
   const { open, setOpen, arrowRef, hasChildren, isActive } = useMenuItemState(
@@ -80,7 +84,7 @@ export const ExpandedMenuItem: React.FC<ExpandedMenuItemProps> = ({
         </ListItemIcon>
         <ListItemText
           primary={item.label}
-          primaryTypographyProps={{
+          sx={{
             fontWeight: isActive ? 600 : 400,
             color: isActive
               ? theme.palette.primary.main
@@ -97,11 +101,7 @@ export const ExpandedMenuItem: React.FC<ExpandedMenuItemProps> = ({
           {item.children!.map((child, index) => {
             const childIsActive = child.path === location.pathname;
             return (
-              <MenuLink
-                key={index}
-                to={child.path || "#"}
-                onClick={onClose}
-              >
+              <MenuLink key={index} to={child.path || "#"} onClick={onClose}>
                 <MenuItemButton
                   sx={getMenuItemStyle(theme, childIsActive, level + 1)}
                 >
@@ -132,4 +132,4 @@ export const ExpandedMenuItem: React.FC<ExpandedMenuItemProps> = ({
       </Collapse>
     </>
   );
-};
+}

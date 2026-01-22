@@ -1,5 +1,3 @@
-// components/sidebar/SidebarHeader.tsx
-import React from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
@@ -9,11 +7,11 @@ export interface SidebarHeaderProps {
   isMobile: boolean;
 }
 
-export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
+export default function SidebarHeader({
   collapsed,
   onToggleCollapse,
   isMobile,
-}) => {
+}: SidebarHeaderProps) {
   return (
     <Box
       sx={{
@@ -79,7 +77,7 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
               bgcolor: "action.hover",
             },
           }}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          
         >
           {collapsed ? (
             <ChevronRight fontSize="small" />
@@ -90,4 +88,4 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
       )}
     </Box>
   );
-};
+}
