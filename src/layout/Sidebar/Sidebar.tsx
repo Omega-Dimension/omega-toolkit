@@ -98,7 +98,7 @@ export default function Sidebar({
         sx={{
           display: { xs: "block", sm: "none" },
           "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
+           
             width: drawerWidth,
             border: "none",
             bgcolor: "background.default",
@@ -128,6 +128,7 @@ export default function Sidebar({
           }),
           overflow: "visible",
           zIndex: theme.zIndex.drawer,
+          position:"relative"
         },
       }}
       open

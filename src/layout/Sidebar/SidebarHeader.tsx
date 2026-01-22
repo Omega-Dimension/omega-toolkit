@@ -12,20 +12,21 @@ export default function SidebarHeader({
   onToggleCollapse,
   isMobile,
 }: SidebarHeaderProps) {
-
   const theme = useTheme();
+  
   return (
     <Box
       sx={{
         display: "flex",
         alignItems: "center",
-        borderBottom : 1,
-        justifyContent: collapsed ? "center" : "space-between",
-        px:2,
+        justifyContent: "center",
+        px: collapsed ? 0 : 2,
+        position: "relative",
         ...theme.mixins.toolbar,
         minHeight: 64,
       }}
     >
+      {/* Logo and Title */}
       {!collapsed ? (
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Box
@@ -68,15 +69,36 @@ export default function SidebarHeader({
         </Box>
       )}
 
-      {onToggleCollapse && !isMobile && !collapsed && (
-        <IconButton size="small" onClick={onToggleCollapse}>
-          <ChevronLeft fontSize="small" />
-        </IconButton>
-      )}
-
-      {onToggleCollapse && !isMobile && collapsed && (
-        <IconButton size="small" onClick={onToggleCollapse}>
-          <ChevronRight fontSize="small" />
+      {/* Toggle Arrow - Positioned on the sidebar edge */}
+      {onToggleCollapse && !isMobile && (
+        <IconButton
+          size="small"
+          onClick={onToggleCollapse}
+          sx={{
+            position: "absolute",
+            right: 0,
+            top: "50%",
+            transform: "translate(50%, -50%)",
+            zIndex: theme.zIndex.drawer + 2,
+            bgcolor: "background.paper",
+            border: 1,
+            borderColor: "divider",
+            width: 24,
+            height: 24,
+            minWidth: 24,
+            minHeight: 24,
+            p: 0.5,
+            boxShadow: 1,
+            "&:hover": {
+              bgcolor: "action.hover",
+            },
+          }}
+        >
+          {collapsed ? (
+            <ChevronRight fontSize="small" sx={{ width: 16, height: 16 }} />
+          ) : (
+            <ChevronLeft fontSize="small" sx={{ width: 16, height: 16 }} />
+          )}
         </IconButton>
       )}
     </Box>
