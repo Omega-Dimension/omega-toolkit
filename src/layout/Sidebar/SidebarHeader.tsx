@@ -1,15 +1,19 @@
-import { Box, Typography, IconButton } from "@mui/material";
+// components/sidebar/SidebarHeader.tsx
+import React from "react";
+import { Box, IconButton, Typography } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
-interface SidebarHeaderProps {
+export interface SidebarHeaderProps {
   collapsed: boolean;
   onToggleCollapse?: () => void;
+  isMobile: boolean;
 }
 
-export default function SidebarHeader({
+export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
   collapsed,
   onToggleCollapse,
-}: SidebarHeaderProps) {
+  isMobile,
+}) => {
   return (
     <Box
       sx={{
@@ -24,15 +28,59 @@ export default function SidebarHeader({
       }}
     >
       {!collapsed ? (
-        <Typography variant="h6" sx={{ fontWeight: 700 }}>
-          Omega Toolkit
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box
+            component="img"
+            src="/logo.svg"
+            alt="Logo"
+            sx={{
+              width: 32,
+              height: 32,
+              borderRadius: 1,
+              bgcolor: "primary.main",
+              p: 0.5,
+            }}
+          />
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+              color: "primary.main",
+              letterSpacing: "-0.5px",
+            }}
+          >
+            DevTools
+          </Typography>
+        </Box>
       ) : (
-        <Box sx={{ width: 36, height: 36, bgcolor: "primary.main" }} />
+        <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+          <Box
+            component="img"
+            src="/logo.svg"
+            alt="Logo"
+            sx={{
+              width: 36,
+              height: 36,
+              borderRadius: 1,
+              bgcolor: "primary.main",
+              p: 0.5,
+            }}
+          />
+        </Box>
       )}
 
-      {onToggleCollapse && (
-        <IconButton onClick={onToggleCollapse} size="small">
+      {onToggleCollapse && !isMobile && (
+        <IconButton
+          onClick={onToggleCollapse}
+          size="small"
+          sx={{
+            color: "text.secondary",
+            "&:hover": {
+              bgcolor: "action.hover",
+            },
+          }}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
           {collapsed ? (
             <ChevronRight fontSize="small" />
           ) : (
@@ -42,4 +90,4 @@ export default function SidebarHeader({
       )}
     </Box>
   );
-}
+};

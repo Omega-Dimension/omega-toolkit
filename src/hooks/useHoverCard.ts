@@ -1,56 +1,57 @@
+// components/sidebar/hooks/useHoverCard.ts
 import { useState, useRef, useCallback } from "react";
 import type { MenuItem } from "../data/menuItems";
 
-interface Params {
+export interface UseHoverCardProps {
   collapsed: boolean;
   isMobile: boolean;
   onClose?: () => void;
 }
 
-export function useHoverCard({ collapsed, isMobile }: Params) {
+export const useHoverCard = ({
+  collapsed,
+  isMobile,
+}: UseHoverCardProps) => {
   const [hoveredItem, setHoveredItem] = useState<MenuItem | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const timer = useRef<number | null>(null);
+  const hoverTimer = useRef<number | null>(null);
 
-  const clear = () => {
-    if (timer.current) {
-      clearTimeout(timer.current);
-      timer.current = null;
+  const clearTimer = () => {
+    if (hoverTimer.current) {
+      clearTimeout(hoverTimer.current);
+      hoverTimer.current = null;
     }
   };
 
-  // when mouse enters menu item
   const handleItemHover = useCallback(
-    (item: MenuItem, el: HTMLElement) => {
-      clear();
-      timer.current = window.setTimeout(() => {
-        if (collapsed && !isMobile && item.children?.length) {
+    (item: MenuItem, element: HTMLElement) => {
+      clearTimer();
+
+      hoverTimer.current = window.setTimeout(() => {
+        if (item.children?.length && collapsed && !isMobile) {
           setHoveredItem(item);
-          setAnchorEl(el);
+          setAnchorEl(element);
         }
-      }, 120);
+      }, 100);
     },
     [collapsed, isMobile],
   );
 
-  // when mouse leaves menu item
   const handleItemLeave = useCallback(() => {
-    clear();
-    timer.current = window.setTimeout(() => {
+    clearTimer();
+    hoverTimer.current = window.setTimeout(() => {
       setHoveredItem(null);
       setAnchorEl(null);
     }, 150);
   }, []);
 
-  // when mouse enters hover card
   const handleCardEnter = useCallback(() => {
-    clear();
+    clearTimer();
   }, []);
 
-  // when mouse leaves hover card
   const handleCardLeave = useCallback(() => {
-    clear();
-    timer.current = window.setTimeout(() => {
+    clearTimer();
+    hoverTimer.current = window.setTimeout(() => {
       setHoveredItem(null);
       setAnchorEl(null);
     }, 150);
@@ -64,4 +65,4 @@ export function useHoverCard({ collapsed, isMobile }: Params) {
     handleCardEnter,
     handleCardLeave,
   };
-}
+};

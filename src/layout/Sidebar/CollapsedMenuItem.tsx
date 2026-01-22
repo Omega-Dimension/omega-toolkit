@@ -1,83 +1,90 @@
+// components/sidebar/CollapsedMenuItem.tsx
+import React, { useRef } from "react";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import type { MenuItem } from "../../data/menuItems";
-import { useMenuItemState } from "../../hooks/useMenuItemState";
-import { Box, IconButton, useTheme, alpha, Typography } from "@mui/material";
+import { getIconButtonStyle } from "./styles";
 import { Link as RouterLink } from "react-router-dom";
+import { useMenuItemState } from "../../hooks/useMenuItemState";
 
-interface CollapsedMenuItemProps {
+export interface CollapsedMenuItemProps {
   item: MenuItem;
   onClose?: () => void;
   onHover?: (e: React.MouseEvent<HTMLElement>) => void;
   onLeave?: () => void;
 }
 
-export default function CollapsedMenuItem({
+export const CollapsedMenuItem: React.FC<CollapsedMenuItemProps> = ({
   item,
   onClose,
   onHover,
   onLeave,
-}: CollapsedMenuItemProps) {
+}) => {
   const theme = useTheme();
   const { hasChildren, isActive } = useMenuItemState(item, true);
+  const hoverTimer = useRef<number | null>(null);
 
-  function handleClick() {
-    if (!hasChildren && onClose) onClose();
-  }
+  const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+    if (!hasChildren) return;
+    hoverTimer.current = window.setTimeout(() => {
+      onHover?.(e);
+    }, 150);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimer.current) {
+      clearTimeout(hoverTimer.current);
+      hoverTimer.current = null;
+    }
+    onLeave?.();
+  };
+
+  const handleClick = () => {
+    if (!hasChildren && onClose) {
+      onClose();
+    }
+  };
+
+  const iconButton = (
+    <IconButton
+      onClick={handleClick}
+      sx={getIconButtonStyle(theme, isActive)}
+      title={item.label}
+      component={hasChildren ? "button" : RouterLink}
+      {...(!hasChildren && { to: item.path || "#" })}
+    >
+      {item.icon}
+    </IconButton>
+  );
 
   return (
     <Box
       sx={{
+        position: "relative",
+        mb: 2,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        mb: 2,
       }}
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {hasChildren ? (
-        <IconButton
-          onClick={handleClick}
-          sx={{
-            width: 44,
-            height: 44,
-            mb: 0.5,
-            backgroundColor: isActive
-              ? alpha(theme.palette.primary.main, 0.12)
-              : "transparent",
-            color: isActive
-              ? theme.palette.primary.main
-              : theme.palette.text.secondary,
-          }}
-        >
-          {item.icon}
-        </IconButton>
-      ) : (
-        <IconButton
-          component={RouterLink}
-          to={item.path || "#"}
-          onClick={handleClick}
-          sx={{
-            width: 44,
-            height: 44,
-            mb: 0.5,
-            backgroundColor: isActive
-              ? alpha(theme.palette.primary.main, 0.12)
-              : "transparent",
-            color: isActive
-              ? theme.palette.primary.main
-              : theme.palette.text.secondary,
-          }}
-        >
-          {item.icon}
-        </IconButton>
-      )}
-
+      {iconButton}
       <Typography
         variant="caption"
-        sx={{ fontSize: "0.7rem", textAlign: "center" }}
+        sx={{
+          fontSize: "0.7rem",
+          textAlign: "center",
+          color: isActive ? "primary.main" : "text.secondary",
+          fontWeight: isActive ? 600 : 400,
+          width: "100%",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          lineHeight: 1.2,
+          px: 0.5,
+        }}
       >
         {item.label}
       </Typography>
     </Box>
   );
-}
+};

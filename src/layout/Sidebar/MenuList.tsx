@@ -1,9 +1,12 @@
-import { Box, List } from "@mui/material";
+// components/sidebar/MenuList.tsx
+import React from "react";
+import { Box, List, useTheme } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import type { MenuItem } from "../../data/menuItems";
-import ExpandedMenuItem from "./ExpandedMenuItem";
-import CollapsedMenuItem from "./CollapsedMenuItem";
+import { CollapsedMenuItem } from "./CollapsedMenuItem";
+import { ExpandedMenuItem } from "./ExpandedMenuItem";
 
-interface MenuListProps {
+export interface MenuListProps {
   items: MenuItem[];
   collapsed: boolean;
   isMobile: boolean;
@@ -12,45 +15,61 @@ interface MenuListProps {
   onItemLeave: () => void;
 }
 
-export default function MenuList({
+export const MenuList: React.FC<MenuListProps> = ({
   items,
   collapsed,
   isMobile,
   onClose,
   onItemHover,
   onItemLeave,
-}: MenuListProps) {
+}) => {
+  const theme = useTheme();
+
   return (
     <List
       component="nav"
-      sx={{ flex: 1, overflowY: "auto", p: collapsed ? 2 : 2.5 }}
+      sx={{
+        flex: 1,
+        overflowY: "auto",
+        overflowX: "hidden",
+        p: collapsed ? 2 : 2.5,
+        "&::-webkit-scrollbar": {
+          width: 6,
+        },
+        "&::-webkit-scrollbar-track": {
+          background: "transparent",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: alpha(theme.palette.text.primary, 0.2),
+          borderRadius: 3,
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+          background: alpha(theme.palette.text.primary, 0.3),
+        },
+      }}
     >
-      <Box component="ul" sx={{ listStyle: "none", p: 0, m: 0 }}>
-        {items.map((item, index) => (
-          <Box
-            component="li"
-            key={index}
-            onMouseEnter={(e) =>
-              collapsed && onItemHover(item, e.currentTarget)
-            }
-            onMouseLeave={onItemLeave}
-          >
-            {collapsed ? (
-              <CollapsedMenuItem
-                item={item}
-                onClose={isMobile ? onClose : undefined}
-                onHover={(e) => onItemHover(item, e.currentTarget)}
-                onLeave={onItemLeave}
-              />
-            ) : (
-              <ExpandedMenuItem
-                item={item}
-                onClose={isMobile ? onClose : undefined}
-              />
-            )}
-          </Box>
-        ))}
-      </Box>
+      {items.map((item, index) => (
+        <Box
+          key={index}
+          sx={{ position: "relative" }}
+          onMouseEnter={(e) => collapsed && onItemHover(item, e.currentTarget)}
+          onMouseLeave={onItemLeave}
+        >
+          {collapsed ? (
+            <CollapsedMenuItem
+              item={item}
+              onClose={isMobile ? onClose : undefined}
+              onHover={(e) => onItemHover(item, e.currentTarget)}
+              onLeave={onItemLeave}
+            />
+          ) : (
+            <ExpandedMenuItem
+              item={item}
+              onClose={isMobile ? onClose : undefined}
+            />
+          )}
+        </Box>
+      ))}
     </List>
   );
-}
+};

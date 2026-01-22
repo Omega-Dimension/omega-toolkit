@@ -20,8 +20,6 @@ export default function DashboardLayout() {
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
-    
-
       {/* Header */}
       <Header
         onMenuClick={handleDrawerToggle}
@@ -47,7 +45,7 @@ export default function DashboardLayout() {
           display: "flex",
           flexDirection: "column",
           overflow: "visible",
-          width: { sm: "100%" }, 
+          width: { sm: "100%" },
           marginLeft: {
             sm: sidebarCollapsed
               ? `${collapsedDrawerWidth}px`
