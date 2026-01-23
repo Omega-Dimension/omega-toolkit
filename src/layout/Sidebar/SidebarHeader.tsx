@@ -13,7 +13,7 @@ export default function SidebarHeader({
   isMobile,
 }: SidebarHeaderProps) {
   const theme = useTheme();
-  
+
   return (
     <Box
       sx={{

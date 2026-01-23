@@ -1,4 +1,3 @@
-import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -10,8 +9,6 @@ import {
 } from "@mui/material";
 import {
   Menu as MenuIcon,
-  ChevronLeft,
-  ChevronRight,
 } from "@mui/icons-material";
 
 interface HeaderProps {
@@ -23,8 +20,6 @@ interface HeaderProps {
 
 export default function Header({
   onMenuClick,
-  sidebarCollapsed = false,
-  onToggleSidebar,
   drawerWidth,
 }: HeaderProps) {
   const theme = useTheme();
@@ -56,12 +51,6 @@ export default function Header({
           </IconButton>
         )}
 
-        {/* Sidebar Collapse/Expand Button */}
-        {!isMobile && onToggleSidebar && (
-          <IconButton color={"primary"} onClick={onToggleSidebar}>
-            {sidebarCollapsed ? <ChevronRight /> : <ChevronLeft />}
-          </IconButton>
-        )}
 
         {/* Page Title */}
         <Typography
