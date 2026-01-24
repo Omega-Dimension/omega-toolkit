@@ -1,4 +1,4 @@
-import DashboardLayout from "../layout/DashboardLayout";
+import MainLayout from "../layout/MainLayout";
 import Home from "../pages/Home";
 
 export interface RouteItem {
@@ -10,7 +10,7 @@ export interface RouteItem {
 export const routes: RouteItem[] = [
   {
     path: "/",
-    element: <DashboardLayout />,
+    element: <MainLayout />,
     children: [{ path: "", element: <Home /> }],
   },
 ];
