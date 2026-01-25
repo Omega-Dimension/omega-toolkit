@@ -23,4 +23,3 @@ export const menuItems: MenuItemProps[] = [
     path: "/about",
   },
 ];
-
