@@ -8,7 +8,7 @@ export default function MainLayout() {
     <>
       <Header />
 
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
+      <Container maxWidth="xl" sx={{ mt: 4, mb: 6 }}>
         <Outlet />
       </Container>
 

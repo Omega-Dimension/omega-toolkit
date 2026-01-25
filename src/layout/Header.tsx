@@ -1,4 +1,11 @@
-import { alpha, Box, Container, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  alpha,
+  Box,
+  Container,
+  IconButton,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { menuItems } from "../data/menuItems";
 import { NavItem } from "../components/NavItem";
 import { Nightlight } from "@mui/icons-material";
@@ -7,7 +14,7 @@ export default function Header() {
   const theme = useTheme();
   return (
     <Box component="header">
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Box
           component="nav"
           sx={{
@@ -30,13 +37,12 @@ export default function Header() {
 
           <Box>
             <IconButton
-            sx={{
-              bgcolor : alpha(theme.palette.primary.main, 0.7),
-            
-              borderRadius : "50%",
-              boxShadow : 1,
-            
-            }}
+              sx={{
+                bgcolor: alpha(theme.palette.primary.main, 0.7),
+
+                borderRadius: "50%",
+                boxShadow: 1,
+              }}
             >
               <Nightlight />
             </IconButton>
