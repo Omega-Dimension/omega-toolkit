@@ -65,7 +65,7 @@ export default function Intro() {
       ref={sectionRef}
       component="section"
       sx={{
-        py: { xs: 10, md: 18 },
+        py: 10,
         overflow: "hidden",
       }}
     >

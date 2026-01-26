@@ -19,17 +19,18 @@ export default function FeaturedTools() {
       cards.forEach((card) => {
         const rect = card.getBoundingClientRect();
         const center = window.innerWidth / 2;
-
-        const fromX = rect.left < center ? -80 : 80; // column detection
+        const fromX = rect.left < center ? -80 : 80;
 
         gsap.from(card, {
           x: fromX,
           opacity: 0,
-          duration: 1,
-          ease: "power3.out",
+          duration: 0.9,
+          ease: "none",
           scrollTrigger: {
             trigger: card,
-            start: "top 85%",
+            start: "top 90%",
+            end: "top 90%",
+            scrub: 1.5,
           },
         });
       });
@@ -39,9 +40,8 @@ export default function FeaturedTools() {
   }, []);
 
   return (
-    <Box ref={sectionRef} component="section" sx={{ py: { xs: 10, md: 14 } }}>
+    <Box ref={sectionRef} component="section" sx={{ py: 14 }}>
       <Container maxWidth="lg">
-        {/* TITLE */}
         <Typography
           variant="h2"
           sx={{ textAlign: "center", fontWeight: 700, mb: 8 }}
@@ -49,7 +49,6 @@ export default function FeaturedTools() {
           Featured Tools
         </Typography>
 
-        {/* CARDS */}
         <Box
           ref={cardsRef}
           sx={{
@@ -59,9 +58,9 @@ export default function FeaturedTools() {
             justifyContent: "center",
           }}
         >
-          {tools.map((tool) => (
+          {tools.map((t) => (
             <Box
-              key={tool.title}
+              key={t.title}
               sx={{
                 width: { xs: "100%", sm: "calc(50% - 16px)" },
                 p: 3.5,
@@ -78,7 +77,7 @@ export default function FeaturedTools() {
               }}
             >
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                {tool.title}
+                {t.title}
               </Typography>
 
               <Typography
@@ -86,12 +85,12 @@ export default function FeaturedTools() {
                 color="text.secondary"
                 sx={{ mb: 2, lineHeight: 1.7 }}
               >
-                {tool.desc}
+                {t.desc}
               </Typography>
 
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                {tool.tech.map((t) => (
-                  <Chip key={t} label={t} size="small" />
+                {t.tech.map((tech) => (
+                  <Chip key={tech} label={tech} size="small" />
                 ))}
               </Box>
             </Box>
