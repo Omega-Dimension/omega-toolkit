@@ -3,6 +3,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import gsap from "gsap";
 import { useRef } from "react";
 import { KeyboardArrowDown } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 interface NavItemProps {
   item: MenuItemProps;
@@ -11,7 +12,7 @@ interface NavItemProps {
 export function NavItem({ item }: NavItemProps) {
   const dropdownRef = useRef<HTMLUListElement | null>(null);
   const arrowRef = useRef<SVGSVGElement | null>(null);
-
+  const navigate = useNavigate();
   function show() {
     if (!item.children) return;
 
@@ -42,6 +43,10 @@ export function NavItem({ item }: NavItemProps) {
         ease: "power2.in",
       })
       .to(arrowRef.current, { rotate: 0, duration: 0.2, ease: "power2.in" }, 0);
+  }
+
+  function go(path: string) {
+    navigate(path)
   }
 
   return (
@@ -103,6 +108,7 @@ export function NavItem({ item }: NavItemProps) {
             <Box
               component="li"
               key={c.label}
+              onClick={() => c.path && go(c.path)}
               sx={{
                 py: 0.5,
                 cursor: "pointer",
