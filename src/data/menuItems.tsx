@@ -11,6 +11,13 @@ export interface ToolsProps {
   tech : string[];
 }
 
+export interface ProfileProps {
+  name : string;
+  role : string;
+  image : string;
+  bio : string
+}
+
 export const menuItems: MenuItemProps[] = [
   {
     label: "Home",
@@ -53,5 +60,28 @@ export const tools : ToolsProps[] = [
     title: "UUID Generator",
     desc: "Generate multiple types of unique IDs instantly.",
     tech: ["TypeScript"],
+  },
+];
+
+
+
+export const profiles: ProfileProps[] = [
+  {
+    name: "Fento",
+    role: "Frontend Developer",
+    image: "/profiles/fento.jpg",
+    bio: "React, MUI, Tailwind. Focused on clean UI and smooth UX.",
+  },
+  {
+    name: "Alex",
+    role: "Backend Developer",
+    image: "/profiles/alex.jpg",
+    bio: "Node.js, APIs, database design and performance.",
+  },
+  {
+    name: "May",
+    role: "UI/UX Designer",
+    image: "/profiles/may.jpg",
+    bio: "Design systems, accessibility, and product thinking.",
   },
 ];
