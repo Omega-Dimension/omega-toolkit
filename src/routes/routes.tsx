@@ -1,5 +1,6 @@
 import MainLayout from "../layout/MainLayout";
 import CsvToJsonPage from "../pages/Files/CsvToJsonPage";
+import ExcelToCsv from "../pages/Files/ExcelToCsvPage";
 import JsonFormatter from "../pages/Files/JsonFormatterPage";
 import JsonToCsvPage from "../pages/Files/JsonToCsvPage";
 import Home from "../pages/Home";
@@ -19,6 +20,8 @@ export const routes: RouteItem[] = [
       { path: "/json-formatter", element: <JsonFormatter /> },
       { path: "/json-csv", element: <JsonToCsvPage /> },
       { path: "/csv-json", element: <CsvToJsonPage /> },
+      { path: "/excel-csv", element: <ExcelToCsv /> },
+
     ],
   },
 ];

@@ -6,16 +6,16 @@ export interface MenuItemProps {
 }
 
 export interface ToolsProps {
-  title : string;
-  desc : string;
-  tech : string[];
+  title: string;
+  desc: string;
+  tech: string[];
 }
 
 export interface ProfileProps {
-  name : string;
-  role : string;
-  image : string;
-  bio : string
+  name: string;
+  role: string;
+  image: string;
+  bio: string;
 }
 
 export const menuItems: MenuItemProps[] = [
@@ -27,10 +27,10 @@ export const menuItems: MenuItemProps[] = [
     label: "Tools",
     children: [
       { label: "JSON Formatter", path: "/json-formatter" },
-      { label : "JSON to Csv Files", path : "json-csv",},
-      {label : "Csv to Json Files", path : "csv-json"},
-      { label: "Image Compress", path: "image-compress" },
-     
+      { label: "JSON to Csv Files", path: "/json-csv" },
+      { label: "Csv to Json Files", path: "/csv-json" },
+      { label : "Exel to Csv Files", path : "/excel-csv"}
+      
     ],
   },
   {
@@ -39,10 +39,7 @@ export const menuItems: MenuItemProps[] = [
   },
 ];
 
-
-
-
-export const tools : ToolsProps[] = [
+export const tools: ToolsProps[] = [
   {
     title: "Image Compressor",
     desc: "Reduce image size without losing quality, runs fully in browser.",
@@ -64,8 +61,6 @@ export const tools : ToolsProps[] = [
     tech: ["TypeScript"],
   },
 ];
-
-
 
 export const profiles: ProfileProps[] = [
   {
