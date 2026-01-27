@@ -23,9 +23,7 @@ export default function JsonToCsvPage() {
       }
 
       const data = parsed as JsonObject[];
-
       const headers = Object.keys(data[0]);
-
       const rows = data.map((obj) =>
         headers.map((h) => String(obj[h] ?? "")).join(","),
       );

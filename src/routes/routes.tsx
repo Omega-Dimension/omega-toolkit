@@ -1,5 +1,6 @@
 import MainLayout from "../layout/MainLayout";
 import JsonFormatter from "../pages/Files/JsonFormatter";
+import JsonToCsvPage from "../pages/Files/JsonToCsvPage";
 import Home from "../pages/Home";
 
 export interface RouteItem {
@@ -15,6 +16,7 @@ export const routes: RouteItem[] = [
     children: [
       { path: "", element: <Home /> },
       { path: "/json-formatter", element: <JsonFormatter /> },
+      { path: "/json-csv", element : <JsonToCsvPage />}
     ],
   },
 ];

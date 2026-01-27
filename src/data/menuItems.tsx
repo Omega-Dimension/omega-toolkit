@@ -27,6 +27,7 @@ export const menuItems: MenuItemProps[] = [
     label: "Tools",
     children: [
       { label: "JSON Formatter", path: "/json-formatter" },
+      { label : "JSON to Csv Files", path : "json-csv",},
       { label: "Image Compress", path: "image-compress" },
       { label: "CSV to Excel", path: "/csv-excel" },
     ],
