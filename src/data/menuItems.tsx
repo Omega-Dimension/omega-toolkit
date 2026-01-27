@@ -26,10 +26,12 @@ export const menuItems: MenuItemProps[] = [
   {
     label: "Tools",
     children: [
-      { label: "JSON Formatter", path: "/json-formatter" },
+      // { label: "JSON Formatter", path: "/json-formatter" },
       { label: "JSON to Csv Files", path: "/json-csv" },
       { label: "Csv to Json Files", path: "/csv-json" },
-      { label : "Exel to Csv Files", path : "/excel-csv"}
+      { label : "Exel to Csv Files", path : "/excel-csv"},
+      { label : "Csv to Excel Files", path : "/csv-excel"}
+
       
     ],
   },
