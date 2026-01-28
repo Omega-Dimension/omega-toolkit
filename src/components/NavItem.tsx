@@ -15,7 +15,6 @@ export function NavItem({ item }: NavItemProps) {
   const navigate = useNavigate();
   function show() {
     if (!item.children) return;
-
     gsap
       .timeline()
       .to(dropdownRef.current, {

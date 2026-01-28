@@ -24,16 +24,21 @@ export const menuItems: MenuItemProps[] = [
     path: "/",
   },
   {
-    label: "Tools",
+    label: "File Tools",
     children: [
       // { label: "JSON Formatter", path: "/json-formatter" },
       { label: "JSON to Csv Files", path: "/json-csv" },
       { label: "Csv to Json Files", path: "/csv-json" },
       { label : "Exel to Csv Files", path : "/excel-csv"},
       { label : "Csv to Excel Files", path : "/csv-excel"}
-
-      
     ],
+  },
+  {
+    label : "Image Tools",
+    children : [
+      {label : "Jpg to Png Image", path : "jpg-png"},
+      {label : "Resize Image", path : "resize-image"}
+    ]
   },
   {
     label: "About",
