@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import * as XLSX from "xlsx";
 
-export default function ExcelToCsv() {
+export default function ExcelToCsvPage() {
   const [csv, setCsv] = useState<string>("");
 
   function handleFile(file: File) {
