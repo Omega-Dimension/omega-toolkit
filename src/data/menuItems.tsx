@@ -37,7 +37,8 @@ export const menuItems: MenuItemProps[] = [
     label : "Image Tools",
     children : [
       {label : "Jpg to Png Image", path : "jpg-png"},
-      {label : "Resize Image", path : "resize-image"}
+      {label : "Resize Image", path : "resize-image"},
+      { label : "Compress Image",path : "compress-image"}
     ]
   },
   {
