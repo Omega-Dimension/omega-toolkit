@@ -5,6 +5,7 @@ import ExcelToCsv from "../pages/Files/ExcelToCsvPage";
 import JsonFormatter from "../pages/Files/JsonFormatterPage";
 import JsonToCsvPage from "../pages/Files/JsonToCsvPage";
 import Home from "../pages/Home";
+import JpgToPng from "../pages/Images/JpgToPngPage";
 
 export interface RouteItem {
   path: string;
@@ -22,7 +23,8 @@ export const routes: RouteItem[] = [
       { path: "/json-csv", element: <JsonToCsvPage /> },
       { path: "/csv-json", element: <CsvToJsonPage /> },
       { path: "/excel-csv", element: <ExcelToCsv /> },
-      { path : "/csv-excel", element : <CsvToExcelPage />}
+      { path : "/csv-excel", element : <CsvToExcelPage />},
+      { path : "/jpg-png", element : <JpgToPng />}
     ],
   },
 ];
