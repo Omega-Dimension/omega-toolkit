@@ -6,6 +6,7 @@ import JsonFormatter from "../pages/Files/JsonFormatterPage";
 import JsonToCsvPage from "../pages/Files/JsonToCsvPage";
 import Home from "../pages/Home";
 import FaviconGeneratorPage from "../pages/Images/FaviconGeneratorPage";
+import ImageCropPage from "../pages/Images/ImageCropPage";
 import ImageResizePage from "../pages/Images/ImageResize";
 import JpgToPng from "../pages/Images/JpgToPngPage";
 
@@ -30,6 +31,7 @@ export const routes: RouteItem[] = [
       { path: "/image/jpg-png", element: <JpgToPng /> },
       { path: "/image/resize-image", element: <ImageResizePage /> },
       { path: "/image/favicon-generator", element: <FaviconGeneratorPage /> },
+      { path: "/image/image-crop", element: <ImageCropPage /> },
     ],
   },
 ];
