@@ -5,7 +5,6 @@ import ExcelToCsv from "../pages/Files/ExcelToCsvPage";
 import JsonFormatter from "../pages/Files/JsonFormatterPage";
 import JsonToCsvPage from "../pages/Files/JsonToCsvPage";
 import Home from "../pages/Home";
-import ImageCompressPage from "../pages/Images/ImageCompress";
 import ImageResizePage from "../pages/Images/ImageResize";
 import JpgToPng from "../pages/Images/JpgToPngPage";
 
@@ -21,14 +20,15 @@ export const routes: RouteItem[] = [
     element: <MainLayout />,
     children: [
       { path: "", element: <Home /> },
-      { path: "/json-formatter", element: <JsonFormatter /> },
-      { path: "/json-csv", element: <JsonToCsvPage /> },
-      { path: "/csv-json", element: <CsvToJsonPage /> },
-      { path: "/excel-csv", element: <ExcelToCsv /> },
-      { path : "/csv-excel", element : <CsvToExcelPage />},
-      { path : "/jpg-png", element : <JpgToPng />},
-      { path : "/resize-image", element : <ImageResizePage />},
-      { path : "/compress-image", element : <ImageCompressPage />},
+      { path: "/file/json-formatter", element: <JsonFormatter /> },
+      { path: "/file/json-csv", element: <JsonToCsvPage /> },
+      { path: "/file/csv-json", element: <CsvToJsonPage /> },
+      { path: "/file/excel-csv", element: <ExcelToCsv /> },
+      { path: "/file/csv-excel", element: <CsvToExcelPage /> },
+
+
+      { path: "/image/jpg-png", element: <JpgToPng /> },
+      { path: "/image/resize-image", element: <ImageResizePage /> },
     ],
   },
 ];
