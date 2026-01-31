@@ -8,6 +8,7 @@ import Home from "../pages/Home";
 import FaviconGeneratorPage from "../pages/Images/FaviconGeneratorPage";
 import ImageCropPage from "../pages/Images/ImageCropPage";
 import ImageResizePage from "../pages/Images/ImageResize";
+import ImageToBase64Page from "../pages/Images/ImageToBase64Page";
 import JpgToPng from "../pages/Images/JpgToPngPage";
 
 export interface RouteItem {
@@ -32,6 +33,7 @@ export const routes: RouteItem[] = [
       { path: "/image/resize-image", element: <ImageResizePage /> },
       { path: "/image/favicon-generator", element: <FaviconGeneratorPage /> },
       { path: "/image/image-crop", element: <ImageCropPage /> },
+      { path : "/image/image-base64", element : <ImageToBase64Page />}
     ],
   },
 ];

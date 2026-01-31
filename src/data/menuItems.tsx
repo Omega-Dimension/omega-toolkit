@@ -39,8 +39,8 @@ export const menuItems: MenuItemProps[] = [
       { label: "Jpg to Png Image", path: "/image/jpg-png" },
       { label: "Resize Image", path: "/image/resize-image" },
       { label : "Fav Generator", path : "/image/favicon-generator"},
-      { label : "Image Crop", path : "/image/image-crop"}
-    
+      { label : "Image Crop", path : "/image/image-crop"},
+      { label : "Image to Base64", path : "image/image-base64"}
     ],
   },
   {
