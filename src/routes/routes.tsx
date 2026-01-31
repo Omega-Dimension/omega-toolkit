@@ -35,7 +35,8 @@ export const routes: RouteItem[] = [
       { path: "/image/favicon-generator", element: <FaviconGeneratorPage /> },
       { path: "/image/image-crop", element: <ImageCropPage /> },
       { path : "/image/image-base64", element : <ImageToBase64Page />},
-      { path : "image/base64-image", element : <Base64ToImagePage />}
+      { path : "image/base64-image", element : <Base64ToImagePage />},
+
     ],
   },
 ];

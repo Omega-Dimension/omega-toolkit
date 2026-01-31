@@ -40,7 +40,8 @@ export const menuItems: MenuItemProps[] = [
       // { label: "Resize Image", path: "/image/resize-image" },
       { label : "Fav Generator", path : "/image/favicon-generator"},
       { label : "Image Crop", path : "/image/image-crop"},
-      { label : "Image to Base64", path : "image/image-base64"}
+      { label : "Image to Base64", path : "image/image-base64"},
+      { label : "Base 64 to Image", path : "image/base64-image"}
     ],
   },
   {
