@@ -5,6 +5,7 @@ import ExcelToCsv from "../pages/Files/ExcelToCsvPage";
 import JsonFormatter from "../pages/Files/JsonFormatterPage";
 import JsonToCsvPage from "../pages/Files/JsonToCsvPage";
 import Home from "../pages/Home";
+import Base64ToImagePage from "../pages/Images/Base64ToImagePage";
 import FaviconGeneratorPage from "../pages/Images/FaviconGeneratorPage";
 import ImageCropPage from "../pages/Images/ImageCropPage";
 import ImageResizePage from "../pages/Images/ImageResize";
@@ -33,7 +34,8 @@ export const routes: RouteItem[] = [
       { path: "/image/resize-image", element: <ImageResizePage /> },
       { path: "/image/favicon-generator", element: <FaviconGeneratorPage /> },
       { path: "/image/image-crop", element: <ImageCropPage /> },
-      { path : "/image/image-base64", element : <ImageToBase64Page />}
+      { path : "/image/image-base64", element : <ImageToBase64Page />},
+      { path : "image/base64-image", element : <Base64ToImagePage />}
     ],
   },
 ];
