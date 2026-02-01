@@ -1,4 +1,5 @@
 import MainLayout from "../layout/MainLayout";
+import Base64ToolPage from "../pages/Dev/Base64ToolPage";
 import HashGeneratorPage from "../pages/Dev/HashGeneratorPage";
 import CsvToExcelPage from "../pages/Files/CsvToExcelPage";
 import CsvToJsonPage from "../pages/Files/CsvToJsonPage";
@@ -40,6 +41,7 @@ export const routes: RouteItem[] = [
 
 
       {path : "/dev/hash-generator", element : <HashGeneratorPage />},
+      {path : "/dev/base64-tool", element : <Base64ToolPage />},
     ],
   },
 ];
