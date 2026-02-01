@@ -48,6 +48,7 @@ export const menuItems: MenuItemProps[] = [
     label : "Dev Tools",
     children: [
         { label: "JSON Formatter", path: "/dev/json-formatter" },
+        { label : "Hash Generator", path : "/dev/hash-generator"},
     ]
   },
   {
