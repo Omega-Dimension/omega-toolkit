@@ -1,4 +1,5 @@
 import MainLayout from "../layout/MainLayout";
+import HashGeneratorPage from "../pages/Dev/HashGeneratorPage";
 import CsvToExcelPage from "../pages/Files/CsvToExcelPage";
 import CsvToJsonPage from "../pages/Files/CsvToJsonPage";
 import ExcelToCsv from "../pages/Files/ExcelToCsvPage";
@@ -35,8 +36,10 @@ export const routes: RouteItem[] = [
       { path: "/image/favicon-generator", element: <FaviconGeneratorPage /> },
       { path: "/image/image-crop", element: <ImageCropPage /> },
       { path : "/image/image-base64", element : <ImageToBase64Page />},
-      { path : "image/base64-image", element : <Base64ToImagePage />},
+      { path : "/image/base64-image", element : <Base64ToImagePage />},
 
+
+      {path : "/dev/hash-generator", element : <HashGeneratorPage />},
     ],
   },
 ];
