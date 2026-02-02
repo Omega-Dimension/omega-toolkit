@@ -51,7 +51,7 @@ export const menuItems: MenuItemProps[] = [
         { label : "Hash Generator", path : "/dev/hash-generator"},
         { label : "Base64 Tool", path : "/dev/base64-tool"}, 
         { label : "UUID Generator", path : "/dev/uuid-generator"}, 
-
+        { label : "JWT Decoder", path : "/dev/jwt-decoder"}
 
     ]
   },

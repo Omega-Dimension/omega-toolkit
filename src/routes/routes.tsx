@@ -1,6 +1,7 @@
 import MainLayout from "../layout/MainLayout";
 import Base64ToolPage from "../pages/Dev/Base64ToolPage";
 import HashGeneratorPage from "../pages/Dev/HashGeneratorPage";
+import JWTDecoderPage from "../pages/Dev/JwtDecoderPage";
 import UuidGeneratorPage from "../pages/Dev/UuidGeneratorPage";
 import CsvToExcelPage from "../pages/Files/CsvToExcelPage";
 import CsvToJsonPage from "../pages/Files/CsvToJsonPage";
@@ -43,6 +44,7 @@ export const routes: RouteItem[] = [
       { path: "/dev/hash-generator", element: <HashGeneratorPage /> },
       { path: "/dev/base64-tool", element: <Base64ToolPage /> },
       { path: "/dev/uuid-generator", element: <UuidGeneratorPage /> },
+      { path : "/dev/jwt-decoder", element : <JWTDecoderPage />}
     ],
   },
 ];
