@@ -13,81 +13,75 @@ import {
 } from "@mui/material";
 
 export default function UuidGeneratorPage() {
-    const [mode, setMode] = useState<"uuid" | "custom">("uuid");
-    const [length, setLength] = useState<number>(8);
-    const [count, setCount] = useState<number>(1);
-    const [useNumbers, setUseNumbers] = useState<boolean>(true);
-    const [useLower, setUseLower] = useState<boolean>(true);
-    const [useUpper, setUseUpper] = useState<boolean>(true);
-    const [results, setResults] = useState<string[]>([]);
+  const [mode, setMode] = useState<"uuid" | "custom">("uuid");
+  const [length, setLength] = useState<number>(8);
+  const [count, setCount] = useState<number>(1);
+  const [useNumbers, setUseNumbers] = useState<boolean>(true);
+  const [useLower, setUseLower] = useState<boolean>(true);
+  const [useUpper, setUseUpper] = useState<boolean>(true);
+  const [results, setResults] = useState<string[]>([]);
 
+  function handleModeChange(
+    _: React.MouseEvent<HTMLElement>,
+    newMode: "uuid" | "custom" | null,
+  ) {
+    if (newMode) {
+      setMode(newMode);
+      setResults([]);
+    }
+  }
 
-    function handleModeChange(
-        _: React.MouseEvent<HTMLElement>,
-        newMode: "uuid" | "custom" | null,
-    ) {
-        if (newMode) {
-            setMode(newMode);
-            setResults([]);
-        }
+  function generateUUIDv4() {
+    const list: string[] = [];
+    for (let i = 0; i < count; i++) {
+      list.push(crypto.randomUUID());
+    }
+    setResults(list);
+  }
+
+  function generateCustomID() {
+    let chars = "";
+
+    if (useNumbers) chars += "0123456789";
+    if (useLower) chars += "abcdefghijklmnopqrstuvwxyz";
+    if (useUpper) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    if (!chars) return;
+
+    const list: string[] = [];
+    for (let i = 0; i < count; i++) {
+      let id = "";
+      const randomValues = crypto.getRandomValues(new Uint32Array(length));
+
+      for (let j = 0; j < length; j++) {
+        id += chars[randomValues[j] % chars.length];
+      }
+
+      list.push(id);
     }
 
+    setResults(list);
+  }
 
-    function generateUUIDv4() {
-        const list : string[] = [];
-        for(let i = 0; i < count; i++) {
-            list.push(crypto.randomUUID());
-        }
-        setResults(list);
+  function handleGenerate() {
+    if (mode === "uuid") {
+      generateUUIDv4();
+    } else {
+      generateCustomID();
     }
+  }
 
+  function copyAll() {
+    if (!results.length) return;
 
-    function generateCustomID() {
-        let chars = "";
+    navigator.clipboard.writeText(results.join("\n"));
+  }
 
-        if(useNumbers) chars += "0123456789";
-        if(useLower) chars += "abcdefghijklmnopqrstuvwxyz";
-        if(useUpper) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  function clearAll() {
+    setResults([]);
+  }
 
-        if(!chars) return;
-
-        const list : string[] = [];
-        for(let i = 0; i < count; i++) {
-            let id = "";
-            const randomValues = crypto.getRandomValues(new Uint32Array(length));
-            
-            for(let j = 0; j < length; j++) {
-                id += chars[randomValues[j] % chars.length]
-            }
-
-            list.push(id);
-        }
-
-        setResults(list);
-    }
-
-
-    function handleGenerate() {
-        if(mode === "uuid") {
-            generateUUIDv4();
-        } else {
-            generateCustomID();
-        }
-    }
-
-
-    function copyAll() {
-        if(!results.length) return;
-
-        navigator.clipboard.writeText(results.join("\n"));
-    }
-
-    function clearAll() {
-        setResults([]);
-    }
-
-
-    return (
+  return (
     <Box sx={{ py: 10 }}>
       <Container maxWidth="md">
         <Typography variant="h4" fontWeight={700} mb={1}>
@@ -197,4 +191,3 @@ export default function UuidGeneratorPage() {
     </Box>
   );
 }
-

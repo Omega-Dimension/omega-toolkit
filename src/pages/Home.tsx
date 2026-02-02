@@ -1,6 +1,7 @@
 import FeaturedTools from "../components/FeaturedTools";
 import Hero from "../components/Hero";
 import Intro from "../components/Intro";
+import PerformanceMetrics from "../components/PerformanceMetrics";
 import Profile from "../components/Profile";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <Intro />
       <FeaturedTools />
       <Profile />
+      <PerformanceMetrics />
     </>
   );
 }
