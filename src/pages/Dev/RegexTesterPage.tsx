@@ -39,7 +39,6 @@ export default function RegexTesterPage() {
       const regex = new RegExp(pattern, flags);
       const matches: MatchResult[] = [];
 
-        const single = regex.exec(testText);
       if (flags.includes("g")) {
         let match: RegExpExecArray | null;
 

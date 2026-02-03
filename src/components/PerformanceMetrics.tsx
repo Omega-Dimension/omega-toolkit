@@ -1,4 +1,4 @@
-import { Box, Container, Typography, Grid, Button, Card, CardContent, useTheme, alpha } from "@mui/material";
+import { Box, Container, Typography, Button, Card, CardContent, useTheme, alpha } from "@mui/material";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,7 +13,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function InteractiveShowcase() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
   const heroCardRef = useRef<HTMLDivElement>(null);
   const floatingCardsRef = useRef<HTMLDivElement[]>([]);
   const theme = useTheme();

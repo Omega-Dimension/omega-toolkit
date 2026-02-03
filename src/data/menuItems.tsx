@@ -54,10 +54,9 @@ export const menuItems: MenuItemProps[] = [
         { label : "JWT Decoder", path : "/dev/jwt-decoder"},
         { label : "Regex Tester", path : "/dev/regex-tester"},
         { label : "Url Tools", path : "/dev/url-tool"}
-
-
     ]
   },
+
   {
     label: "About",
     path: "/about",
