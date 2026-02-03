@@ -52,7 +52,9 @@ export const menuItems: MenuItemProps[] = [
         { label : "Base64 Tool", path : "/dev/base64-tool"}, 
         { label : "UUID Generator", path : "/dev/uuid-generator"}, 
         { label : "JWT Decoder", path : "/dev/jwt-decoder"},
-        { label : "Regex Tester", path : "/dev/regex-tester"}
+        { label : "Regex Tester", path : "/dev/regex-tester"},
+        { label : "Url Tools", path : "/dev/url-tool"}
+
 
     ]
   },

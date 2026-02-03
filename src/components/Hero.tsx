@@ -7,7 +7,7 @@ export default function Hero() {
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const subtitleRef = useRef<HTMLParagraphElement | null>(null);
   const buttonsRef = useRef<HTMLDivElement | null>(null);
-
+  
   useEffect(() => {
     if (!sectionRef.current) return;
 
