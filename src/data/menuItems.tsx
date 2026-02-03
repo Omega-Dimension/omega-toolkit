@@ -17,55 +17,53 @@ export interface ProfileProps {
   image: string;
   bio: string;
 }
-
+// data/menuItems.ts
 export const menuItems: MenuItemProps[] = [
   { label: "Home", path: "/" },
 
   {
-    label: "Tools",
+    label: "File Tools",
     children: [
-      {
-        label: "File Tools",
-        children: [
-          { label: "JSON to CSV", path: "/file/json-csv" },
-          { label: "CSV to JSON", path: "/file/csv-json" },
-          { label: "JSON to Csv Files", path: "/file/json-csv" },
-          { label: "Csv to Json Files", path: "/file/csv-json" },
-          { label: "Exel to Csv Files", path: "/file/excel-csv" },
-          { label: "Csv to Excel Files", path: "/file/csv-excel" },
-        ],
-      },
-      {
-        label: "Image Tools",
-        children: [
-          { label: "Jpg to Png Image", path: "/image/jpg-png" },
-          { label: "Resize Image", path: "/image/resize-image" },
-          { label: "Fav Generator", path: "/image/favicon-generator" },
-          { label: "Image Crop", path: "/image/image-crop" },
-          { label: "Image to Base64", path: "image/image-base64" },
-          { label: "Base 64 to Image", path: "image/base64-image" },
-        ],
-      },
-      {
-        label: "Media Tools",
-        children: [
-          { label: "MP3 Converter", path: "/media/mp3-converter" },
-          { label: "MP3 to WAV", path: "/media/mp3-wav" },
-          { label: "WAV to MP3", path: "/media/wav-mp3" },
-        ],
-      },
-      {
-        label: "Dev Tools",
-        children: [
-          { label: "JSON Formatter", path: "/dev/json-formatter" },
-          { label: "Hash Generator", path: "/dev/hash-generator" },
-          { label: "Base64 Tool", path: "/dev/base64-tool" },
-          { label: "UUID Generator", path: "/dev/uuid-generator" },
-          { label: "JWT Decoder", path: "/dev/jwt-decoder" },
-          { label: "Regex Tester", path: "/dev/regex-tester" },
-          { label: "Url Tools", path: "/dev/url-tool" },
-        ],
-      },
+      { label: "JSON to CSV", path: "/file/json-csv" },
+      { label: "CSV to JSON", path: "/file/csv-json" },
+      { label: "JSON to CSV Files", path: "/file/json-csv" },
+      { label: "CSV to JSON Files", path: "/file/csv-json" },
+      { label: "Excel to CSV Files", path: "/file/excel-csv" },
+      { label: "CSV to Excel Files", path: "/file/csv-excel" },
+    ],
+  },
+
+  {
+    label: "Image Tools",
+    children: [
+      { label: "JPG to PNG Image", path: "/image/jpg-png" },
+      { label: "Resize Image", path: "/image/resize-image" },
+      { label: "Favicon Generator", path: "/image/favicon-generator" },
+      { label: "Image Crop", path: "/image/image-crop" },
+      { label: "Image to Base64", path: "/image/image-base64" },
+      { label: "Base64 to Image", path: "/image/base64-image" },
+    ],
+  },
+
+  {
+    label: "Media Tools",
+    children: [
+      { label: "MP3 Converter", path: "/media/mp3-converter" },
+      { label: "MP3 to WAV", path: "/media/mp3-wav" },
+      { label: "WAV to MP3", path: "/media/wav-mp3" },
+    ],
+  },
+
+  {
+    label: "Dev Tools",
+    children: [
+      { label: "JSON Formatter", path: "/dev/json-formatter" },
+      { label: "Hash Generator", path: "/dev/hash-generator" },
+      { label: "Base64 Tool", path: "/dev/base64-tool" },
+      { label: "UUID Generator", path: "/dev/uuid-generator" },
+      { label: "JWT Decoder", path: "/dev/jwt-decoder" },
+      { label: "Regex Tester", path: "/dev/regex-tester" },
+      { label: "URL Tools", path: "/dev/url-tool" },
     ],
   },
 
