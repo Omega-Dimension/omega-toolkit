@@ -1,8 +1,23 @@
+import { useState } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  Paper,
+  useTheme,
+  alpha,
+  Fade,
+  keyframes,
+} from "@mui/material";
 import type { MenuItemProps } from "../data/menuItems";
-import { Box, Typography, Stack } from "@mui/material";
-import gsap from "gsap";
-import { useRef, useState, useEffect } from "react";
-import { KeyboardArrowRight } from "@mui/icons-material";
+import {
+  ExpandMore,
+  ExpandLess,
+  Folder,
+  Image,
+  MusicNote,
+  Code,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 interface NavItemProps {
@@ -12,344 +27,433 @@ interface NavItemProps {
   closeAllDropdowns: () => void;
 }
 
+// Category icons mapping
+const getCategoryIcon = (category?: string) => {
+  switch (category) {
+    case "file":
+      return <Folder sx={{ fontSize: 20 }} />;
+    case "image":
+      return <Image sx={{ fontSize: 20 }} />;
+    case "media":
+      return <MusicNote sx={{ fontSize: 20 }} />;
+    case "dev":
+      return <Code sx={{ fontSize: 20 }} />;
+    default:
+      return null;
+  }
+};
+
+// Animation for shimmer effect
+const shimmer = keyframes`
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+`;
+
 export function NavItem({
   item,
   activeDropdown,
   setActiveDropdown,
   closeAllDropdowns,
 }: NavItemProps) {
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const arrowRef = useRef<HTMLDivElement | null>(null);
+  const theme = useTheme();
   const navigate = useNavigate();
-  const [isHovering, setIsHovering] = useState(false);
-  const showTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const isLight = theme.palette.mode === "light";
+  const hasChildren = Boolean(item.children);
   const isActive = activeDropdown === item.label;
 
-  function show() {
-    if (showTimeoutRef.current) {
-      clearTimeout(showTimeoutRef.current);
-    }
-    if (hideTimeoutRef.current) {
-      clearTimeout(hideTimeoutRef.current);
-    }
-
-    if (!item.children) return;
-
-    showTimeoutRef.current = setTimeout(() => {
+  const handleMouseEnter = () => {
+    if (hasChildren) {
       setActiveDropdown(item.label);
-      setIsHovering(true);
-
-      gsap.killTweensOf([dropdownRef.current, arrowRef.current]);
-
-      gsap
-        .timeline()
-        .to(dropdownRef.current, {
-          opacity: 1,
-          scaleY: 1,
-          y: 0,
-          pointerEvents: "auto",
-          duration: 0.25,
-          ease: "power2.out",
-        })
-        .to(
-          arrowRef.current,
-          {
-            rotate: 180,
-            duration: 0.2,
-            ease: "power2.out",
-          },
-          0,
-        );
-    }, 100);
-  }
-
-  function hide() {
-    if (showTimeoutRef.current) {
-      clearTimeout(showTimeoutRef.current);
     }
-    if (hideTimeoutRef.current) {
-      clearTimeout(hideTimeoutRef.current);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredCategory(null);
+  };
+
+  const handleClick = () => {
+    if (item.path) {
+      navigate(item.path);
+      closeAllDropdowns();
+    } else if (hasChildren) {
+      setActiveDropdown(isActive ? null : item.label);
     }
+  };
 
-    if (!item.children) return;
-
-    hideTimeoutRef.current = setTimeout(() => {
-      setIsHovering(false);
-
-      gsap.killTweensOf([dropdownRef.current, arrowRef.current]);
-
-      gsap
-        .timeline()
-        .to(dropdownRef.current, {
-          opacity: 0,
-          scaleY: 0.95,
-          y: -10,
-          pointerEvents: "none",
-          duration: 0.2,
-          ease: "power2.in",
-        })
-        .to(
-          arrowRef.current,
-          {
-            rotate: 0,
-            duration: 0.15,
-            ease: "power2.in",
-          },
-          0,
-        );
-    }, 150);
-  }
-
-  function go(path: string) {
-    navigate(path);
-    closeAllDropdowns();
-  }
-
-  useEffect(() => {
-    return () => {
-      if (showTimeoutRef.current) clearTimeout(showTimeoutRef.current);
-      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isActive && !isHovering && item.children) {
-      gsap.killTweensOf([dropdownRef.current, arrowRef.current]);
-      gsap
-        .timeline()
-        .to(dropdownRef.current, {
-          opacity: 1,
-          scaleY: 1,
-          y: 0,
-          pointerEvents: "auto",
-          duration: 0.25,
-          ease: "power2.out",
-        })
-        .to(
-          arrowRef.current,
-          {
-            rotate: 180,
-            duration: 0.2,
-            ease: "power2.out",
-          },
-          0,
-        );
-    } else if (!isActive && isHovering && item.children) {
-      hide();
-    }
-  }, [isActive, isHovering, item.children]);
+  const handleCategoryMouseEnter = (category?: string) => {
+    setHoveredCategory(category || null);
+  };
 
   return (
     <Box
       component="li"
       sx={{
         position: "relative",
-        listStyle: "none",
         height: "100%",
         display: "flex",
         alignItems: "center",
       }}
-      onMouseEnter={show}
-      onMouseLeave={hide}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      <Box
-        onClick={() => item.path && go(item.path)}
+      {/* Main Navigation Button */}
+      <Button
+        onClick={handleClick}
+        endIcon={
+          hasChildren ? (
+            isActive ? (
+              <ExpandLess sx={{ fontSize: 18 }} />
+            ) : (
+              <ExpandMore sx={{ fontSize: 18 }} />
+            )
+          ) : null
+        }
         sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 0.5,
-          px: 2.5,
-          py: 1.5,
+          color: isLight ? "text.primary" : "white",
+          fontWeight: 600,
+          fontSize: "0.95rem",
+          height: 40,
+          px: 2,
           borderRadius: "12px",
-          cursor: "pointer",
-          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-          backgroundColor: isActive ? "rgba(53, 164, 255, 0.1)" : "transparent",
+          textTransform: "none",
           position: "relative",
-          zIndex: 1101,
-          minWidth: 100,
-          justifyContent: "center",
-          backdropFilter: "blur(10px)",
-          border: "1px solid transparent",
+          transition: "all 0.3s ease",
+          background: isActive
+            ? alpha(
+                theme.palette.primary.main,
+                isLight ? 0.15 : 0.2
+              )
+            : "transparent",
           "&:hover": {
-            backgroundColor: "rgba(53, 164, 255, 0.08)",
-            color: "#35a4ff",
+            background: alpha(
+              theme.palette.primary.main,
+              isLight ? 0.1 : 0.15
+            ),
             transform: "translateY(-1px)",
-            boxShadow: "0 4px 20px rgba(53, 164, 255, 0.15)",
-            border: "1px solid rgba(53, 164, 255, 0.2)",
+            "&::after": {
+              width: "60%",
+              opacity: 1,
+            },
+          },
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            bottom: 6,
+            left: "20%",
+            width: 0,
+            height: "2px",
+            background: "linear-gradient(90deg, #35a4ff, #1976d2)",
+            borderRadius: "2px",
+            opacity: 0,
+            transition: "all 0.3s ease",
           },
         }}
       >
-        <Typography
-          component="span"
-          sx={{
-            fontWeight: 600,
-            fontSize: "0.95rem",
-            letterSpacing: "0.01em",
-            color: isActive ? "#35a4ff" : "inherit",
-            transition: "color 0.2s ease",
-          }}
-        >
-          {item.label}
-        </Typography>
+        {item.label}
+      </Button>
 
-        {item.children && (
-          <Box
-            ref={arrowRef}
+      {/* Dropdown Menu */}
+      {hasChildren && isActive && (
+        <Fade in={isActive} timeout={200}>
+          <Paper
+            elevation={0}
             sx={{
-              display: "flex",
-              alignItems: "center",
-              transition: "transform 0.3s ease",
-              ml: 0.5,
-            }}
-          >
-            <KeyboardArrowRight
-              sx={{
-                fontSize: 18,
-                color: isActive ? "#35a4ff" : "inherit",
-                opacity: 0.8,
-              }}
-            />
-          </Box>
-        )}
-      </Box>
-
-      {/* Dropdown Menu - Simplified Crystal Glass */}
-      {item.children && (
-        <Box
-          ref={dropdownRef}
-          sx={{
-            position: "absolute",
-            top: "calc(100% + 8px)",
-            left: "50%",
-            transform: "translateX(-50%) scaleY(0.95)",
-            opacity: 0,
-            transformOrigin: "top center",
-            pointerEvents: "none",
-            width: "max-content",
-            filter: "drop-shadow(0 8px 24px rgba(0, 0, 0, 0.15))",
-          }}
-        >
-          {/* Simplified Crystal Card */}
-          <Box
-            sx={{
-              position: "relative",
-              p: 0,
-              borderRadius: "16px",
-              minWidth: 220,
-              background:
-                "linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1))",
-
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              mt: 1,
+              minWidth: 600,
+              borderRadius: "20px",
               overflow: "hidden",
-              "&::before": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background:
-                  "linear-gradient(135deg, rgba(53, 164, 255, 0.1), rgba(33, 207, 255, 0.05))",
-                borderRadius: "16px",
-                opacity: 0.5,
-              },
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                borderRadius: "16px",
-                padding: "1px",
-                background:
-                  "linear-gradient(135deg, rgba(53, 164, 255, 0.3), rgba(255, 255, 255, 0.1))",
-                WebkitMask:
-                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                maskComposite: "exclude",
-                pointerEvents: "none",
-              },
+              border: "1px solid",
+              borderColor: isLight
+                ? alpha("#000", 0.1)
+                : alpha("#fff", 0.1),
+              background: isLight
+                ? alpha("#fff", 0.85)
+                : alpha("#0f172a", 0.85),
+              backdropFilter: "blur(20px)",
+              boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
+              zIndex: 1301,
+              display: "flex",
+              p: 0,
             }}
           >
-            {/* Subtle gradient overlay */}
+            {/* Main Categories Column */}
             <Box
               sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: "1px",
-                background:
-                  "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)",
+                width: 200,
+                p: 3,
+                borderRight: "1px solid",
+                borderColor: isLight
+                  ? alpha("#000", 0.08)
+                  : alpha("#fff", 0.08),
+                background: isLight
+                  ? alpha("#f8fafc", 0.6)
+                  : alpha("#1e293b", 0.6),
               }}
-            />
-
-            {/* Content */}
-            <Box sx={{ position: "relative", zIndex: 1 }}>
-              <Stack spacing={0.5} sx={{ p: 1.5 }}>
-                {item.children.map((child) => (
-                  <Box
-                    key={child.label}
-                    onClick={() => child.path && go(child.path)}
-                    sx={{
-                      px: 2,
-                      py: 1,
-                      borderRadius: "10px",
-                      cursor: "pointer",
-                      transition: "all 0.2s ease",
-                      position: "relative",
-                      overflow: "hidden",
-                      "&:hover": {
-                        backgroundColor: "rgba(53, 164, 255, 0.1)",
-                        transform: "translateX(2px)",
-                        "& .menu-item-text": {
-                          color: "#35a4ff",
-                        },
-                      },
-                    }}
-                  >
-                    <Typography
-                      component="span"
-                      className="menu-item-text"
-                      sx={{
-                        fontSize: "0.875rem",
-                        fontWeight: 500,
-                        color: "text.primary",
-                        letterSpacing: "0.01em",
-                        position: "relative",
-                        zIndex: 1,
-                        transition: "color 0.2s ease",
-                      }}
-                    >
-                      {child.label}
-                    </Typography>
-
-                    {/* Simple hover effect */}
+            >
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  color: isLight
+                    ? alpha("#000", 0.7)
+                    : alpha("#fff", 0.7),
+                  mb: 2,
+                  px: 1,
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  fontSize: "0.75rem",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                Categories
+              </Typography>
+              {item.children?.map((category) => (
+                <Box
+                  key={category.label}
+                  onMouseEnter={() =>
+                    handleCategoryMouseEnter(category.category)
+                  }
+                  sx={{
+                    p: 1.5,
+                    borderRadius: "12px",
+                    mb: 1,
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    background:
+                      hoveredCategory === category.category
+                        ? alpha(
+                            theme.palette.primary.main,
+                            isLight ? 0.15 : 0.2
+                          )
+                        : "transparent",
+                    border: "1px solid",
+                    borderColor:
+                      hoveredCategory === category.category
+                        ? alpha(
+                            theme.palette.primary.main,
+                            0.3
+                          )
+                        : "transparent",
+                    "&:hover": {
+                      background: alpha(
+                        theme.palette.primary.main,
+                        isLight ? 0.1 : 0.15
+                      ),
+                      transform: "translateX(2px)",
+                    },
+                  }}
+                >
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
                     <Box
                       sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
+                        width: 36,
+                        height: 36,
                         borderRadius: "10px",
-                        background:
-                          "linear-gradient(135deg, rgba(53, 164, 255, 0.08), transparent)",
-                        opacity: 0,
-                        transition: "opacity 0.2s ease",
-                        pointerEvents: "none",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        background: isLight
+                          ? alpha("#000", 0.05)
+                          : alpha("#fff", 0.05),
                       }}
-                    />
+                    >
+                      {getCategoryIcon(category.category)}
+                    </Box>
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 600,
+                          color: isLight
+                            ? "text.primary"
+                            : "white",
+                        }}
+                      >
+                        {category.label}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: isLight
+                            ? alpha("#000", 0.5)
+                            : alpha("#fff", 0.5),
+                        }}
+                      >
+                        {category.children?.length || 0} tools
+                      </Typography>
+                    </Box>
                   </Box>
-                ))}
-              </Stack>
+                </Box>
+              ))}
             </Box>
-          </Box>
-        </Box>
+
+            {/* Tools Grid */}
+            <Box sx={{ flex: 1, p: 3 }}>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: 2,
+                }}
+              >
+                {item.children
+                  ?.find(
+                    (cat) => cat.category === hoveredCategory
+                  )
+                  ?.children?.map((tool) => (
+                    <Paper
+                      key={tool.label}
+                      onClick={() => {
+                        if (tool.path) {
+                          navigate(tool.path);
+                          closeAllDropdowns();
+                        }
+                      }}
+                      elevation={0}
+                      sx={{
+                        p: 2,
+                        borderRadius: "16px",
+                        cursor: "pointer",
+                        position: "relative",
+                        overflow: "hidden",
+                        transition: "all 0.3s ease",
+                        background: isLight
+                          ? alpha("#fff", 0.6)
+                          : alpha("#1e293b", 0.6),
+                        border: "1px solid",
+                        borderColor: isLight
+                          ? alpha("#000", 0.1)
+                          : alpha("#fff", 0.1),
+                        backdropFilter: "blur(10px)",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow: "0 12px 40px rgba(53, 164, 255, 0.2)",
+                          borderColor: alpha(
+                            theme.palette.primary.main,
+                            0.3
+                          ),
+                          background: isLight
+                            ? alpha("#fff", 0.8)
+                            : alpha("#1e293b", 0.8),
+                          "&::before": {
+                            opacity: 1,
+                          },
+                        },
+                        "&::before": {
+                          content: '""',
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          background:
+                            "linear-gradient(135deg, rgba(53, 164, 255, 0.1), rgba(255, 255, 255, 0.05))",
+                          opacity: 0,
+                          transition: "opacity 0.3s ease",
+                        },
+                      }}
+                    >
+                      {/* Crystal effect overlay */}
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          background:
+                            "linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%)",
+                          opacity: isLight ? 0.1 : 0.05,
+                          animation: `${shimmer} 3s infinite linear`,
+                        }}
+                      />
+
+                      <Box sx={{ position: "relative", zIndex: 1 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 600,
+                            mb: 0.5,
+                            color: isLight
+                              ? "text.primary"
+                              : "white",
+                          }}
+                        >
+                          {tool.label}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            color: isLight
+                              ? alpha("#000", 0.6)
+                              : alpha("#fff", 0.6),
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          {tool.path?.split("/").pop()?.replace("-", " ")}
+                        </Typography>
+                      </Box>
+                    </Paper>
+                  ))}
+              </Box>
+
+              {/* Empty state when no category is hovered */}
+              {!hoveredCategory && (
+                <Box
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Box sx={{ textAlign: "center", p: 4 }}>
+                    <Box
+                      sx={{
+                        width: 60,
+                        height: 60,
+                        borderRadius: "16px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "0 auto 16px",
+                        background: alpha(
+                          theme.palette.primary.main,
+                          0.1
+                        ),
+                        border: "1px solid",
+                        borderColor: alpha(
+                          theme.palette.primary.main,
+                          0.2
+                        ),
+                      }}
+                    >
+                      <ExpandMore
+                        sx={{
+                          fontSize: 30,
+                          color: theme.palette.primary.main,
+                        }}
+                      />
+                    </Box>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: isLight
+                          ? alpha("#000", 0.6)
+                          : alpha("#fff", 0.6),
+                      }}
+                    >
+                      Hover over a category to view tools
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+            </Box>
+          </Paper>
+        </Fade>
       )}
     </Box>
   );

@@ -1,5 +1,4 @@
 import {
-  alpha,
   Box,
   Container,
   IconButton,
@@ -32,9 +31,9 @@ export default function Header() {
             left: 0,
             right: 0,
             bottom: 0,
-            zIndex: 1199,
-            backdropFilter: "blur(8px)",
-            backgroundColor: "rgba(0, 0, 0, 0.09)",
+            zIndex: 1299,
+            backdropFilter: "blur(4px)",
+            backgroundColor: "rgba(0, 0, 0, 0.03)",
             pointerEvents: "none",
           }}
         />
@@ -46,7 +45,7 @@ export default function Header() {
         sx={{
           position: "sticky",
           top: 0,
-          zIndex: 1200,
+          zIndex: 1300,
           backdropFilter: "blur(20px)",
           backgroundColor: isLight
             ? "rgba(245, 247, 250, 0.95)"
@@ -73,7 +72,7 @@ export default function Header() {
               position: "relative",
             }}
           >
-            {/* Logo with Crystal Effect */}
+            {/* Logo */}
             <Box
               onClick={() => {
                 window.location.href = "/";
@@ -163,7 +162,7 @@ export default function Header() {
                 position: "relative",
                 height: "100%",
                 alignItems: "center",
-                zIndex: 1200,
+                zIndex: 1301,
               }}
             >
               {menuItems.map((item) => (
@@ -177,13 +176,13 @@ export default function Header() {
               ))}
             </Box>
 
-            {/* Theme Toggle with Crystal Effect */}
+            {/* Theme Toggle */}
             <Box sx={{ 
               display: "flex", 
               alignItems: "center", 
               gap: 2,
               position: "relative",
-              zIndex: 1201,
+              zIndex: 1301,
             }}>
               <IconButton
                 onClick={() => {
