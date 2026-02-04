@@ -17,7 +17,6 @@ export interface ProfileProps {
   image: string;
   bio: string;
 }
-// data/menuItems.ts
 export const menuItems: MenuItemProps[] = [
   { label: "Home", path: "/" },
 
@@ -44,7 +43,6 @@ export const menuItems: MenuItemProps[] = [
       { label: "Base64 to Image", path: "/image/base64-image" },
     ],
   },
-
   {
     label: "Media Tools",
     children: [
