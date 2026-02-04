@@ -120,16 +120,10 @@ export function NavItem({
           position: "relative",
           transition: "all 0.3s ease",
           background: isActive
-            ? alpha(
-                theme.palette.primary.main,
-                isLight ? 0.15 : 0.2
-              )
+            ? alpha(theme.palette.primary.main, isLight ? 0.15 : 0.2)
             : "transparent",
           "&:hover": {
-            background: alpha(
-              theme.palette.primary.main,
-              isLight ? 0.1 : 0.15
-            ),
+            background: alpha(theme.palette.primary.main, isLight ? 0.1 : 0.15),
             transform: "translateY(-1px)",
             "&::after": {
               width: "60%",
@@ -161,15 +155,14 @@ export function NavItem({
             sx={{
               position: "absolute",
               top: "100%",
-              left: 0,
+              left: "50%",
+              transform: "translateX(-50%)",
               mt: 1,
               minWidth: 600,
               borderRadius: "20px",
               overflow: "hidden",
               border: "1px solid",
-              borderColor: isLight
-                ? alpha("#000", 0.1)
-                : alpha("#fff", 0.1),
+              borderColor: isLight ? alpha("#000", 0.1) : alpha("#fff", 0.1),
               background: isLight
                 ? alpha("#fff", 0.85)
                 : alpha("#0f172a", 0.85),
@@ -183,7 +176,7 @@ export function NavItem({
             {/* Main Categories Column */}
             <Box
               sx={{
-                width: 200,
+                width: 230,
                 p: 3,
                 borderRight: "1px solid",
                 borderColor: isLight
@@ -197,9 +190,7 @@ export function NavItem({
               <Typography
                 variant="subtitle2"
                 sx={{
-                  color: isLight
-                    ? alpha("#000", 0.7)
-                    : alpha("#fff", 0.7),
+                  color: isLight ? alpha("#000", 0.7) : alpha("#fff", 0.7),
                   mb: 2,
                   px: 1,
                   fontWeight: 600,
@@ -226,21 +217,18 @@ export function NavItem({
                       hoveredCategory === category.category
                         ? alpha(
                             theme.palette.primary.main,
-                            isLight ? 0.15 : 0.2
+                            isLight ? 0.15 : 0.2,
                           )
                         : "transparent",
                     border: "1px solid",
                     borderColor:
                       hoveredCategory === category.category
-                        ? alpha(
-                            theme.palette.primary.main,
-                            0.3
-                          )
+                        ? alpha(theme.palette.primary.main, 0.3)
                         : "transparent",
                     "&:hover": {
                       background: alpha(
                         theme.palette.primary.main,
-                        isLight ? 0.1 : 0.15
+                        isLight ? 0.1 : 0.15,
                       ),
                       transform: "translateX(2px)",
                     },
@@ -267,9 +255,7 @@ export function NavItem({
                         variant="body2"
                         sx={{
                           fontWeight: 600,
-                          color: isLight
-                            ? "text.primary"
-                            : "white",
+                          color: isLight ? "text.primary" : "white",
                         }}
                       >
                         {category.label}
@@ -300,9 +286,7 @@ export function NavItem({
                 }}
               >
                 {item.children
-                  ?.find(
-                    (cat) => cat.category === hoveredCategory
-                  )
+                  ?.find((cat) => cat.category === hoveredCategory)
                   ?.children?.map((tool) => (
                     <Paper
                       key={tool.label}
@@ -331,10 +315,7 @@ export function NavItem({
                         "&:hover": {
                           transform: "translateY(-2px)",
                           boxShadow: "0 12px 40px rgba(53, 164, 255, 0.2)",
-                          borderColor: alpha(
-                            theme.palette.primary.main,
-                            0.3
-                          ),
+                          borderColor: alpha(theme.palette.primary.main, 0.3),
                           background: isLight
                             ? alpha("#fff", 0.8)
                             : alpha("#1e293b", 0.8),
@@ -377,9 +358,7 @@ export function NavItem({
                           sx={{
                             fontWeight: 600,
                             mb: 0.5,
-                            color: isLight
-                              ? "text.primary"
-                              : "white",
+                            color: isLight ? "text.primary" : "white",
                           }}
                         >
                           {tool.label}
@@ -420,15 +399,9 @@ export function NavItem({
                         alignItems: "center",
                         justifyContent: "center",
                         margin: "0 auto 16px",
-                        background: alpha(
-                          theme.palette.primary.main,
-                          0.1
-                        ),
+                        background: alpha(theme.palette.primary.main, 0.1),
                         border: "1px solid",
-                        borderColor: alpha(
-                          theme.palette.primary.main,
-                          0.2
-                        ),
+                        borderColor: alpha(theme.palette.primary.main, 0.2),
                       }}
                     >
                       <ExpandMore

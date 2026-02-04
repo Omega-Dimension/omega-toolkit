@@ -162,7 +162,7 @@ export default function Header() {
                 position: "relative",
                 height: "100%",
                 alignItems: "center",
-                zIndex: 1301,
+                
               }}
             >
               {menuItems.map((item) => (
