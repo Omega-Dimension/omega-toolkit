@@ -158,7 +158,7 @@ export function NavItem({
               left: "50%",
               transform: "translateX(-50%)",
               mt: 1,
-              minWidth: 600,
+              minWidth: 640, 
               borderRadius: "20px",
               overflow: "hidden",
               border: "1px solid",
@@ -176,7 +176,7 @@ export function NavItem({
             {/* Main Categories Column */}
             <Box
               sx={{
-                width: 230,
+                
                 p: 3,
                 borderRight: "1px solid",
                 borderColor: isLight
@@ -250,12 +250,17 @@ export function NavItem({
                     >
                       {getCategoryIcon(category.category)}
                     </Box>
-                    <Box>
+                    <Box sx={{ minWidth: 0 }}>
+                      {" "}
+                      {/* Add this container to handle text overflow */}
                       <Typography
                         variant="body2"
                         sx={{
                           fontWeight: 600,
                           color: isLight ? "text.primary" : "white",
+                          whiteSpace: "nowrap", // Add this
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
                         }}
                       >
                         {category.label}
@@ -266,6 +271,10 @@ export function NavItem({
                           color: isLight
                             ? alpha("#000", 0.5)
                             : alpha("#fff", 0.5),
+                          display: "block", // Add this
+                          whiteSpace: "nowrap", // Add this
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
                         }}
                       >
                         {category.children?.length || 0} tools
@@ -277,11 +286,12 @@ export function NavItem({
             </Box>
 
             {/* Tools Grid */}
+
             <Box sx={{ flex: 1, p: 3 }}>
               <Box
                 sx={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gridTemplateColumns: "repeat(2, 1.9fr)",
                   gap: 2,
                 }}
               >
@@ -359,6 +369,9 @@ export function NavItem({
                             fontWeight: 600,
                             mb: 0.5,
                             color: isLight ? "text.primary" : "white",
+                            whiteSpace: "nowrap", // Add this
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
                           }}
                         >
                           {tool.label}
@@ -370,6 +383,10 @@ export function NavItem({
                               ? alpha("#000", 0.6)
                               : alpha("#fff", 0.6),
                             lineHeight: 1.4,
+                            display: "block", // Add this
+                            whiteSpace: "nowrap", // Add this
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
                           }}
                         >
                           {tool.path?.split("/").pop()?.replace("-", " ")}
