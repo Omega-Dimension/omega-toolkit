@@ -17,6 +17,7 @@ import ImageCropPage from "../pages/Images/ImageCropPage";
 import ImageResizePage from "../pages/Images/ImageResize";
 import ImageToBase64Page from "../pages/Images/ImageToBase64Page";
 import JpgToPng from "../pages/Images/JpgToPngPage";
+import Mp3ConverterPage from "../pages/Media/Mp3Converter";
 
 export interface RouteItem {
   path: string;
@@ -48,7 +49,9 @@ export const routes: RouteItem[] = [
       { path: "/dev/uuid-generator", element: <UuidGeneratorPage /> },
       { path : "/dev/jwt-decoder", element : <JWTDecoderPage />},
       { path : "/dev/regex-tester", element : <RegexTesterPage />},
-      { path : "/dev/url-tool", element : <UrlEncodeDecodePage />}
+      { path : "/dev/url-tool", element : <UrlEncodeDecodePage />},
+
+      {path: "/media/mp3-converter", element: <Mp3ConverterPage /> },
     ],
   },
 ];
