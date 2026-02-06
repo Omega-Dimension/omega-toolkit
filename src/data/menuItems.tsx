@@ -27,10 +27,8 @@ export const menuItems: MenuItemProps[] = [
         label: "File Tools",
         category: "file",
         children: [
-          { label: "JSON to CSV", path: "/file/json-csv" },
-          { label: "CSV to JSON", path: "/file/csv-json" },
-          { label: "JSON to CSV Files", path: "/file/json-csv-files" },
-          { label: "CSV to JSON Files", path: "/file/csv-json-files" },
+          { label: "JSON to CSV Files", path: "/file/json-csv" },
+          { label: "CSV to JSON Files", path: "/file/csv-json" },
           { label: "Excel to CSV Files", path: "/file/excel-csv" },
           { label: "CSV to Excel Files", path: "/file/csv-excel" },
         ],
