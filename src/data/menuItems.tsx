@@ -50,8 +50,6 @@ export const menuItems: MenuItemProps[] = [
         category: "media",
         children: [
           { label: "MP3 Converter", path: "/media/mp3-converter" },
-          { label: "MP3 to WAV", path: "/media/mp3-wav" },
-          { label: "WAV to MP3", path: "/media/wav-mp3" },
         ],
       },
       {
