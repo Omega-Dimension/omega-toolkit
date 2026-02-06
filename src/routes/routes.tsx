@@ -31,7 +31,6 @@ export const routes: RouteItem[] = [
     element: <MainLayout />,
     children: [
       { path: "", element: <Home /> },
-      { path: "/file/json-formatter", element: <JsonFormatter /> },
       { path: "/file/json-csv", element: <JsonToCsvPage /> },
       { path: "/file/csv-json", element: <CsvToJsonPage /> },
       { path: "/file/excel-csv", element: <ExcelToCsv /> },
@@ -44,6 +43,7 @@ export const routes: RouteItem[] = [
       { path: "/image/image-base64", element: <ImageToBase64Page /> },
       { path: "/image/base64-image", element: <Base64ToImagePage /> },
 
+      { path: "/dev/json-formatter", element: <JsonFormatter /> },
       { path: "/dev/hash-generator", element: <HashGeneratorPage /> },
       { path: "/dev/base64-tool", element: <Base64ToolPage /> },
       { path: "/dev/uuid-generator", element: <UuidGeneratorPage /> },

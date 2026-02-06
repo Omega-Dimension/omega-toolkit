@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-type FormatType = "mp4" | "wav" | "audio";
+type FormatType = "mp4" | "wav" | "audio" | "mp3-to-wav";
 
 export default function Mp3ConverterPage() {
   const [format, setFormat] = useState<FormatType>("mp4");
@@ -26,9 +26,27 @@ export default function Mp3ConverterPage() {
         return "audio/wav";
       case "audio":
         return "audio/*";
+      case "mp3-to-wav":
+        return "audio/mp3";
       default:
         return "audio/*";
     }
+  }
+
+  function getOutputConfig() {
+    if (format === "mp3-to-wav") {
+      return {
+        outputName: "output.wav",
+        mimeType: "audio/wav",
+        downloadName: "converted.wav",
+      };
+    }
+
+    return {
+      outputName: "output.mp3",
+      mimeType: "audio/mp3",
+      downloadName: "converted.mp3",
+    };
   }
 
   async function loadFFmpeg() {
@@ -46,21 +64,24 @@ export default function Mp3ConverterPage() {
       await loadFFmpeg();
       const ffmpeg = ffmpegRef.current!;
 
-      await ffmpeg.writeFile(file.name, await fetchFile(file));
-      await ffmpeg.exec(["-i", file.name, "output.mp3"]);
+      const inputName = file.name;
+      const { outputName, mimeType, downloadName } = getOutputConfig();
 
-      const data = await ffmpeg.readFile("output.mp3");
+      await ffmpeg.writeFile(inputName, await fetchFile(file));
+      await ffmpeg.exec(["-i", inputName, outputName]);
+
+      const data = await ffmpeg.readFile(outputName);
 
       const blob = new Blob(
         [new Uint8Array(data as Uint8Array)],
-        { type: "audio/mp3" }
+        { type: mimeType }
       );
 
       const url = URL.createObjectURL(blob);
 
       const a = document.createElement("a");
       a.href = url;
-      a.download = "converted.mp3";
+      a.download = downloadName;
       a.click();
     } catch (error) {
       console.error(error);
@@ -73,15 +94,14 @@ export default function Mp3ConverterPage() {
     <Box sx={{ py: 10 }}>
       <Container maxWidth="md">
         <Typography variant="h4" mb={1}>
-          MP3 Converter
+          Audio Converter
         </Typography>
 
         <Typography color="text.secondary" mb={4}>
-          Convert MP4, WAV or any audio file to MP3 directly in your browser.
+          Convert MP4, WAV, MP3 or other audio files directly in your browser.
         </Typography>
 
         <Paper sx={{ p: 3 }}>
-          {/* Format Selector */}
           <Box mb={3}>
             <ToggleButtonGroup
               value={format}
@@ -91,10 +111,10 @@ export default function Mp3ConverterPage() {
               <ToggleButton value="mp4">MP4 → MP3</ToggleButton>
               <ToggleButton value="wav">WAV → MP3</ToggleButton>
               <ToggleButton value="audio">Audio → MP3</ToggleButton>
+              <ToggleButton value="mp3-to-wav">MP3 → WAV</ToggleButton>
             </ToggleButtonGroup>
           </Box>
 
-          {/* File Input */}
           <input
             type="file"
             accept={getAcceptType()}
