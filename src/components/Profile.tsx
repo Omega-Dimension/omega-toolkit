@@ -112,6 +112,7 @@ export default function Profile() {
           scrollTrigger: {
             trigger: card,
             start: "top 85%",
+            scrub: 0.8,
           },
         });
       });
