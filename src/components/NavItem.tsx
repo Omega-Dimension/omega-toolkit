@@ -149,301 +149,315 @@ export function NavItem({
 
       {/* Dropdown Menu */}
       {hasChildren && isActive && (
-        <Fade in={isActive} timeout={200}>
-          <Paper
-            elevation={0}
+        <>
+          <Box
             sx={{
               position: "absolute",
               top: "100%",
-              left: "50%",
-              transform: "translateX(-50%)",
-              mt: 1,
-              minWidth: 640, 
-              borderRadius: "20px",
-              overflow: "hidden",
-              border: "1px solid",
-              borderColor: isLight ? alpha("#000", 0.1) : alpha("#fff", 0.1),
-              background: isLight
-                ? alpha("#fff", 0.85)
-                : alpha("#0f172a", 0.85),
-              backdropFilter: "blur(20px)",
-              boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
-              zIndex: 1301,
-              display: "flex",
-              p: 0,
+              left: 0,
+              right: 0,
+              height: 10,
+              background: "transparent",
+              zIndex: 1300,
             }}
-          >
-            {/* Main Categories Column */}
-            <Box
+          />
+
+          <Fade in={isActive} timeout={200}>
+            <Paper
+              elevation={0}
               sx={{
-                
-                p: 3,
-                borderRight: "1px solid",
-                borderColor: isLight
-                  ? alpha("#000", 0.08)
-                  : alpha("#fff", 0.08),
+                position: "absolute",
+                top: "100%",
+                left: "50%",
+                transform: "translateX(-50%)",
+                mt: 1,
+                minWidth: 640,
+                borderRadius: "20px",
+                overflow: "hidden",
+                border: "1px solid",
+                borderColor: isLight ? alpha("#000", 0.1) : alpha("#fff", 0.1),
                 background: isLight
-                  ? alpha("#f8fafc", 0.6)
-                  : alpha("#1e293b", 0.6),
+                  ? alpha("#fff", 0.85)
+                  : alpha("#0f172a", 0.85),
+                backdropFilter: "blur(20px)",
+                boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
+                zIndex: 1301,
+                display: "flex",
+                p: 0,
               }}
             >
-              <Typography
-                variant="subtitle2"
-                sx={{
-                  color: isLight ? alpha("#000", 0.7) : alpha("#fff", 0.7),
-                  mb: 2,
-                  px: 1,
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  fontSize: "0.75rem",
-                  letterSpacing: "0.5px",
-                }}
-              >
-                Categories
-              </Typography>
-              {item.children?.map((category) => (
-                <Box
-                  key={category.label}
-                  onMouseEnter={() =>
-                    handleCategoryMouseEnter(category.category)
-                  }
-                  sx={{
-                    p: 1.5,
-                    borderRadius: "12px",
-                    mb: 1,
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                    background:
-                      hoveredCategory === category.category
-                        ? alpha(
-                            theme.palette.primary.main,
-                            isLight ? 0.15 : 0.2,
-                          )
-                        : "transparent",
-                    border: "1px solid",
-                    borderColor:
-                      hoveredCategory === category.category
-                        ? alpha(theme.palette.primary.main, 0.3)
-                        : "transparent",
-                    "&:hover": {
-                      background: alpha(
-                        theme.palette.primary.main,
-                        isLight ? 0.1 : 0.15,
-                      ),
-                      transform: "translateX(2px)",
-                    },
-                  }}
-                >
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                    <Box
-                      sx={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: "10px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: isLight
-                          ? alpha("#000", 0.05)
-                          : alpha("#fff", 0.05),
-                      }}
-                    >
-                      {getCategoryIcon(category.category)}
-                    </Box>
-                    <Box sx={{ minWidth: 0 }}>
-                      {" "}
-                      {/* Add this container to handle text overflow */}
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          fontWeight: 600,
-                          color: isLight ? "text.primary" : "white",
-                          whiteSpace: "nowrap", // Add this
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        {category.label}
-                      </Typography>
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          color: isLight
-                            ? alpha("#000", 0.5)
-                            : alpha("#fff", 0.5),
-                          display: "block", // Add this
-                          whiteSpace: "nowrap", // Add this
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        {category.children?.length || 0} tools
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-              ))}
-            </Box>
-
-            {/* Tools Grid */}
-
-            <Box sx={{ flex: 1, p: 3 }}>
+              {/* Main Categories Column */}
               <Box
                 sx={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1.9fr)",
-                  gap: 2,
+                  p: 3,
+                  borderRight: "1px solid",
+                  borderColor: isLight
+                    ? alpha("#000", 0.08)
+                    : alpha("#fff", 0.08),
+                  background: isLight
+                    ? alpha("#f8fafc", 0.6)
+                    : alpha("#1e293b", 0.6),
                 }}
               >
-                {item.children
-                  ?.find((cat) => cat.category === hoveredCategory)
-                  ?.children?.map((tool) => (
-                    <Paper
-                      key={tool.label}
-                      onClick={() => {
-                        if (tool.path) {
-                          navigate(tool.path);
-                          closeAllDropdowns();
-                        }
-                      }}
-                      elevation={0}
-                      sx={{
-                        p: 2,
-                        borderRadius: "16px",
-                        cursor: "pointer",
-                        position: "relative",
-                        overflow: "hidden",
-                        transition: "all 0.3s ease",
-                        background: isLight
-                          ? alpha("#fff", 0.6)
-                          : alpha("#1e293b", 0.6),
-                        border: "1px solid",
-                        borderColor: isLight
-                          ? alpha("#000", 0.1)
-                          : alpha("#fff", 0.1),
-                        backdropFilter: "blur(10px)",
-                        "&:hover": {
-                          transform: "translateY(-2px)",
-                          boxShadow: "0 12px 40px rgba(53, 164, 255, 0.2)",
-                          borderColor: alpha(theme.palette.primary.main, 0.3),
-                          background: isLight
-                            ? alpha("#fff", 0.8)
-                            : alpha("#1e293b", 0.8),
-                          "&::before": {
-                            opacity: 1,
-                          },
-                        },
-                        "&::before": {
-                          content: '""',
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          background:
-                            "linear-gradient(135deg, rgba(53, 164, 255, 0.1), rgba(255, 255, 255, 0.05))",
-                          opacity: 0,
-                          transition: "opacity 0.3s ease",
-                        },
-                      }}
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    color: isLight ? alpha("#000", 0.7) : alpha("#fff", 0.7),
+                    mb: 2,
+                    px: 1,
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    fontSize: "0.75rem",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  Categories
+                </Typography>
+                {item.children?.map((category) => (
+                  <Box
+                    key={category.label}
+                    onMouseEnter={() =>
+                      handleCategoryMouseEnter(category.category)
+                    }
+                    sx={{
+                      p: 1.5,
+                      borderRadius: "12px",
+                      mb: 1,
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                      background:
+                        hoveredCategory === category.category
+                          ? alpha(
+                              theme.palette.primary.main,
+                              isLight ? 0.15 : 0.2,
+                            )
+                          : "transparent",
+                      border: "1px solid",
+                      borderColor:
+                        hoveredCategory === category.category
+                          ? alpha(theme.palette.primary.main, 0.3)
+                          : "transparent",
+                      "&:hover": {
+                        background: alpha(
+                          theme.palette.primary.main,
+                          isLight ? 0.1 : 0.15,
+                        ),
+                        transform: "translateX(2px)",
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 1.5 }}
                     >
-                      {/* Crystal effect overlay */}
                       <Box
                         sx={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          background:
-                            "linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%)",
-                          opacity: isLight ? 0.1 : 0.05,
-                          animation: `${shimmer} 3s infinite linear`,
+                          width: 36,
+                          height: 36,
+                          borderRadius: "10px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          background: isLight
+                            ? alpha("#000", 0.05)
+                            : alpha("#fff", 0.05),
                         }}
-                      />
-
-                      <Box sx={{ position: "relative", zIndex: 1 }}>
+                      >
+                        {getCategoryIcon(category.category)}
+                      </Box>
+                      <Box sx={{ minWidth: 0 }}>
+                        {" "}
                         <Typography
                           variant="body2"
                           sx={{
                             fontWeight: 600,
-                            mb: 0.5,
                             color: isLight ? "text.primary" : "white",
-                            whiteSpace: "nowrap", // Add this
+                            whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                           }}
                         >
-                          {tool.label}
+                          {category.label}
                         </Typography>
                         <Typography
                           variant="caption"
                           sx={{
                             color: isLight
-                              ? alpha("#000", 0.6)
-                              : alpha("#fff", 0.6),
-                            lineHeight: 1.4,
-                            display: "block", // Add this
-                            whiteSpace: "nowrap", // Add this
+                              ? alpha("#000", 0.5)
+                              : alpha("#fff", 0.5),
+                            display: "block",
+                            whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                           }}
                         >
-                          {tool.path?.split("/").pop()?.replace("-", " ")}
+                          {category.children?.length || 0} tools
                         </Typography>
                       </Box>
-                    </Paper>
-                  ))}
+                    </Box>
+                  </Box>
+                ))}
               </Box>
 
-              {/* Empty state when no category is hovered */}
-              {!hoveredCategory && (
+              {/* Tools Grid */}
+
+              <Box sx={{ flex: 1, p: 3 }}>
                 <Box
                   sx={{
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, 1.9fr)",
+                    gap: 2,
                   }}
                 >
-                  <Box sx={{ textAlign: "center", p: 4 }}>
-                    <Box
-                      sx={{
-                        width: 60,
-                        height: 60,
-                        borderRadius: "16px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        margin: "0 auto 16px",
-                        background: alpha(theme.palette.primary.main, 0.1),
-                        border: "1px solid",
-                        borderColor: alpha(theme.palette.primary.main, 0.2),
-                      }}
-                    >
-                      <ExpandMore
-                        sx={{
-                          fontSize: 30,
-                          color: theme.palette.primary.main,
+                  {item.children
+                    ?.find((cat) => cat.category === hoveredCategory)
+                    ?.children?.map((tool) => (
+                      <Paper
+                        key={tool.label}
+                        onClick={() => {
+                          if (tool.path) {
+                            navigate(tool.path);
+                            closeAllDropdowns();
+                          }
                         }}
-                      />
-                    </Box>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: isLight
-                          ? alpha("#000", 0.6)
-                          : alpha("#fff", 0.6),
-                      }}
-                    >
-                      Hover over a category to view tools
-                    </Typography>
-                  </Box>
+                        elevation={0}
+                        sx={{
+                          p: 2,
+                          borderRadius: "16px",
+                          cursor: "pointer",
+                          position: "relative",
+                          overflow: "hidden",
+                          transition: "all 0.3s ease",
+                          background: isLight
+                            ? alpha("#fff", 0.6)
+                            : alpha("#1e293b", 0.6),
+                          border: "1px solid",
+                          borderColor: isLight
+                            ? alpha("#000", 0.1)
+                            : alpha("#fff", 0.1),
+                          backdropFilter: "blur(10px)",
+                          "&:hover": {
+                            transform: "translateY(-2px)",
+                            boxShadow: "0 12px 40px rgba(53, 164, 255, 0.2)",
+                            borderColor: alpha(theme.palette.primary.main, 0.3),
+                            background: isLight
+                              ? alpha("#fff", 0.8)
+                              : alpha("#1e293b", 0.8),
+                            "&::before": {
+                              opacity: 1,
+                            },
+                          },
+                          "&::before": {
+                            content: '""',
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            background:
+                              "linear-gradient(135deg, rgba(53, 164, 255, 0.1), rgba(255, 255, 255, 0.05))",
+                            opacity: 0,
+                            transition: "opacity 0.3s ease",
+                          },
+                        }}
+                      >
+                        {/* Crystal effect overlay */}
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            background:
+                              "linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%)",
+                            opacity: isLight ? 0.1 : 0.05,
+                            animation: `${shimmer} 3s infinite linear`,
+                          }}
+                        />
+
+                        <Box sx={{ position: "relative", zIndex: 1 }}>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              fontWeight: 600,
+                              mb: 0.5,
+                              color: isLight ? "text.primary" : "white",
+                              whiteSpace: "nowrap", // Add this
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {tool.label}
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              color: isLight
+                                ? alpha("#000", 0.6)
+                                : alpha("#fff", 0.6),
+                              lineHeight: 1.4,
+                              display: "block", // Add this
+                              whiteSpace: "nowrap", // Add this
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {tool.path?.split("/").pop()?.replace("-", " ")}
+                          </Typography>
+                        </Box>
+                      </Paper>
+                    ))}
                 </Box>
-              )}
-            </Box>
-          </Paper>
-        </Fade>
+
+                {/* Empty state when no category is hovered */}
+                {!hoveredCategory && (
+                  <Box
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Box sx={{ textAlign: "center", p: 4 }}>
+                      <Box
+                        sx={{
+                          width: 60,
+                          height: 60,
+                          borderRadius: "16px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          margin: "0 auto 16px",
+                          background: alpha(theme.palette.primary.main, 0.1),
+                          border: "1px solid",
+                          borderColor: alpha(theme.palette.primary.main, 0.2),
+                        }}
+                      >
+                        <ExpandMore
+                          sx={{
+                            fontSize: 30,
+                            color: theme.palette.primary.main,
+                          }}
+                        />
+                      </Box>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: isLight
+                            ? alpha("#000", 0.6)
+                            : alpha("#fff", 0.6),
+                        }}
+                      >
+                        Hover over a category to view tools
+                      </Typography>
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+            </Paper>
+          </Fade>
+        </>
       )}
     </Box>
   );
