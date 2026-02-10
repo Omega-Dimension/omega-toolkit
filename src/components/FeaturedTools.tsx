@@ -1,14 +1,21 @@
+// components/FeaturedTools.tsx
 import { Box, Container, Typography, Chip } from "@mui/material";
-import { tools } from "../data/menuItems";
+import { menuItems, tools } from "../data/menuItems"; // Now this is dynamically generated
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useNavigate } from "react-router-dom";
+import { getFeaturedTools } from "../utils/featuredTools";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function FeaturedTools() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+
+  const navigate = useNavigate();
+
+  const featuredTools = getFeaturedTools(menuItems);
 
   useEffect(() => {
     if (!cardsRef.current) return;
@@ -39,6 +46,10 @@ export default function FeaturedTools() {
     return () => ctx.revert();
   }, []);
 
+  const handleToolClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <Box ref={sectionRef} component="section" sx={{ py: 14 }}>
       <Container maxWidth="lg">
@@ -58,9 +69,10 @@ export default function FeaturedTools() {
             justifyContent: "center",
           }}
         >
-          {tools.map((t) => (
+          {featuredTools.map((t) => (
             <Box
               key={t.title}
+              onClick={() => t.path && handleToolClick(t.path)}
               sx={{
                 width: { xs: "100%", sm: "calc(50% - 16px)" },
                 p: 3.5,
