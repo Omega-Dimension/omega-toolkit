@@ -12,7 +12,7 @@ export const getTheme = (mode: "light" | "dark") => {
             ...(isLight ? {} : darkScrollbar()),
             background: isLight
               ? "linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%)"
-              : "linear-gradient(135deg, #0f172a 0%, #21cfff2c 100%)",
+              : "linear-gradient(165deg, #0f172a 0%, #1a2536 30%, #21cfff3a 70%, rgba(0, 119, 152, 0.717) 100%)",
             backgroundAttachment: "fixed",
             minHeight: "100vh",
           },
