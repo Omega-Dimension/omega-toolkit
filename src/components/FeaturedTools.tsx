@@ -1,5 +1,5 @@
 // components/FeaturedTools.tsx
-import { Box, Container, Typography, Chip } from "@mui/material";
+import { Box, Container, Typography, Chip, alpha } from "@mui/material";
 import { menuItems, tools } from "../data/menuItems"; // Now this is dynamically generated
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -76,16 +76,11 @@ export default function FeaturedTools() {
               sx={{
                 width: { xs: "100%", sm: "calc(50% - 16px)" },
                 p: 3.5,
-                borderRadius: 3,
-                bgcolor: "background.paper",
-                border: "1px solid",
-                borderColor: "divider",
+                borderRadius: 2,
+                background : "linear-gradient(165deg, #0f172a7c 0%, #21cfff3a 100%)",
                 boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
                 transition: "0.3s",
-                "&:hover": {
-                  transform: "translateY(-6px)",
-                  boxShadow: "0 16px 40px rgba(0,0,0,0.12)",
-                },
+               
               }}
             >
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
@@ -102,7 +97,21 @@ export default function FeaturedTools() {
 
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                 {t.tech.map((tech) => (
-                  <Chip key={tech} label={tech} size="small" />
+                 <Chip
+  key={tech}
+  label={tech}
+  size="small"
+  sx={{
+    background: "rgba(33, 207, 255, 0.1)",
+    color: "#21CFFF",
+    fontWeight: 500,
+    fontSize: "0.75rem",
+    border: "1px solid rgba(33, 207, 255, 0.2)",
+    "&:hover": {
+      background: "rgba(33, 207, 255, 0.15)",
+    },
+  }}
+/>
                 ))}
               </Box>
             </Box>
