@@ -99,42 +99,51 @@ const line3Ref = useRef(null);
   }
 }, [mobileOpen]);
 
-
-  useEffect(() => {
+useEffect(() => {
   if (!drawerRef.current) return;
 
-  const tl = gsap.timeline();
+  if (mobileOpen) {
+    gsap.to(drawerRef.current, {
+      x: "0%",
+      duration: 0.5,
+      ease: "power4.out",
+    });
 
- if (mobileOpen) {
-  tl.fromTo(
-    drawerRef.current,
-    { x: "100%" },
-    { x: "0%", duration: 0.5, ease: "power4.out" }
-  ).from(
-    menuListRef.current.children,
-    {
+    gsap.from(menuListRef.current.children, {
       opacity: 0,
       y: 20,
       stagger: 0.05,
       duration: 0.4,
       ease: "power3.out",
-    },
-    "-=0.3"
-  );
-}
+      delay: 0.2,
+    });
+  } else {
+    gsap.to(drawerRef.current, {
+      x: "100%",
+      duration: 0.45,
+      ease: "power4.in",
+    });
+  }
 }, [mobileOpen]);
+
+
 
   // Mobile Drawer Component
   const MobileDrawer = () => (
     <Drawer
       anchor="right"
       open={mobileOpen}
-      onClose={handleMobileDrawerToggle}
+     onClose={() => setMobileOpen(false)}
       transitionDuration={0}
       ModalProps={{ keepMounted: true }}
-      PaperProps={{
-        ref: drawerRef,
-      }}
+     PaperProps={{
+  ref: drawerRef,
+  sx: {
+    transform: "translateX(100%)",
+    willChange: "transform",
+  },
+}}
+
     >
       <Box sx={{ p: 2 }}>
         {/* Mobile Drawer Header */}
