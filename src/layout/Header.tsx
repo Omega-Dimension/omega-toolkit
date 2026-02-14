@@ -18,8 +18,6 @@ import { menuItems } from "../data/menuItems";
 import { NavItem } from "../components/NavItem";
 import {
   Nightlight,
-  Menu,
-  Close,
   ExpandLess,
   ExpandMore,
 } from "@mui/icons-material";
@@ -34,12 +32,11 @@ export default function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpandedItems, setMobileExpandedItems] = useState<string[]>([]);
-  const drawerRef = useRef(null);
-  const backdropRef = useRef(null);
+  const drawerRef = useRef<HTMLDivElement | null>(null);
   const line1Ref = useRef(null);
-const line2Ref = useRef(null);
-const line3Ref = useRef(null);
-  const menuListRef = useRef(null);
+  const line2Ref = useRef(null);
+  const line3Ref = useRef(null);
+  const menuListRef = useRef<HTMLUListElement | null>(null);
 
   const closeAllDropdowns = () => {
     setActiveDropdown(null);
@@ -68,143 +65,86 @@ const line3Ref = useRef(null);
   };
 
   useEffect(() => {
-  if (!line1Ref.current) return;
+    if (!line1Ref.current) return;
 
-  const tl = gsap.timeline({ defaults: { duration: 0.35, ease: "power3.out" } });
-
-  if (mobileOpen) {
-    tl.to(line2Ref.current, { opacity: 0 }, 0)
-      .to(
-        line1Ref.current,
-        {
-          y: 8,
-          rotate: 45,
-          transformOrigin: "center",
-        },
-        0
-      )
-      .to(
-        line3Ref.current,
-        {
-          y: -8,
-          rotate: -45,
-          transformOrigin: "center",
-        },
-        0
-      );
-  } else {
-    tl.to(line1Ref.current, { y: 0, rotate: 0 }, 0)
-      .to(line3Ref.current, { y: 0, rotate: 0 }, 0)
-      .to(line2Ref.current, { opacity: 1 }, 0);
-  }
-}, [mobileOpen]);
-
-useEffect(() => {
-  if (!drawerRef.current) return;
-
-  if (mobileOpen) {
-    gsap.to(drawerRef.current, {
-      x: "0%",
-      duration: 0.5,
-      ease: "power4.out",
+    const tl = gsap.timeline({
+      defaults: { duration: 0.35, ease: "power3.out" },
     });
 
-    gsap.from(menuListRef.current.children, {
-      opacity: 0,
-      y: 20,
-      stagger: 0.05,
-      duration: 0.4,
-      ease: "power3.out",
-      delay: 0.2,
-    });
-  } else {
-    gsap.to(drawerRef.current, {
-      x: "100%",
-      duration: 0.45,
-      ease: "power4.in",
-    });
-  }
-}, [mobileOpen]);
+    if (mobileOpen) {
+      tl.to(line2Ref.current, { opacity: 0 }, 0)
+        .to(
+          line1Ref.current,
+          {
+            y: 8,
+            rotate: 45,
+            transformOrigin: "center",
+          },
+          0,
+        )
+        .to(
+          line3Ref.current,
+          {
+            y: -8,
+            rotate: -45,
+            transformOrigin: "center",
+          },
+          0,
+        );
+    } else {
+      tl.to(line1Ref.current, { y: 0, rotate: 0 }, 0)
+        .to(line3Ref.current, { y: 0, rotate: 0 }, 0)
+        .to(line2Ref.current, { opacity: 1 }, 0);
+    }
+  }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!drawerRef.current) return;
 
+    if (mobileOpen) {
+      // Animate drawer slide-in
+      gsap.to(drawerRef.current, {
+        x: "0%",
+        duration: 0.5,
+        ease: "power4.out",
+      });
+
+      if (menuListRef.current) {
+        const items = Array.from(menuListRef.current.children);
+        gsap.fromTo(
+          items,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.05,
+            duration: 0.4,
+            ease: "power3.out",
+            delay: 0.2,
+          },
+        );
+      }
+    } else {
+      // Animate drawer slide-out
+      gsap.to(drawerRef.current, {
+        x: "100%",
+        duration: 0.4,
+        ease: "power4.in",
+      });
+    }
+  }, [mobileOpen]);
 
   // Mobile Drawer Component
   const MobileDrawer = () => (
     <Drawer
       anchor="right"
       open={mobileOpen}
-     onClose={() => setMobileOpen(false)}
-      transitionDuration={0}
-      ModalProps={{ keepMounted: true }}
-     PaperProps={{
-  ref: drawerRef,
-  sx: {
-    transform: "translateX(100%)",
-    willChange: "transform",
-  },
-}}
-
+      onClose={() => setMobileOpen(false)}
+      ref={drawerRef}
     >
-      <Box sx={{ p: 2 }}>
-        {/* Mobile Drawer Header */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            mb: 2,
-          }}
-        >
-          <Box
-            onClick={() => {
-              navigate("/");
-              setMobileOpen(false);
-            }}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1.5,
-              cursor: "pointer",
-            }}
-          >
-            <Box
-              sx={{
-                width: 40,
-                height: 40,
-                borderRadius: "12px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "linear-gradient(135deg, #1976d2, #35a4ff)",
-              }}
-            >
-              <Typography
-                sx={{ fontWeight: 800, fontSize: "1.2rem", color: "white" }}
-              >
-                TB
-              </Typography>
-            </Box>
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 700,
-                background: "linear-gradient(135deg, #1976d2 0%, #35a4ff 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              ToolBox
-            </Typography>
-          </Box>
-          <IconButton onClick={handleMobileDrawerToggle}>
-            <Close />
-          </IconButton>
-        </Box>
-
-        <Divider sx={{ my: 2 }} />
-
+      <Box sx={{ p: 2, mt: 5 }}>
         {/* Mobile Navigation List */}
-        <List  ref={menuListRef}  sx={{ width: "100%" }}>
+        <List ref={menuListRef}>
           {menuItems.map((item) => (
             <Box key={item.label}>
               <ListItem disablePadding>
@@ -226,13 +166,13 @@ useEffect(() => {
                 >
                   <ListItemText
                     primary={item.label}
-                    primaryTypographyProps={{
+                    sx={{
                       fontWeight: 600,
                       fontSize: "1rem",
                     }}
                   />
                   {item.children && (
-                    <Box component="span" sx={{ ml: 1 }}>
+                    <Box component="span">
                       {mobileExpandedItems.includes(item.label) ? (
                         <ExpandLess />
                       ) : (
@@ -256,7 +196,7 @@ useEffect(() => {
                         <ListItem sx={{ pl: 4 }}>
                           <ListItemText
                             primary={category.label}
-                            primaryTypographyProps={{
+                            sx={{
                               fontWeight: 600,
                               fontSize: "0.95rem",
                               color: theme.palette.primary.main,
@@ -288,11 +228,8 @@ useEffect(() => {
                                   ?.split("/")
                                   .pop()
                                   ?.replace("-", " ")}
-                                primaryTypographyProps={{
-                                  fontSize: "0.9rem",
-                                  fontWeight: 500,
-                                }}
-                                secondaryTypographyProps={{
+                               
+                                sx={{
                                   fontSize: "0.8rem",
                                 }}
                               />
@@ -309,7 +246,6 @@ useEffect(() => {
           ))}
         </List>
 
-        {/* Theme Toggle in Mobile Drawer */}
         <Box sx={{ mt: 3, px: 2 }}>
           <ListItemButton
             onClick={() => {
@@ -540,52 +476,51 @@ useEffect(() => {
                 </IconButton>
               )}
 
-              {/* Mobile Menu Button */}
               {isMobile && (
                 <>
-                 <IconButton onClick={handleMobileDrawerToggle}>
-  <Box
-    sx={{
-      width: 24,
-      height: 18,
-      position: "relative",
-    }}
-  >
-    <Box
-      ref={line1Ref}
-      sx={{
-        position: "absolute",
-        width: "100%",
-        height: 2,
-        background: "currentColor",
-        top: 0,
-        left: 0,
-      }}
-    />
-    <Box
-      ref={line2Ref}
-      sx={{
-        position: "absolute",
-        width: "100%",
-        height: 2,
-        background: "currentColor",
-        top: 8,
-        left: 0,
-      }}
-    />
-    <Box
-      ref={line3Ref}
-      sx={{
-        position: "absolute",
-        width: "100%",
-        height: 2,
-        background: "currentColor",
-        bottom: 0,
-        left: 0,
-      }}
-    />
-  </Box>
-</IconButton>
+                  <IconButton onClick={handleMobileDrawerToggle}>
+                    <Box
+                      sx={{
+                        width: 24,
+                        height: 18,
+                        position: "relative",
+                      }}
+                    >
+                      <Box
+                        ref={line1Ref}
+                        sx={{
+                          position: "absolute",
+                          width: "100%",
+                          height: 2,
+                          background: "currentColor",
+                          top: 0,
+                          left: 0,
+                        }}
+                      />
+                      <Box
+                        ref={line2Ref}
+                        sx={{
+                          position: "absolute",
+                          width: "100%",
+                          height: 2,
+                          background: "currentColor",
+                          top: 8,
+                          left: 0,
+                        }}
+                      />
+                      <Box
+                        ref={line3Ref}
+                        sx={{
+                          position: "absolute",
+                          width: "100%",
+                          height: 2,
+                          background: "currentColor",
+                          bottom: 0,
+                          left: 0,
+                        }}
+                      />
+                    </Box>
+                  </IconButton>
                   <MobileDrawer />
                 </>
               )}
