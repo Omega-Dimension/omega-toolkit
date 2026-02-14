@@ -10,18 +10,15 @@ import {
   ListItemButton,
   ListItemText,
   Collapse,
-  Divider,
   useMediaQuery,
   alpha,
 } from "@mui/material";
 import { Nightlight, ExpandLess, ExpandMore } from "@mui/icons-material";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { menuItems } from "../data/menuItems";
 import { NavItem } from "../components/NavItem";
-
-
 
 export default function Header() {
   const theme = useTheme();
@@ -58,27 +55,26 @@ export default function Header() {
       prev.includes(key) ? prev.filter((item) => item !== key) : [...prev, key],
     );
   }, []);
-
   useEffect(() => {
     if (!line1Ref.current || !line2Ref.current || !line3Ref.current) return;
 
-    const tl = gsap.timeline({
-      defaults: { duration: 0.35, ease: "power3.out" },
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: { duration: 0.4, ease: "power3.inOut" },
+      });
+
+      if (mobileOpen) {
+        tl.to(line2Ref.current, { opacity: 0 }, 0)
+          .to(line1Ref.current, { y: 8, rotate: 45 }, 0)
+          .to(line3Ref.current, { y: -8, rotate: -45 }, 0);
+      } else {
+        tl.to(line1Ref.current, { y: 0, rotate: 0 }, 0)
+          .to(line3Ref.current, { y: 0, rotate: 0 }, 0)
+          .to(line2Ref.current, { opacity: 1 }, 0);
+      }
     });
 
-    if (mobileOpen) {
-      tl.to(line2Ref.current, { opacity: 0 }, 0)
-        .to(line1Ref.current, { y: 8, rotate: 45 }, 0)
-        .to(line3Ref.current, { y: -8, rotate: -45 }, 0);
-    } else {
-      tl.to(line1Ref.current, { y: 0, rotate: 0 }, 0)
-        .to(line3Ref.current, { y: 0, rotate: 0 }, 0)
-        .to(line2Ref.current, { opacity: 1 }, 0);
-    }
-
-    return () => {
-      tl.kill();
-    };
+    return () => ctx.revert();
   }, [mobileOpen]);
 
   useEffect(() => {
@@ -96,18 +92,30 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
+      if (!headerRef.current) return;
+
       const currentScroll = window.scrollY;
-      if (!ticking.current && headerRef.current) {
-        window.requestAnimationFrame(() => {
-          const direction = currentScroll > lastScroll.current ? "down" : "up";
-          const y = direction === "down" ? -headerRef.current!.offsetHeight : 0;
-          gsap.to(headerRef.current!, { y, duration: 0.9, ease: "power2.out" });
-          lastScroll.current = currentScroll;
-          ticking.current = false;
+
+      if (ticking.current) return;
+
+      ticking.current = true;
+
+      window.requestAnimationFrame(() => {
+        if (!headerRef.current) return;
+
+        const direction = currentScroll > lastScroll.current ? "down" : "up";
+
+        gsap.to(headerRef.current, {
+          y: direction === "down" ? -headerRef.current.offsetHeight : 0,
+          duration: 0.9,
+          ease: "power2.out",
         });
-        ticking.current = true;
-      }
+
+        lastScroll.current = currentScroll;
+        ticking.current = false;
+      });
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -120,52 +128,54 @@ export default function Header() {
     borderBottom: "1px solid",
     borderColor: isLight ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.08)",
   };
-  const hoverGlassEffect = {
-    background: alpha(theme.palette.primary.main, 0.1),
-  };
-
-const renderMobileItem = (
-  item: typeof menuItems[number],
-  keyPath: string,
-  depth: number,
-) => {
-  const isExpanded = mobileExpanded.includes(keyPath);
-
-  return (
-    <Box key={keyPath}>
-      <ListItem disablePadding>
-        <ListItemButton
-          onClick={() =>
-            item.children
-              ? toggleMobileExpand(keyPath)
-              : handleNavigate(item.path)
-          }
-          sx={{
-            pl: 2 + depth * 2,
-            borderRadius: 2,
-            "&:hover": hoverGlassEffect,
-          }}
-        >
-          <ListItemText primary={item.label} />
-          {item.children &&
-            (isExpanded ? <ExpandLess /> : <ExpandMore />)}
-        </ListItemButton>
-      </ListItem>
-
-      {item.children && (
-        <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-          {item.children.map((child) =>
-            renderMobileItem(
-              child as typeof menuItems[number],
-              `${keyPath}-${child.label}`,
-              depth + 1,
-            )
-          )}
-        </Collapse>
-      )}
-    </Box>
+  const hoverGlassEffect = useMemo(
+    () => ({
+      background: alpha(theme.palette.primary.main, 0.1),
+    }),
+    [theme.palette.primary.main],
   );
-};
+
+  const renderMobileItem = (
+    item: (typeof menuItems)[number],
+    keyPath: string,
+    depth: number,
+  ) => {
+    const isExpanded = mobileExpanded.includes(keyPath);
+
+    return (
+      <Box key={keyPath}>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() =>
+              item.children
+                ? toggleMobileExpand(keyPath)
+                : handleNavigate(item.path)
+            }
+            sx={{
+              pl: 2 + depth * 2,
+              borderRadius: 2,
+              "&:hover": hoverGlassEffect,
+            }}
+          >
+            <ListItemText primary={item.label} />
+            {item.children && (isExpanded ? <ExpandLess /> : <ExpandMore />)}
+          </ListItemButton>
+        </ListItem>
+
+        {item.children && (
+          <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+            {item.children.map((child) =>
+              renderMobileItem(
+                child as (typeof menuItems)[number],
+                `${keyPath}-${child.label}`,
+                depth + 1,
+              ),
+            )}
+          </Collapse>
+        )}
+      </Box>
+    );
+  };
 
   return (
     <>
@@ -257,9 +267,9 @@ const renderMobileItem = (
                   >
                     <Box sx={{ p: 2, mt: 5, width: 280 }}>
                       <List ref={menuListRef}>
-                        {menuItems.map((item) => (
-                            renderMobileItem(item, item.label, 0)
-                        ))}
+                        {menuItems.map((item) =>
+                          renderMobileItem(item, item.label, 0),
+                        )}
                       </List>
                     </Box>
                   </Drawer>
