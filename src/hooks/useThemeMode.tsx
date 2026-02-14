@@ -37,10 +37,8 @@ export function ThemeModeProvider({ children }: { children: React.ReactNode }) {
 
 export function useThemeMode() {
     const context = useContext(ThemeMOdeContext);
-
     if(!context) {
         throw new Error("useThemeMode must be used inside ThemeModeProvider");
     }
-
     return context;
 }

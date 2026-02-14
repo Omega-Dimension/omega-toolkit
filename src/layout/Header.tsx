@@ -13,18 +13,21 @@ import {
   useMediaQuery,
   alpha,
 } from "@mui/material";
-import { Nightlight, ExpandLess, ExpandMore } from "@mui/icons-material";
+import { Nightlight, LightMode, ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { menuItems } from "../data/menuItems";
 import { NavItem } from "../components/NavItem";
+import { useThemeMode } from "../hooks/useThemeMode";
 
 export default function Header() {
   const theme = useTheme();
+
+  const {mode, toggleTheme} = useThemeMode();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const isLight = theme.palette.mode === "light";
+  const isLight = mode === "light";
 
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -37,6 +40,8 @@ export default function Header() {
   const line2Ref = useRef<HTMLDivElement>(null);
   const line3Ref = useRef<HTMLDivElement>(null);
   const menuListRef = useRef<HTMLUListElement>(null);
+
+
 
   const closeAllDropdowns = useCallback(() => setActiveDropdown(null), []);
   const toggleDrawer = useCallback(() => setMobileOpen((prev) => !prev), []);
@@ -234,8 +239,8 @@ export default function Header() {
             {/* Right Section */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               {!isMobile && (
-                <IconButton>
-                  <Nightlight />
+                <IconButton onClick={toggleTheme}>
+                  {isLight ? <Nightlight /> : <LightMode />}
                 </IconButton>
               )}
 
