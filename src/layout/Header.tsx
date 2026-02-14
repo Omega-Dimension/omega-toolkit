@@ -21,6 +21,8 @@ import gsap from "gsap";
 import { menuItems } from "../data/menuItems";
 import { NavItem } from "../components/NavItem";
 
+
+
 export default function Header() {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -50,11 +52,10 @@ export default function Header() {
     },
     [navigate],
   );
-  const toggleMobileExpand = useCallback((label: string) => {
+
+  const toggleMobileExpand = useCallback((key: string) => {
     setMobileExpanded((prev) =>
-      prev.includes(label)
-        ? prev.filter((item) => item !== label)
-        : [...prev, label],
+      prev.includes(key) ? prev.filter((item) => item !== key) : [...prev, key],
     );
   }, []);
 
@@ -123,9 +124,49 @@ export default function Header() {
     background: alpha(theme.palette.primary.main, 0.1),
   };
 
-  // ======================
-  // Render
-  // ======================
+const renderMobileItem = (
+  item: typeof menuItems[number],
+  keyPath: string,
+  depth: number,
+) => {
+  const isExpanded = mobileExpanded.includes(keyPath);
+
+  return (
+    <Box key={keyPath}>
+      <ListItem disablePadding>
+        <ListItemButton
+          onClick={() =>
+            item.children
+              ? toggleMobileExpand(keyPath)
+              : handleNavigate(item.path)
+          }
+          sx={{
+            pl: 2 + depth * 2,
+            borderRadius: 2,
+            "&:hover": hoverGlassEffect,
+          }}
+        >
+          <ListItemText primary={item.label} />
+          {item.children &&
+            (isExpanded ? <ExpandLess /> : <ExpandMore />)}
+        </ListItemButton>
+      </ListItem>
+
+      {item.children && (
+        <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+          {item.children.map((child) =>
+            renderMobileItem(
+              child as typeof menuItems[number],
+              `${keyPath}-${child.label}`,
+              depth + 1,
+            )
+          )}
+        </Collapse>
+      )}
+    </Box>
+  );
+};
+
   return (
     <>
       {!isMobile && activeDropdown && (
@@ -217,48 +258,7 @@ export default function Header() {
                     <Box sx={{ p: 2, mt: 5, width: 280 }}>
                       <List ref={menuListRef}>
                         {menuItems.map((item) => (
-                          <Box key={item.label}>
-                            <ListItem disablePadding>
-                              <ListItemButton
-                                onClick={() =>
-                                  item.children
-                                    ? toggleMobileExpand(item.label)
-                                    : handleNavigate(item.path)
-                                }
-                                sx={{
-                                  borderRadius: 2,
-                                  "&:hover": hoverGlassEffect,
-                                }}
-                              >
-                                <ListItemText primary={item.label} />
-                                {item.children &&
-                                  (mobileExpanded.includes(item.label) ? (
-                                    <ExpandLess />
-                                  ) : (
-                                    <ExpandMore />
-                                  ))}
-                              </ListItemButton>
-                            </ListItem>
-
-                            {item.children && (
-                              <Collapse
-                                in={mobileExpanded.includes(item.label)}
-                                timeout="auto"
-                                unmountOnExit
-                              >
-                                {item.children.map((child) => (
-                                  <ListItemButton
-                                    key={child.label}
-                                    sx={{ pl: 4 }}
-                                    onClick={() => handleNavigate(child.path)}
-                                  >
-                                    <ListItemText primary={child.label} />
-                                  </ListItemButton>
-                                ))}
-                                <Divider />
-                              </Collapse>
-                            )}
-                          </Box>
+                            renderMobileItem(item, item.label, 0)
                         ))}
                       </List>
                     </Box>
