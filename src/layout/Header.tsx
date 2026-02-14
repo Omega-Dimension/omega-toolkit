@@ -27,33 +27,20 @@ export default function Header() {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isLight = theme.palette.mode === "light";
 
-  // ======================
-  // State
-  // ======================
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string[]>([]);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const lastScroll = useRef(0);
+  const ticking = useRef(false);
 
-  // ======================
-  // Refs (strict types)
-  // ======================
   const line1Ref = useRef<HTMLDivElement>(null);
   const line2Ref = useRef<HTMLDivElement>(null);
   const line3Ref = useRef<HTMLDivElement>(null);
   const menuListRef = useRef<HTMLUListElement>(null);
 
-  // ======================
-  // Handlers (memoized)
-  // ======================
-
-  const closeAllDropdowns = useCallback(() => {
-    setActiveDropdown(null);
-  }, []);
-
-  const toggleDrawer = useCallback(() => {
-    setMobileOpen((prev) => !prev);
-  }, []);
-
+  const closeAllDropdowns = useCallback(() => setActiveDropdown(null), []);
+  const toggleDrawer = useCallback(() => setMobileOpen((prev) => !prev), []);
   const handleNavigate = useCallback(
     (path?: string) => {
       if (!path) return;
@@ -63,7 +50,6 @@ export default function Header() {
     },
     [navigate],
   );
-
   const toggleMobileExpand = useCallback((label: string) => {
     setMobileExpanded((prev) =>
       prev.includes(label)
@@ -71,10 +57,6 @@ export default function Header() {
         : [...prev, label],
     );
   }, []);
-
-  // ======================
-  // Hamburger Animation
-  // ======================
 
   useEffect(() => {
     if (!line1Ref.current || !line2Ref.current || !line3Ref.current) return;
@@ -98,37 +80,36 @@ export default function Header() {
     };
   }, [mobileOpen]);
 
-  // ======================
-  // Stagger Animation for Mobile Menu
-  // ======================
-
   useEffect(() => {
     if (!mobileOpen || !menuListRef.current) return;
-
-    const items = Array.from(
-      menuListRef.current.children,
-    ) as HTMLElement[];
-
+    const items = Array.from(menuListRef.current.children) as HTMLElement[];
     const ctx = gsap.context(() => {
       gsap.fromTo(
         items,
         { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.05,
-          duration: 0.4,
-          ease: "power3.out",
-        },
+        { opacity: 1, y: 0, stagger: 0.05, duration: 0.4, ease: "power3.out" },
       );
     });
-
     return () => ctx.revert();
   }, [mobileOpen]);
 
-  // ======================
-  // Styles (DRY)
-  // ======================
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+      if (!ticking.current && headerRef.current) {
+        window.requestAnimationFrame(() => {
+          const direction = currentScroll > lastScroll.current ? "down" : "up";
+          const y = direction === "down" ? -headerRef.current!.offsetHeight : 0;
+          gsap.to(headerRef.current!, { y, duration: 0.9, ease: "power2.out" });
+          lastScroll.current = currentScroll;
+          ticking.current = false;
+        });
+        ticking.current = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const headerGlassStyle = {
     backdropFilter: "blur(20px)",
@@ -136,11 +117,8 @@ export default function Header() {
       ? "rgba(245, 247, 250, 0.95)"
       : "rgba(15, 23, 42, 0.95)",
     borderBottom: "1px solid",
-    borderColor: isLight
-      ? "rgba(0, 0, 0, 0.08)"
-      : "rgba(255, 255, 255, 0.08)",
+    borderColor: isLight ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.08)",
   };
-
   const hoverGlassEffect = {
     background: alpha(theme.palette.primary.main, 0.1),
   };
@@ -148,10 +126,8 @@ export default function Header() {
   // ======================
   // Render
   // ======================
-
   return (
     <>
-      {/* Blur Overlay */}
       {!isMobile && activeDropdown && (
         <Box
           sx={{
@@ -166,14 +142,10 @@ export default function Header() {
       )}
 
       <Box
+        ref={headerRef}
         component="header"
         onMouseLeave={!isMobile ? closeAllDropdowns : undefined}
-        sx={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1300,
-          ...headerGlassStyle,
-        }}
+        sx={{ position: "sticky", top: 0, zIndex: 1300, ...headerGlassStyle }}
       >
         <Container maxWidth="xl">
           <Box
@@ -186,10 +158,7 @@ export default function Header() {
             }}
           >
             {/* Logo */}
-            <Box
-              onClick={() => handleNavigate("/")}
-              sx={{ cursor: "pointer" }}
-            >
+            <Box onClick={() => handleNavigate("/")} sx={{ cursor: "pointer" }}>
               <Typography fontWeight={700}>ToolBox</Typography>
             </Box>
 
@@ -197,11 +166,7 @@ export default function Header() {
             {!isMobile && (
               <Box
                 component="ul"
-                sx={{
-                  display: "flex",
-                  gap: 1,
-                  listStyle: "none",
-                }}
+                sx={{ display: "flex", gap: 1, listStyle: "none" }}
               >
                 {menuItems.map((item) => (
                   <NavItem
@@ -225,7 +190,6 @@ export default function Header() {
 
               {isMobile && (
                 <>
-                  {/* Hamburger */}
                   <IconButton onClick={toggleDrawer}>
                     <Box sx={{ width: 24, height: 18, position: "relative" }}>
                       {[line1Ref, line2Ref, line3Ref].map((ref, i) => (
@@ -245,7 +209,6 @@ export default function Header() {
                     </Box>
                   </IconButton>
 
-                  {/* Drawer */}
                   <Drawer
                     anchor="right"
                     open={mobileOpen}
@@ -287,9 +250,7 @@ export default function Header() {
                                   <ListItemButton
                                     key={child.label}
                                     sx={{ pl: 4 }}
-                                    onClick={() =>
-                                      handleNavigate(child.path)
-                                    }
+                                    onClick={() => handleNavigate(child.path)}
                                   >
                                     <ListItemText primary={child.label} />
                                   </ListItemButton>
