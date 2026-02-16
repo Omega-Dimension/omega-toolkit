@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Container,
   Typography,
   Box,
   Button,
@@ -30,7 +29,7 @@ export default function JpgToPng() {
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: 6 }}>
+    <Box sx={{ py: 10 }}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>
         JPG to PNG
       </Typography>
@@ -39,9 +38,14 @@ export default function JpgToPng() {
         Convert JPG images to PNG format
       </Typography>
 
-      <Stack spacing={3}>
+      <Stack spacing={3} alignItems="flex-start">
         {/* Upload Button */}
-        <Button variant="contained" component="label">
+        <Button
+          variant="contained"
+          size="medium"
+          component="label"
+          sx={{ px: 3 }}
+        >
           Upload JPG
           <input
             hidden
@@ -54,7 +58,7 @@ export default function JpgToPng() {
         </Button>
 
         {preview && (
-          <Paper elevation={3} sx={{ p: 3 }}>
+          <Paper elevation={2} sx={{ p: 3 }}>
             <Stack spacing={2} alignItems="flex-start">
               <Box
                 component="img"
@@ -64,6 +68,7 @@ export default function JpgToPng() {
 
               <Button
                 variant="contained"
+                size="medium"
                 color="primary"
                 href={preview}
                 download="converted.png"
@@ -74,6 +79,6 @@ export default function JpgToPng() {
           </Paper>
         )}
       </Stack>
-    </Container>
+    </Box>
   );
 }
