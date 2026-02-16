@@ -47,7 +47,6 @@ export default function ImageToBase64Page() {
 
   return (
     <Box sx={{ py: 10 }}>
-      <Container maxWidth="md">
         <Typography variant="h4" fontWeight={700} mb={1}>
           Image to Base64
         </Typography>
@@ -107,7 +106,6 @@ export default function ImageToBase64Page() {
             </Box>
           )}
         </Paper>
-      </Container>
     </Box>
   );
 }

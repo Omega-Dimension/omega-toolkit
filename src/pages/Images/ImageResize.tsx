@@ -42,7 +42,6 @@ export default function ImageResizePage() {
 
   return (
     <Box sx={{ py: 10 }}>
-      <Container maxWidth="lg">
         <Typography variant="h4" fontWeight={700} mb={1}>
           Image Resize
         </Typography>
@@ -105,7 +104,6 @@ export default function ImageResizePage() {
             </Box>
           )}
         </Paper>
-      </Container>
     </Box>
   );
 }

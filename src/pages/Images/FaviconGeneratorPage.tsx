@@ -107,7 +107,6 @@ export default function FaviconGeneratorPage() {
 
   return (
     <Box sx={{ py: 10 }}>
-      <Container maxWidth="md">
         <Typography variant="h4" fontWeight={700} mb={1}>
           Favicon Generator
         </Typography>
@@ -159,7 +158,6 @@ export default function FaviconGeneratorPage() {
             </Box>
           )}
         </Paper>
-      </Container>
     </Box>
   );
 }

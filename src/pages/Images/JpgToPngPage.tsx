@@ -1,4 +1,12 @@
 import { useState } from "react";
+import {
+  Container,
+  Typography,
+  Box,
+  Button,
+  Stack,
+  Paper,
+} from "@mui/material";
 
 export default function JpgToPng() {
   const [preview, setPreview] = useState<string>("");
@@ -22,28 +30,50 @@ export default function JpgToPng() {
   }
 
   return (
-    <div className="p-10 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-2">JPG to PNG</h1>
-      <p className="text-gray-500 mb-6">Convert JPG images to PNG format</p>
+    <Container maxWidth="md" sx={{ py: 6 }}>
+      <Typography variant="h4" fontWeight="bold" gutterBottom>
+        JPG to PNG
+      </Typography>
 
-      <input
-        type="file"
-        accept="image/jpeg"
-        onChange={(e) => e.target.files && handleFile(e.target.files[0])}
-      />
+      <Typography variant="body2" color="text.secondary" mb={4}>
+        Convert JPG images to PNG format
+      </Typography>
 
-      {preview && (
-        <div className="mt-6">
-          <img src={preview} className="max-w-sm mb-3" />
-          <a
-            href={preview}
-            download="converted.png"
-            className="px-4 py-2 bg-blue-600 text-white rounded"
-          >
-            Download PNG
-          </a>
-        </div>
-      )}
-    </div>
+      <Stack spacing={3}>
+        {/* Upload Button */}
+        <Button variant="contained" component="label">
+          Upload JPG
+          <input
+            hidden
+            type="file"
+            accept="image/jpeg"
+            onChange={(e) =>
+              e.target.files && handleFile(e.target.files[0])
+            }
+          />
+        </Button>
+
+        {preview && (
+          <Paper elevation={3} sx={{ p: 3 }}>
+            <Stack spacing={2} alignItems="flex-start">
+              <Box
+                component="img"
+                src={preview}
+                sx={{ maxWidth: 300, borderRadius: 1 }}
+              />
+
+              <Button
+                variant="contained"
+                color="primary"
+                href={preview}
+                download="converted.png"
+              >
+                Download PNG
+              </Button>
+            </Stack>
+          </Paper>
+        )}
+      </Stack>
+    </Container>
   );
 }
