@@ -44,42 +44,46 @@ export default function CsvToJsonPage() {
 
   return (
     <Box sx={{ py: 10 }}>
-        <Typography variant="h4" fontWeight={700} mb={4}>
-          CSV to JSON
-        </Typography>
+      <Typography variant="h4" fontWeight={700} mb={4}>
+        CSV to JSON
+      </Typography>
 
-        <Paper sx={{ p: 3 }}>
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { md: "1fr 1fr" },
-              gap: 3,
+      <Paper sx={{ p: 3 }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { md: "1fr 1fr" },
+            gap: 3,
+          }}
+        >
+          <TextField
+            multiline
+            minRows={14}
+            fullWidth
+            value={csv}
+            onChange={(e) => setCsv(e.target.value)}
+            placeholder="name,age\nFento,25"
+          />
+
+          <TextField
+            multiline
+            minRows={14}
+            fullWidth
+            value={json}
+            slotProps={{
+              input: {
+                readOnly: true,
+              },
             }}
-          >
-            <TextField
-              multiline
-              minRows={14}
-              fullWidth
-              value={csv}
-              onChange={(e) => setCsv(e.target.value)}
-              placeholder="name,age\nFento,25"
-            />
+          />
+        </Box>
 
-            <TextField
-              multiline
-              minRows={14}
-              fullWidth
-              value={json}
-              InputProps={{ readOnly: true }}
-            />
-          </Box>
-
-          <Box mt={3}>
-            <Button variant="contained" onClick={convert}>
-              Convert
-            </Button>
-          </Box>
-        </Paper>
+        <Box mt={3}>
+          <Button variant="contained" onClick={convert}>
+            Convert
+          </Button>
+        </Box>
+      </Paper>
     </Box>
   );
 }

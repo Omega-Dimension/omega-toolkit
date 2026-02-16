@@ -43,7 +43,6 @@ export default function HashGeneratorPage() {
 
   return (
     <Box sx={{ py: 10 }}>
-      <Container maxWidth="md">
         <Typography variant="h4" fontWeight={700} mb={1}>
           Hash Generator
         </Typography>
@@ -109,7 +108,6 @@ export default function HashGeneratorPage() {
             </Box>
           )}
         </Paper>
-      </Container>
     </Box>
   );
 }

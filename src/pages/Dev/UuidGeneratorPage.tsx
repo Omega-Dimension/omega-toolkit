@@ -83,7 +83,6 @@ export default function UuidGeneratorPage() {
 
   return (
     <Box sx={{ py: 10 }}>
-      <Container maxWidth="md">
         <Typography variant="h4" fontWeight={700} mb={1}>
           UUID / ID Generator
         </Typography>
@@ -187,7 +186,6 @@ export default function UuidGeneratorPage() {
             </Box>
           )}
         </Paper>
-      </Container>
     </Box>
   );
 }

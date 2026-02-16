@@ -48,7 +48,6 @@ export default function UrlEncodeDecodePage() {
 
   return (
     <Box sx={{ py: 10 }}>
-      <Container maxWidth="md">
         <Typography variant="h4" fontWeight={700} mb={1}>
           URL Encode / Decode
         </Typography>
@@ -115,7 +114,6 @@ export default function UrlEncodeDecodePage() {
             </Box>
           )}
         </Paper>
-      </Container>
     </Box>
   );
 }
