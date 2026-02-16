@@ -31,7 +31,7 @@ export default function ExcelToCsvPage() {
 
   return (
     <Box sx={{ py: 10 }}>
-      <Container maxWidth="lg">
+     
         <Typography variant="h4" fontWeight={700} mb={4}>
           Excel to CSV
         </Typography>
@@ -60,7 +60,7 @@ export default function ExcelToCsvPage() {
             />
           </Box>
         </Paper>
-      </Container>
+     
     </Box>
   );
 }

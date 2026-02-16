@@ -44,7 +44,6 @@ export default function CsvToJsonPage() {
 
   return (
     <Box sx={{ py: 10 }}>
-      <Container maxWidth="lg">
         <Typography variant="h4" fontWeight={700} mb={4}>
           CSV to JSON
         </Typography>
@@ -81,7 +80,6 @@ export default function CsvToJsonPage() {
             </Button>
           </Box>
         </Paper>
-      </Container>
     </Box>
   );
 }

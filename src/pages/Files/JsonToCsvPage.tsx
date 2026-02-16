@@ -36,7 +36,7 @@ export default function JsonToCsvPage() {
 
   return (
     <Box sx={{ py: 10 }}>
-      <Container maxWidth="lg">
+
         <Typography>JSON to CSV</Typography>
 
         <Paper sx={{ p: 3 }}>
@@ -73,7 +73,7 @@ export default function JsonToCsvPage() {
             </Button>
           </Box>
         </Paper>
-      </Container>
+     
     </Box>
   );
 }

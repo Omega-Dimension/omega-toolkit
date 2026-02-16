@@ -6,30 +6,34 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 export default function MainLayout() {
-
   const pageRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
-    if(!pageRef.current) return;
+    if (!pageRef.current) return;
 
     gsap.fromTo(
       pageRef.current,
-      {y: 30, opacity : 0},
+      { y: 30, opacity: 0 },
       {
-        y : 0,
-        opacity : 1,
-        duration : 0.6,
-        ease : "power3.out"
-      }
-    )
-  }, [location.pathname])
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        ease: "power3.out",
+      },
+    );
+  }, [location.pathname]);
 
   return (
     <>
       <Header />
-  
-      <Container ref = {pageRef} component="main" maxWidth="xl" sx={{ mt: 4, mb: 6 }}>
+
+      <Container
+        ref={pageRef}
+        component="main"
+        maxWidth="xl"
+        sx={{ mt: 4, mb: 6 }}
+      >
         <Outlet />
       </Container>
 

@@ -24,7 +24,7 @@ export default function JsonFormatter() {
 
   return (
     <Box sx={{ py: 10 }}>
-      <Container maxWidth="lg">
+  
         <Typography variant="h4" mb={1}>
           JSON Formatter
         </Typography>
@@ -88,7 +88,7 @@ export default function JsonFormatter() {
             </Button>
           </Box>
         </Paper>
-      </Container>
+   
     </Box>
   );
 }
