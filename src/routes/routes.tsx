@@ -1,4 +1,5 @@
 import MainLayout from "../layout/MainLayout";
+import About from "../pages/About";
 import Base64ToolPage from "../pages/Dev/Base64ToolPage";
 import HashGeneratorPage from "../pages/Dev/HashGeneratorPage";
 import JWTDecoderPage from "../pages/Dev/JwtDecoderPage";
@@ -52,6 +53,7 @@ export const routes: RouteItem[] = [
       { path : "/dev/url-tool", element : <UrlEncodeDecodePage />},
 
       {path: "/media/mp3-converter", element: <Mp3ConverterPage /> },
+      {path : "/about-us", element : <About />}
     ],
   },
 ];

@@ -78,14 +78,11 @@ export default function Intro() {
             gap: { xs: 6, md: 10 },
           }}
         >
-          {/* IMAGE / ILLUSTRATION */}
-          {/* IMAGE / ILLUSTRATION */}
           <Box
             ref={imageRef}
             sx={{
               flex: 1,
               position: "relative",
-              height: { xs: 280, md: 420 },
               borderRadius: 4,
               overflow: "hidden",
               boxShadow: "0 24px 48px rgba(0,0,0,0.12)",

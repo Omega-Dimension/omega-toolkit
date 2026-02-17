@@ -261,7 +261,7 @@ export default function Footer() {
             <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
               <Box
                 component="a"
-                href="https://github.com/your-username/toolbox/issues/new"
+                href="https://github.com/Omega-Dimension/omega-toolkit/issues"
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{
@@ -291,7 +291,7 @@ export default function Footer() {
               
               <Box
                 component="a"
-                href="https://github.com/your-username/toolbox/discussions"
+                href="#"
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{

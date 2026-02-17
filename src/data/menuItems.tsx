@@ -67,7 +67,7 @@ export const menuItems: MenuItemProps[] = [
       },
     ],
   },
-  { label: "About", path: "/about" },
+  { label: "About", path: "/about-us" },
 ];
 export const tools: ToolsProps[] = [
   {
