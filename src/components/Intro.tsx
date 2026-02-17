@@ -100,31 +100,7 @@ export default function Intro() {
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
-                display: "block",
-              }}
-            />
-
-            {/* Gradient Overlay */}
-            <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                background: (theme) =>
-                  theme.palette.mode === "light"
-                    ? "linear-gradient(135deg, rgba(102,126,234,0.35), rgba(118,75,162,0.35))"
-                    : "linear-gradient(135deg, rgba(33,212,253,0.35), rgba(183,33,255,0.35))",
-                zIndex: 1,
-              }}
-            />
-
-            {/* Pattern Overlay */}
-            <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                opacity: 0.5,
-                zIndex: 2,
+               
               }}
             />
           </Box>
