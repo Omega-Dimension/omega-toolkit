@@ -1,5 +1,5 @@
 import { Box, Container, Typography, Chip } from "@mui/material";
-import { menuItems } from "../data/menuItems"; 
+import { menuItems } from "../data/menuItems";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";

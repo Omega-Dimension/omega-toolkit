@@ -1,9 +1,90 @@
 import { Box, Container, Typography, useTheme, alpha, IconButton, Stack, Divider } from "@mui/material";
-import { GitHub, LinkedIn, Twitter, Favorite } from "@mui/icons-material";
+import { GitHub, LinkedIn, Twitter, Favorite, BugReport, Forum } from "@mui/icons-material";
+
+// Define interfaces for type safety
+interface LinkItem {
+  name: string;
+  url: string;
+  external: boolean;
+}
+
+interface SocialLinkItem {
+  Icon: React.ElementType;
+  url: string;
+  label: string;
+}
+
+interface LinkListProps {
+  links: LinkItem[];
+}
 
 export default function Footer() {
   const theme = useTheme();
   const isLight = theme.palette.mode === 'light';
+
+  // Menu data arrays with proper typing
+  const resourceLinks: LinkItem[] = [
+    { name: "React Documentation", url: "https://react.dev", external: true },
+    { name: "MUI Documentation", url: "https://mui.com/material-ui/getting-started/", external: true },
+    { name: "API Reference", url: "https://mui.com/material-ui/api/", external: true },
+    { name: "Changelog", url: "https://github.com/mui/material-ui/releases", external: true },
+    { name: "Status", url: "https://status.mui.com", external: true },
+  ];
+
+  const companyLinks: LinkItem[] = [
+    { name: "About Us", url: "/about", external: false },
+    { name: "Contact", url: "/contact", external: false },
+  ];
+
+  const bottomLinks: LinkItem[] = [
+    { name: "Privacy Policy", url: "/privacy", external: false },
+    { name: "Terms of Service", url: "/terms", external: false },
+  ];
+
+  const socialLinks: SocialLinkItem[] = [
+    { Icon: GitHub, url: "https://github.com", label: "GitHub" },
+    { Icon: Twitter, url: "https://twitter.com", label: "Twitter" },
+    { Icon: LinkedIn, url: "https://linkedin.com", label: "LinkedIn" },
+  ];
+
+  const linkStyles = {
+    color: alpha(theme.palette.text.primary, 0.7),
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    textDecoration: "none",
+    display: "inline-block",
+    "&:hover": {
+      color: theme.palette.primary.main,
+      transform: "translateX(4px)",
+    },
+  };
+
+  const sectionTitleStyles = {
+    fontWeight: 700,
+    mb: 2,
+    color: theme.palette.text.primary,
+    textTransform: "uppercase",
+    fontSize: "0.75rem",
+    letterSpacing: "1px",
+  };
+
+  const LinkList = ({ links }: LinkListProps) => (
+    <Stack spacing={1.5}>
+      {links.map((link: LinkItem) => (
+        <Typography
+          key={link.name}
+          component="a"
+          href={link.url}
+          target={link.external ? "_blank" : undefined}
+          rel={link.external ? "noopener noreferrer" : undefined}
+          variant="body2"
+          sx={linkStyles}
+        >
+          {link.name}
+        </Typography>
+      ))}
+    </Stack>
+  );
 
   return (
     <Box
@@ -111,9 +192,13 @@ export default function Footer() {
             
             {/* Social Links */}
             <Stack direction="row" spacing={1.5}>
-              {[GitHub, Twitter, LinkedIn].map((Icon, index) => (
+              {socialLinks.map(({ Icon, url, label }: SocialLinkItem) => (
                 <IconButton
-                  key={index}
+                  key={label}
+                  component="a"
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   size="small"
                   sx={{
                     width: 36,
@@ -139,155 +224,113 @@ export default function Footer() {
             </Stack>
           </Box>
 
-          {/* Quick Links - Column 1 */}
+          {/* Resources Section */}
           <Box>
-            <Typography
-              variant="subtitle2"
-              sx={{
-                fontWeight: 700,
-                mb: 2,
-                color: theme.palette.text.primary,
-                textTransform: "uppercase",
-                fontSize: "0.75rem",
-                letterSpacing: "1px",
-              }}
-            >
+            <Typography variant="subtitle2" sx={sectionTitleStyles}>
               Resources
             </Typography>
-            <Stack spacing={1.5}>
-              {["Documentation", "API Reference", "Changelog", "Status"].map((item) => (
-                <Typography
-                  key={item}
-                  variant="body2"
-                  sx={{
-                    color: alpha(theme.palette.text.primary, 0.7),
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                    "&:hover": {
-                      color: theme.palette.primary.main,
-                      transform: "translateX(4px)",
-                    },
-                  }}
-                >
-                  {item}
-                </Typography>
-              ))}
-            </Stack>
+            <LinkList links={resourceLinks} />
           </Box>
 
-          {/* Quick Links - Column 2 */}
+          {/* Company Section */}
           <Box>
-            <Typography
-              variant="subtitle2"
-              sx={{
-                fontWeight: 700,
-                mb: 2,
-                color: theme.palette.text.primary,
-                textTransform: "uppercase",
-                fontSize: "0.75rem",
-                letterSpacing: "1px",
-              }}
-            >
+            <Typography variant="subtitle2" sx={sectionTitleStyles}>
               Company
             </Typography>
-            <Stack spacing={1.5}>
-              {["About Us", "Blog", "Careers", "Contact"].map((item) => (
-                <Typography
-                  key={item}
-                  variant="body2"
-                  sx={{
-                    color: alpha(theme.palette.text.primary, 0.7),
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                    "&:hover": {
-                      color: theme.palette.primary.main,
-                      transform: "translateX(4px)",
-                    },
-                  }}
-                >
-                  {item}
-                </Typography>
-              ))}
-            </Stack>
+            <LinkList links={companyLinks} />
           </Box>
 
-          {/* Newsletter/Updates */}
+          {/* Help & Feedback Section - Replaces Newsletter */}
           <Box>
-            <Typography
-              variant="subtitle2"
-              sx={{
-                fontWeight: 700,
-                mb: 2,
-                color: theme.palette.text.primary,
-                textTransform: "uppercase",
-                fontSize: "0.75rem",
-                letterSpacing: "1px",
-              }}
-            >
-              Stay Updated
+            <Typography variant="subtitle2" sx={sectionTitleStyles}>
+              👋 Let's Connect
             </Typography>
+            
             <Typography
               variant="body2"
               sx={{
                 color: alpha(theme.palette.text.primary, 0.7),
                 mb: 2,
+                lineHeight: 1.6,
+                fontStyle: "italic",
               }}
             >
-              Get the latest tools and updates directly to your inbox.
+              "Found a bug? Have a suggestion? We're all ears! Your feedback makes ToolBox better for everyone."
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                p: 0.5,
-                borderRadius: "14px",
-                background: alpha(theme.palette.background.paper, 0.6),
-                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                backdropFilter: "blur(8px)",
-                "&:focus-within": {
-                  borderColor: alpha(theme.palette.primary.main, 0.5),
-                  boxShadow: `0 0 0 3px ${alpha(theme.palette.primary.main, 0.1)}`,
-                },
-              }}
-            >
+            
+            <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
               <Box
-                component="input"
-                placeholder="Enter your email"
+                component="a"
+                href="https://github.com/your-username/toolbox/issues/new"
+                target="_blank"
+                rel="noopener noreferrer"
                 sx={{
-                  flex: 1,
-                  border: "none",
-                  background: "transparent",
-                  p: 1.5,
-                  px: 2,
-                  color: theme.palette.text.primary,
-                  fontSize: "0.875rem",
-                  outline: "none",
-                  "&::placeholder": {
-                    color: alpha(theme.palette.text.primary, 0.4),
-                  },
-                }}
-              />
-              <Box
-                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
                   px: 2,
                   py: 1,
-                  borderRadius: "10px",
-                  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-                  color: "white",
-                  fontSize: "0.75rem",
+                  borderRadius: "20px",
+                  background: `linear-gradient(135deg, ${alpha(theme.palette.error.main, 0.1)}, ${alpha(theme.palette.error.dark, 0.05)})`,
+                  border: `1px solid ${alpha(theme.palette.error.main, 0.2)}`,
+                  color: theme.palette.error.main,
+                  fontSize: "0.875rem",
                   fontWeight: 600,
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
+                  textDecoration: "none",
+                  transition: "all 0.2s ease",
                   "&:hover": {
-                    transform: "translateX(-2px)",
-                    boxShadow: `0 6px 16px ${alpha(theme.palette.primary.main, 0.3)}`,
+                    background: `linear-gradient(135deg, ${alpha(theme.palette.error.main, 0.15)}, ${alpha(theme.palette.error.dark, 0.1)})`,
+                    transform: "translateY(-2px)",
+                    boxShadow: `0 4px 12px ${alpha(theme.palette.error.main, 0.2)}`,
                   },
                 }}
               >
-                Subscribe
+                <BugReport sx={{ fontSize: 18 }} />
+                Report Issue
               </Box>
-            </Box>
+              
+              <Box
+                component="a"
+                href="https://github.com/your-username/toolbox/discussions"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  px: 2,
+                  py: 1,
+                  borderRadius: "20px",
+                  background: alpha(theme.palette.primary.main, 0.1),
+                  border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                  color: theme.palette.primary.main,
+                  fontSize: "0.875rem",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    background: alpha(theme.palette.primary.main, 0.15),
+                    transform: "translateY(-2px)",
+                    boxShadow: `0 4px 12px ${alpha(theme.palette.primary.main, 0.2)}`,
+                  },
+                }}
+              >
+                <Forum sx={{ fontSize: 18 }} />
+                Share Ideas
+              </Box>
+            </Stack>
+            
+            <Typography
+              variant="caption"
+              sx={{
+                display: "block",
+                mt: 2,
+                color: alpha(theme.palette.text.primary, 0.5),
+                fontSize: "0.7rem",
+              }}
+            >
+              💡 Every report helps us improve. Thank you for being part of our journey!
+            </Typography>
           </Box>
         </Box>
 
@@ -324,34 +367,28 @@ export default function Footer() {
               gap: 2,
             }}
           >
-            <Typography
-              variant="body2"
-              sx={{
-                color: alpha(theme.palette.text.primary, 0.6),
-                display: "flex",
-                alignItems: "center",
-                gap: 0.5,
-                "&:hover": {
-                  color: theme.palette.primary.main,
-                },
-              }}
-            >
-              Privacy Policy
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                color: alpha(theme.palette.text.primary, 0.6),
-                display: "flex",
-                alignItems: "center",
-                gap: 0.5,
-                "&:hover": {
-                  color: theme.palette.primary.main,
-                },
-              }}
-            >
-              Terms of Service
-            </Typography>
+            {/* Bottom Links */}
+            {bottomLinks.map((link: LinkItem) => (
+              <Typography
+                key={link.name}
+                component="a"
+                href={link.url}
+                variant="body2"
+                sx={{
+                  color: alpha(theme.palette.text.primary, 0.6),
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 0.5,
+                  textDecoration: "none",
+                  "&:hover": {
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                {link.name}
+              </Typography>
+            ))}
+            
             <Typography
               variant="body2"
               sx={{
