@@ -13,7 +13,14 @@ import {
   useMediaQuery,
   alpha,
 } from "@mui/material";
-import { Nightlight, LightMode, ExpandLess, ExpandMore } from "@mui/icons-material";
+import {
+  Nightlight,
+  LightMode,
+  ExpandLess,
+  ExpandMore,
+  AccountCircle,
+  AccountCircleOutlined,
+} from "@mui/icons-material";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
@@ -24,7 +31,7 @@ import { useThemeMode } from "../hooks/useThemeMode";
 export default function Header() {
   const theme = useTheme();
 
-  const {mode, toggleTheme} = useThemeMode();
+  const { mode, toggleTheme } = useThemeMode();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isLight = mode === "light";
@@ -40,8 +47,6 @@ export default function Header() {
   const line2Ref = useRef<HTMLDivElement>(null);
   const line3Ref = useRef<HTMLDivElement>(null);
   const menuListRef = useRef<HTMLUListElement>(null);
-
-
 
   const closeAllDropdowns = useCallback(() => setActiveDropdown(null), []);
   const toggleDrawer = useCallback(() => setMobileOpen((prev) => !prev), []);
@@ -239,11 +244,19 @@ export default function Header() {
             {/* Right Section */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               {!isMobile && (
+                <>
                 <IconButton onClick={toggleTheme}>
                   {isLight ? <Nightlight /> : <LightMode />}
                 </IconButton>
-              )}
 
+                <IconButton
+                onClick={() => console.log("profile click")}
+                >
+                  <AccountCircle sx={{fontSize: 40}} />
+                </IconButton>
+                </>
+              )}
+              
               {isMobile && (
                 <>
                   <IconButton onClick={toggleDrawer}>
