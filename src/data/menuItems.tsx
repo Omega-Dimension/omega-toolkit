@@ -44,6 +44,7 @@ export const menuItems: MenuItemProps[] = [
           { label: "Image Crop", path: "/image/image-crop" },
           { label: "Image to Base64", path: "/image/image-base64" },
           { label: "Base64 to Image", path: "/image/base64-image" },
+         
         ],
       },
       {

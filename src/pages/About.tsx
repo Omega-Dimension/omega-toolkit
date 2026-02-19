@@ -19,7 +19,6 @@ import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SecurityIcon from "@mui/icons-material/Security";
 
-// Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
@@ -29,7 +28,6 @@ export default function About() {
   const subtitleRef = useRef<HTMLParagraphElement | null>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const statsRef = useRef<(HTMLDivElement | null)[]>([]);
-
   const cards = [
     {
       icon: <ArchitectureIcon sx={{ fontSize: 40 }} />,
@@ -83,7 +81,6 @@ export default function About() {
         "-=0.4",
       );
 
-      // Cards animation with stagger
       cardsRef.current.forEach((card, index) => {
         if (card) {
           gsap.from(card, {
@@ -101,7 +98,6 @@ export default function About() {
         }
       });
 
-      // Stats animation
       statsRef.current.forEach((stat, index) => {
         if (stat) {
           gsap.from(stat, {
@@ -229,7 +225,6 @@ export default function About() {
           ))}
         </Grid>
 
-        {/* Stats Section */}
         <Box sx={{ textAlign: "center", mb: 8 }}>
           <Typography variant="h2" gutterBottom>
             By the Numbers
@@ -281,7 +276,6 @@ export default function About() {
           </Grid>
         </Box>
 
-        {/* Vision Statement */}
         <Box
           sx={{
             maxWidth: 800,
