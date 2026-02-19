@@ -10,6 +10,7 @@ import {
   Typography,
   type SelectChangeEvent,
 } from "@mui/material";
+import { SwapHorizOutlined } from "@mui/icons-material";
 
 type ConvertType = "zawgyiToUnicode" | "unicodeToZawgyi";
 
@@ -45,6 +46,30 @@ export default function MyanmarFontConverter() {
     setType(e.target.value as ConvertType);
   }
 
+  const isZawgyiToUnicode = type === "zawgyiToUnicode";
+
+  const leftLabel = isZawgyiToUnicode ? "Zawgyi Input" : "Unicode Input";
+  const rightLabel = isZawgyiToUnicode ? "Unicode Output" : "Zawgyi Output";
+
+  const options: {
+    value: ConvertType;
+    from: string;
+    to: string;
+  }[] = [
+    { value: "zawgyiToUnicode", from: "Zawgyi", to: "Unicode" },
+    { value: "unicodeToZawgyi", from: "Unicode", to: "Zawgyi" },
+  ];
+
+  function renderDirection(from: string, to: string) {
+    return (
+      <Box display="flex" alignItems="center" gap={1}>
+        {from}
+        <SwapHorizOutlined fontSize="small" />
+        {to}
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ py: 10 }}>
       <Typography variant="h4" mb={1}>
@@ -56,9 +81,28 @@ export default function MyanmarFontConverter() {
       </Typography>
 
       <Box mb={3}>
-        <Select value={type} onChange={handleChange} fullWidth>
-          <MenuItem>Zawgyi Unicode</MenuItem>
-          <MenuItem>Unicode Zawgyi</MenuItem>
+        <Select
+          value={type}
+          onChange={handleChange}
+          fullWidth
+          sx={{
+            fontWeight: 600,
+            "& .MuiSelect-select": {
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            },
+          }}
+          renderValue={(selected) => {
+            const current = options.find((o) => o.value === selected);
+            return current ? renderDirection(current.from, current.to) : null;
+          }}
+        >
+          {options.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {renderDirection(option.from, option.to)}
+            </MenuItem>
+          ))}
         </Select>
       </Box>
 
@@ -70,24 +114,34 @@ export default function MyanmarFontConverter() {
             gap: 3,
           }}
         >
-          <TextField
-            multiline
-            minRows={14}
-            fullWidth
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="စာထည့်ပါ..."
-          />
+          <Box>
+            <Typography mb={1} fontWeight={600}>
+              {leftLabel}
+            </Typography>
+            <TextField
+              multiline
+              minRows={14}
+              fullWidth
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="စာထည့်ပါ..."
+            />
+          </Box>
 
-          <TextField
-            multiline
-            minRows={14}
-            fullWidth
-            value={output}
-            slotProps={{
-              input: { readOnly: true },
-            }}
-          />
+          <Box>
+            <Typography mb={1} fontWeight={600}>
+              {rightLabel}
+            </Typography>
+            <TextField
+              multiline
+              minRows={14}
+              fullWidth
+              value={output}
+              slotProps={{
+                input: { readOnly: true },
+              }}
+            />
+          </Box>
         </Box>
 
         <Box mt={3} display="flex" gap={2}>
