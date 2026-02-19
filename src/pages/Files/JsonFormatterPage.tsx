@@ -57,7 +57,7 @@ export default function JsonFormatter() {
             {/* Output */}
 
             <Box>
-              <Typography mb={1}>Formatted Outpu</Typography>
+              <Typography mb={1}>Formatted Output</Typography>
               <TextField
                 multiline
                 minRows={14}

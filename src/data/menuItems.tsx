@@ -31,6 +31,7 @@ export const menuItems: MenuItemProps[] = [
           { label: "CSV to JSON Files", path: "/file/csv-json" },
           { label: "Excel to CSV Files", path: "/file/excel-csv" },
           { label: "CSV to Excel Files", path: "/file/csv-excel" },
+          { label: "Zawgyi ⇄ Unicode Converter", path: "/file/myanmar-font-converter"},
         ],
       },
       {

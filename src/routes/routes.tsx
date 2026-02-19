@@ -11,6 +11,7 @@ import CsvToJsonPage from "../pages/Files/CsvToJsonPage";
 import ExcelToCsv from "../pages/Files/ExcelToCsvPage";
 import JsonFormatter from "../pages/Files/JsonFormatterPage";
 import JsonToCsvPage from "../pages/Files/JsonToCsvPage";
+import MyanmarFontConverter from "../pages/Files/MyanmarFontConverter";
 import Home from "../pages/Home";
 import Base64ToImagePage from "../pages/Images/Base64ToImagePage";
 import FaviconGeneratorPage from "../pages/Images/FaviconGeneratorPage";
@@ -36,6 +37,7 @@ export const routes: RouteItem[] = [
       { path: "/file/csv-json", element: <CsvToJsonPage /> },
       { path: "/file/excel-csv", element: <ExcelToCsv /> },
       { path: "/file/csv-excel", element: <CsvToExcelPage /> },
+      { path : "/file/myanmar-font-converter", element : <MyanmarFontConverter />},
 
       { path: "/image/jpg-png", element: <JpgToPng /> },
       { path: "/image/resize-image", element: <ImageResizePage /> },
