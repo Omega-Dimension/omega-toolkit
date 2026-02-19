@@ -34,8 +34,7 @@ export default function About() {
     {
       icon: <ArchitectureIcon sx={{ fontSize: 40 }} />,
       title: "Microservice Architecture",
-      description:
-        "Building scalable, resilient systems with distributed microservices that evolve with your business needs.",
+      description: "Building scalable, resilient systems with distributed microservices that evolve with your business needs.",
     },
     {
       icon: <StorageIcon sx={{ fontSize: 40 }} />,

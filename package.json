@@ -19,6 +19,7 @@
     "@mui/material": "^7.3.7",
     "gsap": "^3.14.2",
     "jszip": "^3.10.1",
+    "knayi-myscript": "^2.8.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.12.0",
