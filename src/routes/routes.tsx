@@ -19,6 +19,7 @@ import ImageCropPage from "../pages/Images/ImageCropPage";
 import ImageResizePage from "../pages/Images/ImageResize";
 import ImageToBase64Page from "../pages/Images/ImageToBase64Page";
 import JpgToPng from "../pages/Images/JpgToPngPage";
+import QrScannerPage from "../pages/Images/QrScannerPage";
 import Mp3ConverterPage from "../pages/Media/Mp3Converter";
 
 export interface RouteItem {
@@ -45,6 +46,7 @@ export const routes: RouteItem[] = [
       { path: "/image/image-crop", element: <ImageCropPage /> },
       { path: "/image/image-base64", element: <ImageToBase64Page /> },
       { path: "/image/base64-image", element: <Base64ToImagePage /> },
+      {path : "/image/qr-scanner", element : <QrScannerPage />},
 
       { path: "/dev/json-formatter", element: <JsonFormatter /> },
       { path: "/dev/hash-generator", element: <HashGeneratorPage /> },
