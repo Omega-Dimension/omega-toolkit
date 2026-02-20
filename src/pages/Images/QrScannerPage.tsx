@@ -25,7 +25,6 @@ export default function QrScannerPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  // --- Camera Scanner ---
   async function startScanner() {
     if (!qrRef.current) return;
 
@@ -40,15 +39,14 @@ export default function QrScannerPage() {
           setResult(decodedText);
           stopScanner();
 
-          // Redirect if valid URL
           try {
             const url = new URL(decodedText);
             setTimeout(() => {
               window.location.href = url.toString();
-            }, 1000); // Small delay to show the result
+            }, 1000); 
           } catch {}
         },
-        () => {} // required by TS
+        () => {} 
       );
 
       setIsScanning(true);
@@ -66,7 +64,6 @@ export default function QrScannerPage() {
     }
   }
 
-  // --- Upload QR Image with Preview and Scanning Effect ---
   async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -104,8 +101,7 @@ export default function QrScannerPage() {
       tempDiv.style.display = "none";
       document.body.appendChild(tempDiv);
 
-      // Simulate scanning with delay
-      await new Promise(resolve => setTimeout(resolve, 1500)); // Scanning animation delay
+      await new Promise(resolve => setTimeout(resolve, 1500)); 
       
       const decodedText = await html5QrCode.scanFile(file, true);
       setResult(decodedText);
@@ -114,17 +110,17 @@ export default function QrScannerPage() {
       setTimeout(() => {
         setPreviewImage(null);
         
-        // Redirect if valid URL
+      
         try {
           const url = new URL(decodedText);
           window.location.href = url.toString();
         } catch {
-          // Not a URL, just show the result
+         
         }
       }, 1000);
 
     } catch {
-      setResult("❌ No QR code found in image");
+      setResult("No QR code found in image");
       setTimeout(() => {
         setPreviewImage(null);
       }, 2000);
@@ -142,13 +138,12 @@ export default function QrScannerPage() {
 
   // --- Mode Switch ---
   function handleModeChange(e: SelectChangeEvent) {
-    stopScanner(); // stop camera if switching
-    setPreviewImage(null); // clear preview
+    stopScanner(); 
+    setPreviewImage(null); 
     setResult("");
     setMode(e.target.value as ScanMode);
   }
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       stopScanner();
@@ -161,7 +156,6 @@ export default function QrScannerPage() {
         QR Code Scanner
       </Typography>
 
-      {/* Mode Selector */}
       <Box mb={3}>
         <Select value={mode} onChange={handleModeChange} fullWidth>
           <MenuItem value="camera">Scan with Camera</MenuItem>
@@ -224,8 +218,6 @@ export default function QrScannerPage() {
             </Typography>
           </Box>
         )}
-
-        {/* Upload Preview with Scanning Effect */}
         {mode === "upload" && previewImage && (
           <Box>
             <Box 
@@ -242,7 +234,6 @@ export default function QrScannerPage() {
                 backgroundColor: "#f5f5f5"
               }}
             >
-              {/* Image Preview */}
               <Box
                 component="img"
                 src={previewImage}
@@ -254,7 +245,6 @@ export default function QrScannerPage() {
                 }}
               />
               
-              {/* Scanning Overlay */}
               {isUploading && (
                 <>
                   <Box
@@ -278,7 +268,6 @@ export default function QrScannerPage() {
                     </Typography>
                   </Box>
                   
-                  {/* Scanning Line Animation */}
                   <Box
                     sx={{
                       position: "absolute",
@@ -329,7 +318,6 @@ export default function QrScannerPage() {
         )}
       </Paper>
 
-      {/* Hidden div for HTML5Qrcode (required for file scanning) */}
       <div id="upload-preview-scanner" style={{ display: 'none' }} />
     </Box>
   );

@@ -62,12 +62,13 @@ export function NavItem({
   const hasChildren = Boolean(item.children);
   const isActive = activeDropdown === item.label;
 
-  const handleMouseEnter = () => {
-    if (hasChildren) {
-      setActiveDropdown(item.label);
-    }
-  };
-
+ const handleMouseEnter = () => {
+  if (hasChildren) {
+    setActiveDropdown(item.label);
+  } else {
+    setActiveDropdown(null);
+  }
+};
   const handleMouseLeave = () => {
     setHoveredCategory(null);
   };
@@ -130,18 +131,7 @@ export function NavItem({
               opacity: 1,
             },
           },
-          "&::after": {
-            content: '""',
-            position: "absolute",
-            bottom: 6,
-            left: "20%",
-            width: 0,
-            height: "2px",
-            background: "linear-gradient(90deg, #35a4ff, #1976d2)",
-            borderRadius: "2px",
-            opacity: 0,
-            transition: "all 0.3s ease",
-          },
+      
         }}
       >
         {item.label}
@@ -382,7 +372,7 @@ export function NavItem({
                               fontWeight: 600,
                               mb: 0.5,
                               color: isLight ? "text.primary" : "white",
-                              whiteSpace: "nowrap", // Add this
+                              whiteSpace: "nowrap", 
                               overflow: "hidden",
                               textOverflow: "ellipsis",
                             }}
@@ -396,8 +386,8 @@ export function NavItem({
                                 ? alpha("#000", 0.6)
                                 : alpha("#fff", 0.6),
                               lineHeight: 1.4,
-                              display: "block", // Add this
-                              whiteSpace: "nowrap", // Add this
+                              display: "block",
+                              whiteSpace: "nowrap", 
                               overflow: "hidden",
                               textOverflow: "ellipsis",
                             }}
