@@ -1,3 +1,4 @@
+import { Dashboard } from "@mui/icons-material";
 import MainLayout from "../layout/MainLayout";
 import About from "../pages/About";
 import Base64ToolPage from "../pages/Dev/Base64ToolPage";
@@ -38,7 +39,10 @@ export const routes: RouteItem[] = [
       { path: "/file/csv-json", element: <CsvToJsonPage /> },
       { path: "/file/excel-csv", element: <ExcelToCsv /> },
       { path: "/file/csv-excel", element: <CsvToExcelPage /> },
-      { path : "/file/myanmar-font-converter", element : <MyanmarFontConverter />},
+      {
+        path: "/file/myanmar-font-converter",
+        element: <MyanmarFontConverter />,
+      },
 
       { path: "/image/jpg-png", element: <JpgToPng /> },
       { path: "/image/resize-image", element: <ImageResizePage /> },
@@ -46,18 +50,21 @@ export const routes: RouteItem[] = [
       { path: "/image/image-crop", element: <ImageCropPage /> },
       { path: "/image/image-base64", element: <ImageToBase64Page /> },
       { path: "/image/base64-image", element: <Base64ToImagePage /> },
-      {path : "/image/qr-scanner", element : <QrScannerPage />},
+      { path: "/image/qr-scanner", element: <QrScannerPage /> },
 
       { path: "/dev/json-formatter", element: <JsonFormatter /> },
       { path: "/dev/hash-generator", element: <HashGeneratorPage /> },
       { path: "/dev/base64-tool", element: <Base64ToolPage /> },
       { path: "/dev/uuid-generator", element: <UuidGeneratorPage /> },
-      { path : "/dev/jwt-decoder", element : <JWTDecoderPage />},
-      { path : "/dev/regex-tester", element : <RegexTesterPage />},
-      { path : "/dev/url-tool", element : <UrlEncodeDecodePage />},
+      { path: "/dev/jwt-decoder", element: <JWTDecoderPage /> },
+      { path: "/dev/regex-tester", element: <RegexTesterPage /> },
+      { path: "/dev/url-tool", element: <UrlEncodeDecodePage /> },
 
-      {path: "/media/mp3-converter", element: <Mp3ConverterPage /> },
-      {path : "/about-us", element : <About />}
+      { path: "/dashboard", element: <Dashboard /> },
+
+      { path: "/media/mp3-converter", element: <Mp3ConverterPage /> },
+
+      { path: "/about-us", element: <About /> },
     ],
   },
 ];

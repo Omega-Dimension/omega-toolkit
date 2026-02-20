@@ -1,13 +1,19 @@
 import { Box, Button, Typography, Container } from "@mui/material";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const subtitleRef = useRef<HTMLParagraphElement | null>(null);
   const buttonsRef = useRef<HTMLDivElement | null>(null);
-  
+
+  const navigate = useNavigate();
+  function handleExploreClick() {
+    navigate("/dashboard");
+  }
+
   useEffect(() => {
     if (!sectionRef.current) return;
 
@@ -88,7 +94,11 @@ export default function Hero() {
             ref={buttonsRef}
             sx={{ display: "flex", gap: 2, justifyContent: "center" }}
           >
-            <Button variant="contained" size="large">
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleExploreClick}
+            >
               Explore Tools
             </Button>
             <Button variant="outlined" size="large">
