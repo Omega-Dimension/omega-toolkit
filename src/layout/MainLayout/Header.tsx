@@ -12,13 +12,13 @@ import {
   Collapse,
   useMediaQuery,
   alpha,
+  Button,
 } from "@mui/material";
 import {
   Nightlight,
   LightMode,
   ExpandLess,
   ExpandMore,
-  AccountCircle,
 } from "@mui/icons-material";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
@@ -26,15 +26,17 @@ import gsap from "gsap";
 import { menuItems } from "../../data/menuItems";
 import { NavItem } from "../../components/NavItem";
 import { useThemeMode } from "../../hooks/useThemeMode";
+import { useModal } from "../../hooks/useModal";
+import LoginModal from "../../auth/LoginModal";
 
 export default function Header() {
   const theme = useTheme();
+  const {openModal} = useModal();
 
   const { mode, toggleTheme } = useThemeMode();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isLight = mode === "light";
-
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string[]>([]);
@@ -248,9 +250,26 @@ export default function Header() {
                     {isLight ? <Nightlight /> : <LightMode />}
                   </IconButton>
 
-                  <IconButton onClick={() => console.log("profile click")}>
-                    <AccountCircle sx={{ fontSize: 40 }} />
-                  </IconButton>
+
+                  <Button onClick={() => openModal(<LoginModal />)} variant="contained" size="small" 
+                     sx={{
+        borderRadius: 2,
+        textTransform: "none",
+        fontWeight: 600,
+        background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${alpha(
+          theme.palette.primary.main,
+          0.8
+        )})`,
+        boxShadow: `0 4px 8px ${alpha(theme.palette.primary.main, 0.3)}`,
+        "&:hover": {
+          transform: "translateY(-2px)",
+          boxShadow: `0 6px 12px ${alpha(theme.palette.primary.main, 0.4)}`,
+        },
+      }}
+                  >
+                    Login
+                  </Button>
+
                 </>
               )}
 
