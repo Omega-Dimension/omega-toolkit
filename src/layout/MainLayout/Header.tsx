@@ -244,18 +244,16 @@ export default function Header() {
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               {!isMobile && (
                 <>
-                <IconButton onClick={toggleTheme}>
-                  {isLight ? <Nightlight /> : <LightMode />}
-                </IconButton>
+                  <IconButton onClick={toggleTheme}>
+                    {isLight ? <Nightlight /> : <LightMode />}
+                  </IconButton>
 
-                <IconButton
-                onClick={() => console.log("profile click")}
-                >
-                  <AccountCircle sx={{fontSize: 40}} />
-                </IconButton>
+                  <IconButton onClick={() => console.log("profile click")}>
+                    <AccountCircle sx={{ fontSize: 40 }} />
+                  </IconButton>
                 </>
               )}
-              
+
               {isMobile && (
                 <>
                   <IconButton onClick={toggleDrawer}>

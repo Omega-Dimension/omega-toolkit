@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { 
-  Box, 
-  List, 
-  ListItemButton, 
-  ListItemText, 
+import {
+  Box,
+  List,
+  ListItemButton,
+  ListItemText,
   ListItemIcon,
   Collapse,
   Divider,
   Typography,
   useTheme,
-  alpha
+  alpha,
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -23,10 +23,9 @@ import {
   Info as InfoIcon,
   ExpandLess,
   ExpandMore,
-  ChevronRight
+  ChevronRight,
 } from "@mui/icons-material";
 
-// Menu item type definition
 interface MenuItemProps {
   label: string;
   path?: string;
@@ -37,10 +36,10 @@ interface MenuItemProps {
 
 // Your menu items array
 export const menuItems: MenuItemProps[] = [
-  { 
-    label: "Home", 
+  {
+    label: "Home",
     path: "/",
-    icon: <HomeIcon /> 
+    icon: <HomeIcon />,
   },
   {
     label: "Tools",
@@ -55,7 +54,10 @@ export const menuItems: MenuItemProps[] = [
           { label: "CSV to JSON Files", path: "/file/csv-json" },
           { label: "Excel to CSV Files", path: "/file/excel-csv" },
           { label: "CSV to Excel Files", path: "/file/csv-excel" },
-          { label: "Zawgyi ⇄ Unicode Converter", path: "/file/myanmar-font-converter" },
+          {
+            label: "Zawgyi ⇄ Unicode Converter",
+            path: "/file/myanmar-font-converter",
+          },
         ],
       },
       {
@@ -76,9 +78,7 @@ export const menuItems: MenuItemProps[] = [
         label: "Media Tools",
         icon: <MediaIcon />,
         category: "media",
-        children: [
-          { label: "MP3 Converter", path: "/media/mp3-converter" },
-        ],
+        children: [{ label: "MP3 Converter", path: "/media/mp3-converter" }],
       },
       {
         label: "Dev Tools",
@@ -96,10 +96,10 @@ export const menuItems: MenuItemProps[] = [
       },
     ],
   },
-  { 
-    label: "About", 
+  {
+    label: "About",
     path: "/about-us",
-    icon: <InfoIcon />
+    icon: <InfoIcon />,
   },
 ];
 
@@ -110,7 +110,12 @@ interface MenuItemComponentProps {
   currentPath: string;
 }
 
-const MenuItemComponent = ({ item, depth = 0, onNavigate, currentPath }: MenuItemComponentProps) => {
+const MenuItemComponent = ({
+  item,
+  depth = 0,
+  onNavigate,
+  currentPath,
+}: MenuItemComponentProps) => {
   const [open, setOpen] = useState(false);
   const hasChildren = item.children && item.children.length > 0;
   const isSelected = item.path === currentPath;
@@ -134,19 +139,21 @@ const MenuItemComponent = ({ item, depth = 0, onNavigate, currentPath }: MenuIte
           py: 1,
           borderRadius: 1,
           mb: 0.5,
-          backgroundColor: isSelected ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
-          '&:hover': {
+          backgroundColor: isSelected
+            ? alpha(theme.palette.primary.main, 0.1)
+            : "transparent",
+          "&:hover": {
             backgroundColor: alpha(theme.palette.primary.main, 0.05),
           },
-          '&.Mui-selected': {
+          "&.Mui-selected": {
             backgroundColor: alpha(theme.palette.primary.main, 0.15),
-            '&:hover': {
+            "&:hover": {
               backgroundColor: alpha(theme.palette.primary.main, 0.2),
             },
-            '& .MuiListItemIcon-root': {
+            "& .MuiListItemIcon-root": {
               color: theme.palette.primary.main,
             },
-            '& .MuiListItemText-primary': {
+            "& .MuiListItemText-primary": {
               color: theme.palette.primary.main,
               fontWeight: 600,
             },
@@ -154,23 +161,29 @@ const MenuItemComponent = ({ item, depth = 0, onNavigate, currentPath }: MenuIte
         }}
       >
         {item.icon && (
-          <ListItemIcon sx={{ 
-            minWidth: 40,
-            color: isSelected ? theme.palette.primary.main : 'inherit'
-          }}>
+          <ListItemIcon
+            sx={{
+              minWidth: 40,
+              color: isSelected ? theme.palette.primary.main : "inherit",
+            }}
+          >
             {item.icon}
           </ListItemIcon>
         )}
-        <ListItemText 
+        <ListItemText
           primary={item.label}
           primaryTypographyProps={{
-            fontSize: depth === 0 ? '0.95rem' : '0.9rem',
+            fontSize: depth === 0 ? "0.95rem" : "0.9rem",
             fontWeight: depth === 0 ? 500 : 400,
           }}
         />
         {hasChildren && (
           <>
-            {open ? <ExpandLess sx={{ fontSize: 20 }} /> : <ExpandMore sx={{ fontSize: 20 }} />}
+            {open ? (
+              <ExpandLess sx={{ fontSize: 20 }} />
+            ) : (
+              <ExpandMore sx={{ fontSize: 20 }} />
+            )}
           </>
         )}
       </ListItemButton>
@@ -207,48 +220,58 @@ export default function DashboardSidebar() {
     <Box
       sx={{
         width: 280,
-        height: '100vh',
+        height: "100vh",
         bgcolor: theme.palette.background.paper,
         borderRight: `1px solid ${theme.palette.divider}`,
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
       }}
     >
       {/* Header */}
-      <Box sx={{ 
-        p: 3,
-        borderBottom: `1px solid ${theme.palette.divider}`,
-        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.05)} 0%, ${alpha(theme.palette.primary.main, 0.02)} 100%)`,
-      }}>
-        <Typography variant="h6" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
+      <Box
+        sx={{
+          p: 3,
+          borderBottom: `1px solid ${theme.palette.divider}`,
+          background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.05)} 0%, ${alpha(theme.palette.primary.main, 0.02)} 100%)`,
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{ fontWeight: 600, color: theme.palette.text.primary }}
+        >
           Dashboard
         </Typography>
-        <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
+        <Typography
+          variant="caption"
+          sx={{ color: theme.palette.text.secondary }}
+        >
           Tools & Utilities
         </Typography>
       </Box>
 
       {/* Menu Items */}
-      <Box sx={{ 
-        flex: 1, 
-        overflow: 'auto',
-        px: 2,
-        py: 2,
-        '&::-webkit-scrollbar': {
-          width: '6px',
-        },
-        '&::-webkit-scrollbar-track': {
-          background: theme.palette.background.default,
-        },
-        '&::-webkit-scrollbar-thumb': {
-          background: theme.palette.divider,
-          borderRadius: '3px',
-          '&:hover': {
-            background: theme.palette.action.hover,
+      <Box
+        sx={{
+          flex: 1,
+          overflow: "auto",
+          px: 2,
+          py: 2,
+          "&::-webkit-scrollbar": {
+            width: "6px",
           },
-        },
-      }}>
+          "&::-webkit-scrollbar-track": {
+            background: theme.palette.background.default,
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: theme.palette.divider,
+            borderRadius: "3px",
+            "&:hover": {
+              background: theme.palette.action.hover,
+            },
+          },
+        }}
+      >
         <List component="nav" disablePadding>
           {menuItems.map((item, index) => (
             <Box key={index}>
@@ -266,12 +289,17 @@ export default function DashboardSidebar() {
       </Box>
 
       {/* Footer */}
-      <Box sx={{ 
-        p: 2,
-        borderTop: `1px solid ${theme.palette.divider}`,
-        bgcolor: alpha(theme.palette.background.default, 0.5),
-      }}>
-        <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
+      <Box
+        sx={{
+          p: 2,
+          borderTop: `1px solid ${theme.palette.divider}`,
+          bgcolor: alpha(theme.palette.background.default, 0.5),
+        }}
+      >
+        <Typography
+          variant="caption"
+          sx={{ color: theme.palette.text.secondary }}
+        >
           v1.0.0
         </Typography>
       </Box>

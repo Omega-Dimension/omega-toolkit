@@ -13,7 +13,7 @@ export default function Hero() {
   function handleExploreClick() {
     navigate("/dashboard");
   }
-
+  
   useEffect(() => {
     if (!sectionRef.current) return;
 
