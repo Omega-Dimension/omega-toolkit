@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Box,
   Typography,
@@ -19,6 +19,7 @@ import {
   Code,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import gsap from "gsap";
 
 interface NavItemProps {
   item: MenuItemProps;
@@ -27,7 +28,6 @@ interface NavItemProps {
   closeAllDropdowns: () => void;
 }
 
-// Category icons mapping
 const getCategoryIcon = (category?: string) => {
   switch (category) {
     case "file":
@@ -43,7 +43,6 @@ const getCategoryIcon = (category?: string) => {
   }
 };
 
-// Animation for shimmer effect
 const shimmer = keyframes`
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
@@ -57,10 +56,55 @@ export function NavItem({
 }: NavItemProps) {
   const theme = useTheme();
   const navigate = useNavigate();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const isLight = theme.palette.mode === "light";
   const hasChildren = Boolean(item.children);
   const isActive = activeDropdown === item.label;
+
+  useEffect(() => {
+  const dropdown = dropdownRef.current;
+  if (!dropdown) return;
+
+  const ctx = gsap.context(() => {
+    if (isActive) {
+      gsap.fromTo(
+        dropdown,
+        {
+          opacity: 0,
+          y: 8,
+          scale: 0.98,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.1,
+          ease: "power3.out",
+        }
+      );
+
+      const cards = dropdown.querySelectorAll(".tool-card");
+
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 10 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.3,
+          stagger: 0.05,
+          ease: "power2.out",
+          delay: 0.1,
+        }
+      );
+    }
+  }, dropdown);
+
+  return () => ctx.revert();
+}, [isActive]);
 
  const handleMouseEnter = () => {
   if (hasChildren) {
@@ -154,6 +198,7 @@ export function NavItem({
 
           <Fade in={isActive} timeout={200}>
             <Paper
+              ref={dropdownRef}
               elevation={0}
               sx={{
                 position: "absolute",
@@ -302,6 +347,7 @@ export function NavItem({
                     ?.find((cat) => cat.category === hoveredCategory)
                     ?.children?.map((tool) => (
                       <Paper
+                          className="tool-card"
                         key={tool.label}
                         onClick={() => {
                           if (tool.path) {

@@ -31,7 +31,7 @@ import LoginModal from "../../auth/LoginModal";
 
 export default function Header() {
   const theme = useTheme();
-  const {openModal} = useModal();
+  const { openModal } = useModal();
 
   const { mode, toggleTheme } = useThemeMode();
   const navigate = useNavigate();
@@ -48,6 +48,7 @@ export default function Header() {
   const line2Ref = useRef<HTMLDivElement>(null);
   const line3Ref = useRef<HTMLDivElement>(null);
   const menuListRef = useRef<HTMLUListElement>(null);
+  const desktopMenuRef = useRef<HTMLUListElement>(null);
 
   const closeAllDropdowns = useCallback(() => setActiveDropdown(null), []);
   const toggleDrawer = useCallback(() => setMobileOpen((prev) => !prev), []);
@@ -66,6 +67,32 @@ export default function Header() {
       prev.includes(key) ? prev.filter((item) => item !== key) : [...prev, key],
     );
   }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+    if (!desktopMenuRef.current) return;
+
+    const items = desktopMenuRef.current.children;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        items,
+        {
+          opacity: 0,
+          y: -20,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          stagger: 0.15, 
+        },
+      );
+    }, desktopMenuRef);
+
+    return () => ctx.revert();
+  }, [isMobile]);
   useEffect(() => {
     if (!line1Ref.current || !line2Ref.current || !line3Ref.current) return;
 
@@ -202,7 +229,6 @@ export default function Header() {
           }}
         />
       )}
-
       <Box
         ref={headerRef}
         component="header"
@@ -227,6 +253,7 @@ export default function Header() {
             {/* Desktop Navigation */}
             {!isMobile && (
               <Box
+                ref={desktopMenuRef}
                 component="ul"
                 sx={{ display: "flex", gap: 1, listStyle: "none" }}
               >
@@ -250,26 +277,27 @@ export default function Header() {
                     {isLight ? <Nightlight /> : <LightMode />}
                   </IconButton>
 
-
-                  <Button onClick={() => openModal(<LoginModal />)} variant="contained" size="small" 
-                     sx={{
-        borderRadius: 2,
-        textTransform: "none",
-        fontWeight: 600,
-        background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${alpha(
-          theme.palette.primary.main,
-          0.8
-        )})`,
-        boxShadow: `0 4px 8px ${alpha(theme.palette.primary.main, 0.3)}`,
-        "&:hover": {
-          transform: "translateY(-2px)",
-          boxShadow: `0 6px 12px ${alpha(theme.palette.primary.main, 0.4)}`,
-        },
-      }}
+                  <Button
+                    onClick={() => openModal(<LoginModal />)}
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      borderRadius: 2,
+                      textTransform: "none",
+                      fontWeight: 600,
+                      background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${alpha(
+                        theme.palette.primary.main,
+                        0.8,
+                      )})`,
+                      boxShadow: `0 4px 8px ${alpha(theme.palette.primary.main, 0.3)}`,
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                        boxShadow: `0 6px 12px ${alpha(theme.palette.primary.main, 0.4)}`,
+                      },
+                    }}
                   >
                     Login
                   </Button>
-
                 </>
               )}
 
