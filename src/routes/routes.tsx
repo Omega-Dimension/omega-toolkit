@@ -71,7 +71,8 @@ export const routes: RouteItem[] = [
     path : "/dashboard",
     element : <DashboardLayout />,
     children : [
-      {path : "", element : <DashboardHomePage />}
+      {path : "", element : <DashboardHomePage />},
+    
     ]
 
   }
