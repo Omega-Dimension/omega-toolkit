@@ -19,14 +19,13 @@ import {
   ExpandLess,
   ExpandMore,
   AccountCircle,
-  AccountCircleOutlined,
 } from "@mui/icons-material";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
-import { menuItems } from "../data/menuItems";
-import { NavItem } from "../components/NavItem";
-import { useThemeMode } from "../hooks/useThemeMode";
+import { menuItems } from "../../data/menuItems";
+import { NavItem } from "../../components/NavItem";
+import { useThemeMode } from "../../hooks/useThemeMode";
 
 export default function Header() {
   const theme = useTheme();

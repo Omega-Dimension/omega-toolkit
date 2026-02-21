@@ -7,7 +7,7 @@ import {
   Paper,
 } from "@mui/material";
 
-export default function JpgToPng() {
+export default function JpgToPngPage() {
   const [preview, setPreview] = useState<string>("");
 
   function handleFile(file: File) {

@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import {

@@ -14,7 +14,7 @@ import { SwapHorizOutlined } from "@mui/icons-material";
 
 type ConvertType = "zawgyiToUnicode" | "unicodeToZawgyi";
 
-export default function MyanmarFontConverter() {
+export default function MyanmarFontConverterPage() {
   const [type, setType] = useState<ConvertType>("zawgyiToUnicode");
   const [input, setInput] = useState<string>("");
   const [output, setOutput] = useState<string>("");

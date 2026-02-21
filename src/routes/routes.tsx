@@ -1,27 +1,28 @@
-import { Dashboard } from "@mui/icons-material";
-import MainLayout from "../layout/MainLayout";
-import About from "../pages/About";
-import Base64ToolPage from "../pages/Dev/Base64ToolPage";
-import HashGeneratorPage from "../pages/Dev/HashGeneratorPage";
-import JWTDecoderPage from "../pages/Dev/JwtDecoderPage";
-import RegexTesterPage from "../pages/Dev/RegexTesterPage";
-import UrlEncodeDecodePage from "../pages/Dev/UrlEncodeDecodePage";
-import UuidGeneratorPage from "../pages/Dev/UuidGeneratorPage";
-import CsvToExcelPage from "../pages/Files/CsvToExcelPage";
-import CsvToJsonPage from "../pages/Files/CsvToJsonPage";
-import ExcelToCsv from "../pages/Files/ExcelToCsvPage";
-import JsonFormatter from "../pages/Files/JsonFormatterPage";
-import JsonToCsvPage from "../pages/Files/JsonToCsvPage";
-import MyanmarFontConverter from "../pages/Files/MyanmarFontConverter";
-import Home from "../pages/Home";
-import Base64ToImagePage from "../pages/Images/Base64ToImagePage";
-import FaviconGeneratorPage from "../pages/Images/FaviconGeneratorPage";
-import ImageCropPage from "../pages/Images/ImageCropPage";
-import ImageResizePage from "../pages/Images/ImageResize";
-import ImageToBase64Page from "../pages/Images/ImageToBase64Page";
-import JpgToPng from "../pages/Images/JpgToPngPage";
-import QrScannerPage from "../pages/Images/QrScannerPage";
-import Mp3ConverterPage from "../pages/Media/Mp3Converter";
+import MainLayout from "../layout/MainLayout/MainLayout";
+import About from "../pages/public/About";
+import Base64ToolPage from "../pages/dev/Base64ToolPage";
+import HashGeneratorPage from "../pages/dev/HashGeneratorPage";
+import JWTDecoderPage from "../pages/dev/JwtDecoderPage";
+import RegexTesterPage from "../pages/dev/RegexTesterPage";
+import UrlEncodeDecodePage from "../pages/dev/UrlEncodeDecodePage";
+import UuidGeneratorPage from "../pages/dev/UuidGeneratorPage";
+import CsvToExcelPage from "../pages/files/CsvToExcelPage";
+import CsvToJsonPage from "../pages/files/CsvToJsonPage";
+import ExcelToCsv from "../pages/files/ExcelToCsvPage";
+import JsonFormatter from "../pages/files/JsonFormatterPage";
+import JsonToCsvPage from "../pages/files/JsonToCsvPage";
+import MyanmarFontConverter from "../pages/files/MyanmarFontConverterPage";
+import Home from "../pages/public/Home";
+import Base64ToImagePage from "../pages/images/Base64ToImagePage";
+import FaviconGeneratorPage from "../pages/images/FaviconGeneratorPage";
+import ImageCropPage from "../pages/images/ImageCropPage";
+import ImageResizePage from "../pages/images/ImageResizePage";
+import ImageToBase64Page from "../pages/images/ImageToBase64Page";
+import JpgToPng from "../pages/images/JpgToPngPage";
+import QrScannerPage from "../pages/images/QrScannerPage";
+import Mp3ConverterPage from "../pages/media/Mp3ConverterPage";
+import DashboardLayout from "../layout/DashboardLayout/DashboardLayout";
+import DashboardHomePage from "../pages/Dashboard/DashboardHomePage";
 
 export interface RouteItem {
   path: string;
@@ -59,12 +60,19 @@ export const routes: RouteItem[] = [
       { path: "/dev/jwt-decoder", element: <JWTDecoderPage /> },
       { path: "/dev/regex-tester", element: <RegexTesterPage /> },
       { path: "/dev/url-tool", element: <UrlEncodeDecodePage /> },
-
-      { path: "/dashboard", element: <Dashboard /> },
-
       { path: "/media/mp3-converter", element: <Mp3ConverterPage /> },
 
       { path: "/about-us", element: <About /> },
     ],
   },
+
+
+  {
+    path : "/dashboard",
+    element : <DashboardLayout />,
+    children : [
+      {path : "", element : <DashboardHomePage />}
+    ]
+
+  }
 ];

@@ -1,11 +1,8 @@
-"use client";
-
 import { useState } from "react";
 import JSZip from "jszip";
 import {
   Box,
   Button,
-  Container,
   Paper,
   Typography,
 } from "@mui/material";

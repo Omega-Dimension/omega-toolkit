@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-export default function JsonFormatter() {
+export default function JsonFormatterPage() {
   const [input, setInput] = useState<string>("");
   const [output, setOutput] = useState<string>("");
 
