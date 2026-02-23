@@ -20,6 +20,7 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
+import { buildPath } from "../utils/globalfunctions";
 
 interface NavItemProps {
   item: MenuItemProps;
@@ -119,7 +120,7 @@ export function NavItem({
 
   const handleClick = () => {
     if (item.path) {
-      navigate(item.path);
+      navigate(buildPath("", item.path));
       closeAllDropdowns();
     } else if (hasChildren) {
       setActiveDropdown(isActive ? null : item.label);
@@ -351,7 +352,7 @@ export function NavItem({
                         key={tool.label}
                         onClick={() => {
                           if (tool.path) {
-                            navigate(tool.path);
+                            navigate(buildPath("", tool.path));
                             closeAllDropdowns();
                           }
                         }}

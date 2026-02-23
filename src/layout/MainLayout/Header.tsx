@@ -28,6 +28,7 @@ import { NavItem } from "../../components/NavItem";
 import { useThemeMode } from "../../hooks/useThemeMode";
 import { useModal } from "../../hooks/useModal";
 import LoginModal from "../../auth/LoginModal";
+import { buildPath } from "../../utils/globalfunctions";
 
 export default function Header() {
   const theme = useTheme();
@@ -55,7 +56,7 @@ export default function Header() {
   const handleNavigate = useCallback(
     (path?: string) => {
       if (!path) return;
-      navigate(path);
+      navigate(buildPath("", path));
       setMobileOpen(false);
       setMobileExpanded([]);
     },

@@ -25,6 +25,7 @@ import {
   ExpandMore,
   ChevronRight,
 } from "@mui/icons-material";
+import { buildPath } from "../../utils/globalfunctions";
 
 interface MenuItemProps {
   label: string;
@@ -213,7 +214,7 @@ export default function DashboardSidebar() {
   const theme = useTheme();
 
   const handleNavigate = (path: string) => {
-    navigate(path);
+    navigate(buildPath("/dashboard", path));
   };
 
   return (

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
 import { getFeaturedTools } from "../utils/featuredTools";
+import { buildPath } from "../utils/globalfunctions";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,7 +47,7 @@ export default function FeaturedTools() {
   }, []);
 
   const handleToolClick = (path: string) => {
-    navigate(path);
+    navigate(buildPath("", path));
   };
 
   return (
