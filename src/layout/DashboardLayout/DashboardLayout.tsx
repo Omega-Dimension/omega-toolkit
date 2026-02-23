@@ -6,10 +6,8 @@ import DashboardSidebar from "./DashboardSidebar";
 export default function DashboardLayout() {
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
-      {/* Sidebar */}
       <DashboardSidebar />
 
-      {/* Right Side */}
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <DashboardHeader />
 

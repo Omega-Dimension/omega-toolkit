@@ -86,7 +86,7 @@ export default function Header() {
           y: 0,
           duration: 0.8,
           ease: "power3.out",
-          stagger: 0.15, 
+          stagger: 0.15,
         },
       );
     }, desktopMenuRef);

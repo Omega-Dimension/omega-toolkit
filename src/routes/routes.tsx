@@ -1,79 +1,35 @@
 import MainLayout from "../layout/MainLayout/MainLayout";
-import About from "../pages/public/About";
-import Base64ToolPage from "../pages/dev/Base64ToolPage";
-import HashGeneratorPage from "../pages/dev/HashGeneratorPage";
-import JWTDecoderPage from "../pages/dev/JwtDecoderPage";
-import RegexTesterPage from "../pages/dev/RegexTesterPage";
-import UrlEncodeDecodePage from "../pages/dev/UrlEncodeDecodePage";
-import UuidGeneratorPage from "../pages/dev/UuidGeneratorPage";
-import CsvToExcelPage from "../pages/files/CsvToExcelPage";
-import CsvToJsonPage from "../pages/files/CsvToJsonPage";
-import ExcelToCsv from "../pages/files/ExcelToCsvPage";
-import JsonFormatter from "../pages/files/JsonFormatterPage";
-import JsonToCsvPage from "../pages/files/JsonToCsvPage";
-import MyanmarFontConverter from "../pages/files/MyanmarFontConverterPage";
-import Home from "../pages/public/Home";
-import Base64ToImagePage from "../pages/images/Base64ToImagePage";
-import FaviconGeneratorPage from "../pages/images/FaviconGeneratorPage";
-import ImageCropPage from "../pages/images/ImageCropPage";
-import ImageResizePage from "../pages/images/ImageResizePage";
-import ImageToBase64Page from "../pages/images/ImageToBase64Page";
-import JpgToPng from "../pages/images/JpgToPngPage";
-import QrScannerPage from "../pages/images/QrScannerPage";
-import Mp3ConverterPage from "../pages/media/Mp3ConverterPage";
 import DashboardLayout from "../layout/DashboardLayout/DashboardLayout";
+
+import Home from "../pages/public/Home";
+import About from "../pages/public/About";
 import DashboardHomePage from "../pages/Dashboard/DashboardHomePage";
 
+import { toolRoutes } from "./toolRoutes";
+
 export interface RouteItem {
-  path: string;
+  path?: string;        
+  index?: boolean;     
   element: React.ReactNode;
   children?: RouteItem[];
 }
-
 export const routes: RouteItem[] = [
   {
     path: "/",
     element: <MainLayout />,
     children: [
-      { path: "", element: <Home /> },
-      { path: "/file/json-csv", element: <JsonToCsvPage /> },
-      { path: "/file/csv-json", element: <CsvToJsonPage /> },
-      { path: "/file/excel-csv", element: <ExcelToCsv /> },
-      { path: "/file/csv-excel", element: <CsvToExcelPage /> },
-      {
-        path: "/file/myanmar-font-converter",
-        element: <MyanmarFontConverter />,
-      },
-
-      { path: "/image/jpg-png", element: <JpgToPng /> },
-      { path: "/image/resize-image", element: <ImageResizePage /> },
-      { path: "/image/favicon-generator", element: <FaviconGeneratorPage /> },
-      { path: "/image/image-crop", element: <ImageCropPage /> },
-      { path: "/image/image-base64", element: <ImageToBase64Page /> },
-      { path: "/image/base64-image", element: <Base64ToImagePage /> },
-      { path: "/image/qr-scanner", element: <QrScannerPage /> },
-
-      { path: "/dev/json-formatter", element: <JsonFormatter /> },
-      { path: "/dev/hash-generator", element: <HashGeneratorPage /> },
-      { path: "/dev/base64-tool", element: <Base64ToolPage /> },
-      { path: "/dev/uuid-generator", element: <UuidGeneratorPage /> },
-      { path: "/dev/jwt-decoder", element: <JWTDecoderPage /> },
-      { path: "/dev/regex-tester", element: <RegexTesterPage /> },
-      { path: "/dev/url-tool", element: <UrlEncodeDecodePage /> },
-      { path: "/media/mp3-converter", element: <Mp3ConverterPage /> },
-
-      { path: "/about-us", element: <About /> },
+      { index: true, element: <Home /> },
+      ...toolRoutes,
+      { path: "about-us", element: <About /> },
     ],
   },
 
-
   {
-    path : "/dashboard",
-    element : <DashboardLayout />,
-    children : [
-      {path : "", element : <DashboardHomePage />},
-    
-    ]
-
-  }
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      { index: true, element: <DashboardHomePage /> },
+      ...toolRoutes,
+    ],
+  },
 ];
