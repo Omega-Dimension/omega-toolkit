@@ -173,7 +173,7 @@ const MenuItemComponent = ({
         )}
         <ListItemText
           primary={item.label}
-          primaryTypographyProps={{
+          sx={{
             fontSize: depth === 0 ? "0.95rem" : "0.9rem",
             fontWeight: depth === 0 ? 500 : 400,
           }}

@@ -58,7 +58,7 @@ export default function Header() {
       if (!path) return;
       navigate(buildPath("", path));
       setMobileOpen(false);
-      setMobileExpanded([]);
+      setMobileExpanded([]);    
     },
     [navigate],
   );
