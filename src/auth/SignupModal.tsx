@@ -1,4 +1,4 @@
-// src/auth/LoginModal.tsx
+// src/auth/SignUpModal.tsx
 import {
   Box,
   Button,
@@ -22,14 +22,14 @@ import {
 import { useState } from "react";
 import { useModal } from "../hooks/useModal";
 import { useAuthForm } from "../hooks/useAuthForm";
-import { signInWithGoogle, signInWithGithub, signInWithEmail } from "../config/firebase";
-import type { AuthFormData } from "../types/authForm";
+import { signInWithGoogle, signInWithGithub, signUpWithEmail } from "../config/firebase";
+import type { SignUpFormData } from "../types/authForm";
 
-interface LoginModalProps {
-  onSignUpClick?: () => void;
+interface SignUpModalProps {
+  onLoginClick?: () => void;
 }
 
-export default function LoginModal({ onSignUpClick }: LoginModalProps) {
+export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
   const theme = useTheme();
   const { closeModal } = useModal();
   const {
@@ -44,9 +44,10 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
     resetState,
   } = useAuthForm();
 
-  const [formData, setFormData] = useState<AuthFormData>({
+  const [formData, setFormData] = useState<SignUpFormData>({
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,12 +62,25 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
     setError(null);
     setLoading(true);
 
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const { user, error } = await signInWithEmail(formData.email, formData.password);
+      const { user, error } = await signUpWithEmail(formData.email, formData.password);
       if (error) {
         setError(error);
       } else if (user) {
-        setSuccess("Logged in successfully!");
+        setSuccess("Account created successfully!");
         setTimeout(() => {
           closeModal();
         }, 1500);
@@ -93,7 +107,7 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
       if (result?.error) {
         setError(result.error);
       } else if (result?.user) {
-        setSuccess(`Logged in with ${provider} successfully!`);
+        setSuccess(`Account created with ${provider} successfully!`);
         setTimeout(() => {
           closeModal();
         }, 1500);
@@ -132,10 +146,10 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
             mb: 1,
           }}
         >
-          Welcome Back
+          Create Account
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Sign in to continue to ToolBox
+          Sign up to start using ToolBox
         </Typography>
       </Box>
 
@@ -232,6 +246,7 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
         onChange={handleChange}
         required
         disabled={loading}
+        helperText="Minimum 6 characters"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -261,22 +276,38 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
         }}
       />
 
-      {/* Forgot Password */}
-      <Box sx={{ textAlign: "right" }}>
-        <Button
-          size="small"
-          sx={{
-            textTransform: "none",
-            color: "text.secondary",
-            "&:hover": {
-              color: "primary.main",
-              backgroundColor: "transparent",
+      {/* Confirm Password Field */}
+      <TextField
+        fullWidth
+        name="confirmPassword"
+        label="Confirm Password"
+        type={showPassword ? "text" : "password"}
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        required
+        disabled={loading}
+        error={formData.password !== formData.confirmPassword && formData.confirmPassword !== ""}
+        helperText={
+          formData.password !== formData.confirmPassword && formData.confirmPassword !== ""
+            ? "Passwords do not match"
+            : ""
+        }
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Lock sx={{ fontSize: 20, color: "text.secondary" }} />
+            </InputAdornment>
+          ),
+        }}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            borderRadius: 2,
+            "&:hover fieldset": {
+              borderColor: theme.palette.primary.main,
             },
-          }}
-        >
-          Forgot Password?
-        </Button>
-      </Box>
+          },
+        }}
+      />
 
       {/* Submit Button */}
       <Button
@@ -306,16 +337,16 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
           },
         }}
       >
-        {loading ? "Please wait..." : "Sign In"}
+        {loading ? "Please wait..." : "Sign Up"}
       </Button>
 
-      {/* Sign Up Link */}
+      {/* Login Link */}
       <Box sx={{ textAlign: "center", mt: 1 }}>
         <Typography variant="body2" color="text.secondary">
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <Button
             size="small"
-            onClick={onSignUpClick}
+            onClick={onLoginClick}
             disabled={loading}
             sx={{
               textTransform: "none",
@@ -327,7 +358,7 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
               },
             }}
           >
-            Sign Up
+            Sign In
           </Button>
         </Typography>
       </Box>
