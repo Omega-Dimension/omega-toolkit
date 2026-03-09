@@ -28,11 +28,12 @@ import { NavItem } from "../../components/NavItem";
 import { useThemeMode } from "../../hooks/useThemeMode";
 import { useModal } from "../../hooks/useModal";
 import LoginModal from "../../auth/LoginModal";
+import SignUpModal from "../../auth/SignupModal";
 import { buildPath } from "../../utils/globalfunctions";
 
 export default function Header() {
   const theme = useTheme();
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   const { mode, toggleTheme } = useThemeMode();
   const navigate = useNavigate();
@@ -51,6 +52,8 @@ export default function Header() {
   const menuListRef = useRef<HTMLUListElement>(null);
   const desktopMenuRef = useRef<HTMLUListElement>(null);
 
+  const [showLogin, setShowLogin] = useState(true);
+
   const closeAllDropdowns = useCallback(() => setActiveDropdown(null), []);
   const toggleDrawer = useCallback(() => setMobileOpen((prev) => !prev), []);
   const handleNavigate = useCallback(
@@ -58,7 +61,7 @@ export default function Header() {
       if (!path) return;
       navigate(buildPath("", path));
       setMobileOpen(false);
-      setMobileExpanded([]);    
+      setMobileExpanded([]);
     },
     [navigate],
   );
@@ -174,6 +177,32 @@ export default function Header() {
     [theme.palette.primary.main],
   );
 
+  const handleOpenAuth = useCallback(() => {
+    setShowLogin(true);
+    openModal(
+      <LoginModal
+        onSignUpClick={() => {
+          closeModal();
+          setShowLogin(false);
+          openModal(<SignUpModal />);
+        }}
+      />,
+    );
+  }, [openModal, closeModal]);
+
+  const handleOpenSignUp = useCallback(() => {
+    setShowLogin(false);
+    openModal(
+      <SignUpModal
+        onLoginClick={() => {
+          closeModal();
+          setShowLogin(true);
+          openModal(<LoginModal />);
+        }}
+      />,
+    );
+  }, [openModal, closeModal]);
+
   const renderMobileItem = (
     item: (typeof menuItems)[number],
     keyPath: string,
@@ -279,7 +308,7 @@ export default function Header() {
                   </IconButton>
 
                   <Button
-                    onClick={() => openModal(<LoginModal />)}
+                    onClick={handleOpenAuth}
                     variant="contained"
                     size="small"
                     sx={{
@@ -330,9 +359,9 @@ export default function Header() {
                   >
                     <Box sx={{ p: 2, mt: 5, width: 280 }}>
                       <List ref={menuListRef}>
-                        {menuItems.map((item) =>
+                        {/* {menuItems.map((item) =>
                           renderMobileItem(item, item.label, 0),
-                        )}
+                        )} */}
                       </List>
                     </Box>
                   </Drawer>
