@@ -8,6 +8,7 @@ import {
   useState,
   forwardRef,
   type ReactNode,
+  useEffect,
 } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -28,28 +29,72 @@ export function useModal() {
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<ReactNode>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const modalBoxRef = useRef<HTMLDivElement>(null);
 
   const isOpen = Boolean(content);
 
-  const openModal = useCallback((node: ReactNode) => {
+  // Animate modal open
+  useGSAP(() => {
+    if (isOpen && modalBoxRef.current) {
+      gsap.fromTo(modalBoxRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.2, ease: "power2.out" }
+      );
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+  if (!modalBoxRef.current || !content) return;
+
+  gsap.fromTo(
+    modalBoxRef.current,
+    { opacity: 0, scale: 0.97 },
+    {
+      opacity: 1,
+      scale: 1,
+      duration: 0.18,
+      ease: "power2.out",
+    }
+  );
+}, [content]);
+
+ const openModal = useCallback((node: ReactNode) => {
     setContent(node);
   }, []);
 
-  const closeModal = useCallback(() => {
-    if (!closeBtnRef.current) {
-      setContent(null);
-      return;
-    }
+const closeModal = useCallback(() => {
+  if (!modalBoxRef.current) {
+    setContent(null);
+    return;
+  }
 
-    gsap.to(closeBtnRef.current, {
-      y: -20,
-      rotate: 180,
-      opacity: 0,
-      duration: 0.25,
-      ease: "power2.in",
-      onComplete: () => setContent(null),
-    });
-  }, []);
+  const tl = gsap.timeline({
+    onComplete: () => setContent(null),
+  });
+
+  // modal fade out
+  tl.to(modalBoxRef.current, {
+    opacity: 0,
+    scale: 0.97,
+    duration: 0.18,
+    ease: "power2.in",
+  });
+
+  // keep your button animation 
+  if (closeBtnRef.current) {
+    tl.to(
+      closeBtnRef.current,
+      {
+        y: -20,
+        rotate: 180,
+        opacity: 0,
+        duration: 0.25,
+        ease: "power2.in",
+      },
+      0
+    );
+  }
+}, []);
 
   const handleBackdropClick = (event: { target: any; currentTarget: any }) => {
     if (event.target === event.currentTarget) {
@@ -64,6 +109,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
       {isOpen && (
         <Modal open={isOpen} onClose={closeModal} onClick={handleBackdropClick}>
           <Box
+            ref={modalBoxRef}
             sx={{
               position: "absolute",
               top: "50%",
@@ -74,6 +120,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
               boxShadow: 24,
               borderRadius: 2,
               p: 4,
+              opacity: 0, // Start invisible
             }}
           >
             <Box sx={{ position: "relative" }}>

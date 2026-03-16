@@ -21,7 +21,7 @@ import {
   ExpandMore,
 } from "@mui/icons-material";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { menuItems } from "../../data/menuItems";
 import { NavItem } from "../../components/NavItem";
@@ -53,6 +53,13 @@ export default function Header() {
   const desktopMenuRef = useRef<HTMLUListElement>(null);
 
   const [showLogin, setShowLogin] = useState(true);
+  const location = useLocation();
+const [selectedPath, setSelectedPath] = useState<string>("");
+
+// Update the useEffect to track path changes
+useEffect(() => {
+  setSelectedPath(location.pathname);
+}, [location]);
 
   const closeAllDropdowns = useCallback(() => setActiveDropdown(null), []);
   const toggleDrawer = useCallback(() => setMobileOpen((prev) => !prev), []);
@@ -178,26 +185,24 @@ export default function Header() {
   );
 
   const handleOpenAuth = useCallback(() => {
-    setShowLogin(true);
     openModal(
       <LoginModal
         onSignUpClick={() => {
           closeModal();
-          setShowLogin(false);
-          openModal(<SignUpModal />);
-        }}
-      />,
-    );
-  }, [openModal, closeModal]);
 
-  const handleOpenSignUp = useCallback(() => {
-    setShowLogin(false);
-    openModal(
-      <SignUpModal
-        onLoginClick={() => {
-          closeModal();
-          setShowLogin(true);
-          openModal(<LoginModal />);
+          setTimeout(() => {
+            openModal(
+              <SignUpModal
+                onLoginClick={() => {
+                  closeModal();
+
+                  setTimeout(() => {
+                    handleOpenAuth();
+                  }, 250);
+                }}
+              />,
+            );
+          }, 250); // match GSAP duration
         }}
       />,
     );
@@ -294,6 +299,7 @@ export default function Header() {
                     activeDropdown={activeDropdown}
                     setActiveDropdown={setActiveDropdown}
                     closeAllDropdowns={closeAllDropdowns}
+                    selectedPath={selectedPath}
                   />
                 ))}
               </Box>

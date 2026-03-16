@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Box,
   Typography,
@@ -27,6 +27,7 @@ interface NavItemProps {
   activeDropdown: string | null;
   setActiveDropdown: (label: string | null) => void;
   closeAllDropdowns: () => void;
+  selectedPath?: string;
 }
 
 const getCategoryIcon = (category?: string) => {
@@ -54,16 +55,29 @@ export function NavItem({
   activeDropdown,
   setActiveDropdown,
   closeAllDropdowns,
+  selectedPath
 }: NavItemProps) {
   const theme = useTheme();
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const isLight = theme.palette.mode === "light";
   const hasChildren = Boolean(item.children);
   const isActive = activeDropdown === item.label;
+
+
+  const isSelected = useMemo(() => {
+  if (item.path === selectedPath) return true;
+  
+  // Check if any child path matches
+  if (item.children) {
+    return item.children.some(category => 
+      category.children?.some(tool => tool.path === selectedPath)
+    );
+  }
+  return false;
+}, [selectedPath, item]);
 
   useEffect(() => {
   const dropdown = dropdownRef.current;
@@ -144,43 +158,57 @@ export function NavItem({
       onMouseLeave={handleMouseLeave}
     >
       {/* Main Navigation Button */}
-      <Button
-        onClick={handleClick}
-        endIcon={
-          hasChildren ? (
-            isActive ? (
-              <ExpandLess sx={{ fontSize: 18 }} />
-            ) : (
-              <ExpandMore sx={{ fontSize: 18 }} />
-            )
-          ) : null
-        }
-        sx={{
-          color: isLight ? "text.primary" : "white",
-          fontWeight: 600,
-          fontSize: "0.95rem",
-          height: 40,
-          px: 2,
-          borderRadius: "12px",
-          textTransform: "none",
-          position: "relative",
-          transition: "all 0.3s ease",
-          background: isActive
-            ? alpha(theme.palette.primary.main, isLight ? 0.15 : 0.2)
-            : "transparent",
-          "&:hover": {
-            background: alpha(theme.palette.primary.main, isLight ? 0.1 : 0.15),
-            transform: "translateY(-1px)",
-            "&::after": {
-              width: "60%",
-              opacity: 1,
-            },
-          },
-      
-        }}
-      >
-        {item.label}
-      </Button>
+     <Button
+  onClick={handleClick}
+  endIcon={
+    hasChildren ? (
+      isActive ? (
+        <ExpandLess sx={{ fontSize: 18 }} />
+      ) : (
+        <ExpandMore sx={{ fontSize: 18 }} />
+      )
+    ) : null
+  }
+  sx={{
+    color: isLight ? "text.primary" : "white",
+    fontWeight: isSelected ? 700 : 600, // Make selected text bolder
+    fontSize: "0.95rem",
+    height: 40,
+    px: 2,
+    borderRadius: "12px",
+    textTransform: "none",
+    position: "relative",
+    transition: "all 0.3s ease",
+    background: isActive
+      ? alpha(theme.palette.primary.main, isLight ? 0.15 : 0.2)
+      : isSelected
+      ? alpha(theme.palette.primary.main, isLight ? 0.1 : 0.15) // Selected state background
+      : "transparent",
+    border: isSelected ? `1px solid ${alpha(theme.palette.primary.main, 0.3)}` : "none", // Optional border for selected
+    "&:hover": {
+      background: alpha(theme.palette.primary.main, isLight ? 0.1 : 0.15),
+      transform: "translateY(-1px)",
+      "&::after": {
+        width: "60%",
+        opacity: 1,
+      },
+    },
+    // Add an indicator line for selected items
+    "&::after": isSelected ? {
+      content: '""',
+      position: "absolute",
+      bottom: 4,
+      left: "20%",
+      width: "60%",
+      height: 3,
+      borderRadius: "3px 3px 0 0",
+      background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.5)})`,
+      transition: "all 0.3s ease",
+    } : {},
+  }}
+>
+  {item.label}
+</Button>
 
       {/* Dropdown Menu */}
       {hasChildren && isActive && (
