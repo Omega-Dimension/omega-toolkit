@@ -2,9 +2,8 @@ export interface MenuItemProps {
   label: string;
   path?: string;
   children?: MenuItemProps[];
-  category?: string; 
+  category?: string;
 }
-
 
 export interface ToolsProps {
   title: string;
@@ -31,7 +30,10 @@ export const menuItems: MenuItemProps[] = [
           { label: "CSV to JSON Files", path: "/file/csv-json" },
           { label: "Excel to CSV Files", path: "/file/excel-csv" },
           { label: "CSV to Excel Files", path: "/file/csv-excel" },
-          { label: "Zawgyi ⇄ Unicode Converter", path: "/file/myanmar-font-converter"},
+          {
+            label: "Zawgyi ⇄ Unicode Converter",
+            path: "/file/myanmar-font-converter",
+          },
         ],
       },
       {
@@ -45,16 +47,12 @@ export const menuItems: MenuItemProps[] = [
           { label: "Image to Base64", path: "/image/image-base64" },
           { label: "Base64 to Image", path: "/image/base64-image" },
           { label: "QR Scanner", path: "/image/qr-scanner" },
-
-         
         ],
       },
       {
         label: "Media Tools",
         category: "media",
-        children: [
-          { label: "MP3 Converter", path: "/media/mp3-converter" },
-        ],
+        children: [{ label: "MP3 Converter", path: "/media/mp3-converter" }],
       },
       {
         label: "Dev Tools",
@@ -68,6 +66,11 @@ export const menuItems: MenuItemProps[] = [
           { label: "Regex Tester", path: "/dev/regex-tester" },
           { label: "URL Tools", path: "/dev/url-tool" },
         ],
+      },
+      {
+        label: "Color Tools",
+        category: "color",
+        children: [{ label: "Color Picker", path: "/colors/picker" }],
       },
     ],
   },

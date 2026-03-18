@@ -9,6 +9,7 @@ import {
   forwardRef,
   type ReactNode,
   useEffect,
+  type MouseEvent,
 } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -36,71 +37,72 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   // Animate modal open
   useGSAP(() => {
     if (isOpen && modalBoxRef.current) {
-      gsap.fromTo(modalBoxRef.current,
+      gsap.fromTo(
+        modalBoxRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.2, ease: "power2.out" }
+        { opacity: 1, duration: 0.2, ease: "power2.out" },
       );
     }
   }, [isOpen]);
 
   useEffect(() => {
-  if (!modalBoxRef.current || !content) return;
+    if (!modalBoxRef.current || !content) return;
 
-  gsap.fromTo(
-    modalBoxRef.current,
-    { opacity: 0, scale: 0.97 },
-    {
-      opacity: 1,
-      scale: 1,
-      duration: 0.18,
-      ease: "power2.out",
-    }
-  );
-}, [content]);
+    gsap.fromTo(
+      modalBoxRef.current,
+      { opacity: 0, scale: 0.97 },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 0.18,
+        ease: "power2.out",
+      },
+    );
+  }, [content]);
 
- const openModal = useCallback((node: ReactNode) => {
+  const openModal = useCallback(function (node: ReactNode) {
     setContent(node);
   }, []);
 
-const closeModal = useCallback(() => {
-  if (!modalBoxRef.current) {
-    setContent(null);
-    return;
-  }
+  const closeModal = useCallback(() => {
+    if (!modalBoxRef.current) {
+      setContent(null);
+      return;
+    }
 
-  const tl = gsap.timeline({
-    onComplete: () => setContent(null),
-  });
+    const tl = gsap.timeline({
+      onComplete: () => setContent(null),
+    });
 
-  // modal fade out
-  tl.to(modalBoxRef.current, {
-    opacity: 0,
-    scale: 0.97,
-    duration: 0.18,
-    ease: "power2.in",
-  });
+    // modal fade out
+    tl.to(modalBoxRef.current, {
+      opacity: 0,
+      scale: 0.97,
+      duration: 0.18,
+      ease: "power2.in",
+    });
 
-  // keep your button animation 
-  if (closeBtnRef.current) {
-    tl.to(
-      closeBtnRef.current,
-      {
-        y: -20,
-        rotate: 180,
-        opacity: 0,
-        duration: 0.25,
-        ease: "power2.in",
-      },
-      0
-    );
-  }
-}, []);
+    // keep your button animation
+    if (closeBtnRef.current) {
+      tl.to(
+        closeBtnRef.current,
+        {
+          y: -20,
+          rotate: 180,
+          opacity: 0,
+          duration: 0.25,
+          ease: "power2.in",
+        },
+        0,
+      );
+    }
+  }, []);
 
-  const handleBackdropClick = (event: { target: any; currentTarget: any }) => {
+  function handleBackdropClick(event: MouseEvent<HTMLDivElement>) {
     if (event.target === event.currentTarget) {
       closeModal();
     }
-  };
+  }
 
   return (
     <ModalContext.Provider value={{ openModal, closeModal }}>

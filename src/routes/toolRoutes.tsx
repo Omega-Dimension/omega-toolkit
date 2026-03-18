@@ -1,3 +1,4 @@
+import ColorPickerPage from "../pages/colors/ColorPickerPage";
 import Base64ToolPage from "../pages/dev/Base64ToolPage";
 import HashGeneratorPage from "../pages/dev/HashGeneratorPage";
 import JWTDecoderPage from "../pages/dev/JwtDecoderPage";
@@ -53,4 +54,7 @@ export const toolRoutes = [
 
   // MEDIA
   { path: "media/mp3-converter", element: <Mp3ConverterPage /> },
+
+  // COLOR
+  {path : "colors/picker", element : <ColorPickerPage />}
 ];

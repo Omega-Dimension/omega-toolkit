@@ -16,6 +16,7 @@ import {
   Image,
   MusicNote,
   Code,
+  Palette,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
@@ -58,6 +59,7 @@ function CategoryIcon({ category }: CategoryIconProps) {
     image: <Image sx={{ fontSize: 20 }} />,
     media: <MusicNote sx={{ fontSize: 20 }} />,
     dev: <Code sx={{ fontSize: 20 }} />,
+    color : <Palette sx={{fontSize : 20}} />
   };
 
   return category && category in iconMap
