@@ -45,16 +45,16 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     }
   }, [isOpen]);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!modalBoxRef.current || !content) return;
 
     gsap.fromTo(
       modalBoxRef.current,
-      { opacity: 0, scale: 0.97 },
+      { opacity: 0, scale: 0.95 },
       {
         opacity: 1,
         scale: 1,
-        duration: 0.18,
+        duration: 0.25,
         ease: "power2.out",
       },
     );
@@ -109,7 +109,12 @@ export function ModalProvider({ children }: { children: ReactNode }) {
       {children}
 
       {isOpen && (
-        <Modal open={isOpen} onClose={closeModal} onClick={handleBackdropClick}>
+        <Modal
+          open={isOpen}
+          onClose={closeModal}
+          onClick={handleBackdropClick}
+          sx={{ zIndex: 2000 }}
+        >
           <Box
             ref={modalBoxRef}
             sx={{
@@ -122,7 +127,6 @@ export function ModalProvider({ children }: { children: ReactNode }) {
               boxShadow: 24,
               borderRadius: 2,
               p: 4,
-              opacity: 0, // Start invisible
             }}
           >
             <Box sx={{ position: "relative" }}>

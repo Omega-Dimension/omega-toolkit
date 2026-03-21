@@ -52,7 +52,6 @@ export default function Header() {
   const menuListRef = useRef<HTMLUListElement>(null);
   const desktopMenuRef = useRef<HTMLUListElement>(null);
 
-  const [showLogin, setShowLogin] = useState(true);
   const location = useLocation();
 const [selectedPath, setSelectedPath] = useState<string>("");
 
@@ -185,6 +184,8 @@ useEffect(() => {
   );
 
   const handleOpenAuth = useCallback(() => {
+
+    console.log("click...")
     openModal(
       <LoginModal
         onSignUpClick={() => {

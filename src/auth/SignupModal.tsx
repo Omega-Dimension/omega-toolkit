@@ -1,4 +1,3 @@
-// src/auth/SignUpModal.tsx
 import {
   Box,
   Button,
@@ -22,7 +21,11 @@ import {
 import { useState } from "react";
 import { useModal } from "../hooks/useModal";
 import { useAuthForm } from "../hooks/useAuthForm";
-import { signInWithGoogle, signInWithGithub, signUpWithEmail } from "../config/firebase";
+import {
+  signInWithGoogle,
+  signInWithGithub,
+  signUpWithEmail,
+} from "../config/firebase";
 import type { SignUpFormData } from "../types/authForm";
 
 interface SignUpModalProps {
@@ -41,7 +44,6 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
     setError,
     success,
     setSuccess,
-    resetState,
   } = useAuthForm();
 
   const [formData, setFormData] = useState<SignUpFormData>({
@@ -76,7 +78,10 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
     }
 
     try {
-      const { user, error } = await signUpWithEmail(formData.email, formData.password);
+      const { user, error } = await signUpWithEmail(
+        formData.email,
+        formData.password,
+      );
       if (error) {
         setError(error);
       } else if (user) {
@@ -138,7 +143,7 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
             fontWeight: 700,
             background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${alpha(
               theme.palette.primary.main,
-              0.7
+              0.7,
             )})`,
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
@@ -219,12 +224,14 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
         onChange={handleChange}
         required
         disabled={loading}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Email sx={{ fontSize: 20, color: "text.secondary" }} />
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email sx={{ fontSize: 20, color: "text.secondary" }} />
+              </InputAdornment>
+            ),
+          },
         }}
         sx={{
           "& .MuiOutlinedInput-root": {
@@ -247,24 +254,26 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
         required
         disabled={loading}
         helperText="Minimum 6 characters"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Lock sx={{ fontSize: 20, color: "text.secondary" }} />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                onClick={() => setShowPassword(!showPassword)}
-                edge="end"
-                size="small"
-                disabled={loading}
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <Lock sx={{ fontSize: 20, color: "text.secondary" }} />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                  size="small"
+                  disabled={loading}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
         sx={{
           "& .MuiOutlinedInput-root": {
@@ -286,18 +295,24 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
         onChange={handleChange}
         required
         disabled={loading}
-        error={formData.password !== formData.confirmPassword && formData.confirmPassword !== ""}
+        error={
+          formData.password !== formData.confirmPassword &&
+          formData.confirmPassword !== ""
+        }
         helperText={
-          formData.password !== formData.confirmPassword && formData.confirmPassword !== ""
+          formData.password !== formData.confirmPassword &&
+          formData.confirmPassword !== ""
             ? "Passwords do not match"
             : ""
         }
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Lock sx={{ fontSize: 20, color: "text.secondary" }} />
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <Lock sx={{ fontSize: 20, color: "text.secondary" }} />
+              </InputAdornment>
+            ),
+          },
         }}
         sx={{
           "& .MuiOutlinedInput-root": {
@@ -322,16 +337,16 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
           fontWeight: 600,
           background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${alpha(
             theme.palette.primary.main,
-            0.8
+            0.8,
           )})`,
           boxShadow: `0 8px 16px ${alpha(theme.palette.primary.main, 0.3)}`,
           "&:hover": {
             background: `linear-gradient(45deg, ${alpha(
               theme.palette.primary.main,
-              0.9
+              0.9,
             )}, ${theme.palette.primary.main})`,
             transform: loading ? "none" : "translateY(-2px)",
-            boxShadow: loading 
+            boxShadow: loading
               ? `0 8px 16px ${alpha(theme.palette.primary.main, 0.3)}`
               : `0 12px 20px ${alpha(theme.palette.primary.main, 0.4)}`,
           },

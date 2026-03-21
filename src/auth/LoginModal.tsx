@@ -1,4 +1,3 @@
-// src/auth/LoginModal.tsx
 import {
   Box,
   Button,
@@ -22,7 +21,11 @@ import {
 import { useState } from "react";
 import { useModal } from "../hooks/useModal";
 import { useAuthForm } from "../hooks/useAuthForm";
-import { signInWithGoogle, signInWithGithub, signInWithEmail } from "../config/firebase";
+import {
+  signInWithGoogle,
+  signInWithGithub,
+  signInWithEmail,
+} from "../config/firebase";
 import type { AuthFormData } from "../types/authForm";
 
 interface LoginModalProps {
@@ -41,7 +44,6 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
     setError,
     success,
     setSuccess,
-    resetState,
   } = useAuthForm();
 
   const [formData, setFormData] = useState<AuthFormData>({
@@ -62,7 +64,10 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
     setLoading(true);
 
     try {
-      const { user, error } = await signInWithEmail(formData.email, formData.password);
+      const { user, error } = await signInWithEmail(
+        formData.email,
+        formData.password,
+      );
       if (error) {
         setError(error);
       } else if (user) {
@@ -124,7 +129,7 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
             fontWeight: 700,
             background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${alpha(
               theme.palette.primary.main,
-              0.7
+              0.7,
             )})`,
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
@@ -205,18 +210,27 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
         onChange={handleChange}
         required
         disabled={loading}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Email sx={{ fontSize: 20, color: "text.secondary" }} />
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email sx={{ fontSize: 20, color: "text.secondary" }} />
+              </InputAdornment>
+            ),
+          },
         }}
         sx={{
           "& .MuiOutlinedInput-root": {
             borderRadius: 2,
+
             "&:hover fieldset": {
               borderColor: theme.palette.primary.main,
+            },
+
+            "& input:-webkit-autofill": {
+              WebkitBoxShadow: `0 0 0 1000px ${theme.palette.background.paper} inset`,
+              WebkitTextFillColor: theme.palette.text.primary,
+              transition: "background-color 9999s ease-in-out 0s",
             },
           },
         }}
@@ -232,24 +246,26 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
         onChange={handleChange}
         required
         disabled={loading}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Lock sx={{ fontSize: 20, color: "text.secondary" }} />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                onClick={() => setShowPassword(!showPassword)}
-                edge="end"
-                size="small"
-                disabled={loading}
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <Lock sx={{ fontSize: 20, color: "text.secondary" }} />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                  size="small"
+                  disabled={loading}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
         sx={{
           "& .MuiOutlinedInput-root": {
@@ -257,6 +273,11 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
             "&:hover fieldset": {
               borderColor: theme.palette.primary.main,
             },
+          },
+          "& input:-webkit-autofill": {
+            WebkitBoxShadow: `0 0 0 1000px ${theme.palette.background.paper} inset`,
+            WebkitTextFillColor: theme.palette.text.primary,
+            transition: "background-color 9999s ease-in-out 0s",
           },
         }}
       />
@@ -291,16 +312,16 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
           fontWeight: 600,
           background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${alpha(
             theme.palette.primary.main,
-            0.8
+            0.8,
           )})`,
           boxShadow: `0 8px 16px ${alpha(theme.palette.primary.main, 0.3)}`,
           "&:hover": {
             background: `linear-gradient(45deg, ${alpha(
               theme.palette.primary.main,
-              0.9
+              0.9,
             )}, ${theme.palette.primary.main})`,
             transform: loading ? "none" : "translateY(-2px)",
-            boxShadow: loading 
+            boxShadow: loading
               ? `0 8px 16px ${alpha(theme.palette.primary.main, 0.3)}`
               : `0 12px 20px ${alpha(theme.palette.primary.main, 0.4)}`,
           },
