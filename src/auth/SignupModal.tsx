@@ -240,6 +240,11 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
               borderColor: theme.palette.primary.main,
             },
           },
+            "& input:-webkit-autofill": {
+            WebkitBoxShadow: `0 0 0 1000px ${theme.palette.background.paper} inset`,
+            WebkitTextFillColor: theme.palette.text.primary,
+            transition: "background-color 9999s ease-in-out 0s",
+          },
         }}
       />
 
@@ -281,6 +286,11 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
             "&:hover fieldset": {
               borderColor: theme.palette.primary.main,
             },
+          },
+            "& input:-webkit-autofill": {
+            WebkitBoxShadow: `0 0 0 1000px ${theme.palette.background.paper} inset`,
+            WebkitTextFillColor: theme.palette.text.primary,
+            transition: "background-color 9999s ease-in-out 0s",
           },
         }}
       />
