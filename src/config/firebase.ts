@@ -18,20 +18,20 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Initialize Firebase
+//! Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-// Providers
+//! Providers
 export const googleProvider = new GoogleAuthProvider();
 export const githubProvider = new GithubAuthProvider();
 
-// Add scopes if needed
+//! Add scopes if needed
 googleProvider.addScope('profile');
 googleProvider.addScope('email');
 githubProvider.addScope('user:email');
 
-// Auth functions
+//! Auth functions
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, googleProvider);

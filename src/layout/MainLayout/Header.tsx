@@ -13,6 +13,7 @@ import {
   useMediaQuery,
   alpha,
   Button,
+  Avatar,
 } from "@mui/material";
 import {
   Nightlight,
@@ -30,6 +31,8 @@ import { useModal } from "../../hooks/useModal";
 import LoginModal from "../../auth/LoginModal";
 import SignUpModal from "../../auth/SignupModal";
 import { buildPath } from "../../utils/globalfunctions";
+import { onAuthStateChanged, type User } from "firebase/auth";
+import { auth } from "../../config/firebase";
 
 export default function Header() {
   const theme = useTheme();
@@ -53,12 +56,12 @@ export default function Header() {
   const desktopMenuRef = useRef<HTMLUListElement>(null);
 
   const location = useLocation();
-const [selectedPath, setSelectedPath] = useState<string>("");
+  const [selectedPath, setSelectedPath] = useState<string>("");
+  const [user, setUser] = useState<User | null>(null);
 
-// Update the useEffect to track path changes
-useEffect(() => {
-  setSelectedPath(location.pathname);
-}, [location]);
+  useEffect(() => {
+    setSelectedPath(location.pathname);
+  }, [location]);
 
   const closeAllDropdowns = useCallback(() => setActiveDropdown(null), []);
   const toggleDrawer = useCallback(() => setMobileOpen((prev) => !prev), []);
@@ -183,9 +186,15 @@ useEffect(() => {
     [theme.palette.primary.main],
   );
 
-  const handleOpenAuth = useCallback(() => {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
 
-    console.log("click...")
+    return () => unsubscribe();
+  }, []);
+
+  const handleOpenAuth = useCallback(() => {
     openModal(
       <LoginModal
         onSignUpClick={() => {
@@ -313,6 +322,36 @@ useEffect(() => {
                   <IconButton onClick={toggleTheme}>
                     {isLight ? <Nightlight /> : <LightMode />}
                   </IconButton>
+
+                  {user ? (
+                    <Avatar
+                      src={user.photoURL || ""}
+                      alt={user.email || ""}
+                      sx={{ width: 36, height: 36, cursor: "pointer" }}
+                    />
+                  ) : (
+                    <Button
+                      onClick={handleOpenAuth}
+                      variant="contained"
+                      size="small"
+                      sx={{
+                        borderRadius: 2,
+                        textTransform: "none",
+                        fontWeight: 600,
+                        background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${alpha(
+                          theme.palette.primary.main,
+                          0.8,
+                        )})`,
+                        boxShadow: `0 4px 8px ${alpha(theme.palette.primary.main, 0.3)}`,
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow: `0 6px 12px ${alpha(theme.palette.primary.main, 0.4)}`,
+                        },
+                      }}
+                    >
+                      Login
+                    </Button>
+                  )}
 
                   <Button
                     onClick={handleOpenAuth}
