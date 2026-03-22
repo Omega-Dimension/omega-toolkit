@@ -14,6 +14,9 @@ import {
   alpha,
   Button,
   Avatar,
+  Menu,
+  Divider,
+  MenuItem,
 } from "@mui/material";
 import {
   Nightlight,
@@ -32,7 +35,7 @@ import LoginModal from "../../auth/LoginModal";
 import SignUpModal from "../../auth/SignupModal";
 import { buildPath } from "../../utils/globalfunctions";
 import { onAuthStateChanged, type User } from "firebase/auth";
-import { auth } from "../../config/firebase";
+import { auth, logout } from "../../config/firebase";
 
 export default function Header() {
   const theme = useTheme();
@@ -54,6 +57,9 @@ export default function Header() {
   const line3Ref = useRef<HTMLDivElement>(null);
   const menuListRef = useRef<HTMLUListElement>(null);
   const desktopMenuRef = useRef<HTMLUListElement>(null);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const isMenuOpen = Boolean(anchorEl);
 
   const location = useLocation();
   const [selectedPath, setSelectedPath] = useState<string>("");
@@ -188,11 +194,20 @@ export default function Header() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      console.log("firebase user...", firebaseUser);
       setUser(firebaseUser);
     });
 
     return () => unsubscribe();
   }, []);
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleOpenAuth = useCallback(() => {
     openModal(
@@ -324,11 +339,13 @@ export default function Header() {
                   </IconButton>
 
                   {user ? (
-                    <Avatar
-                      src={user.photoURL || ""}
-                      alt={user.email || ""}
-                      sx={{ width: 36, height: 36, cursor: "pointer" }}
-                    />
+                    <IconButton onClick={handleMenuOpen}>
+                      <Avatar
+                        src={user.photoURL || ""}
+                        alt={user.email || ""}
+                        sx={{ width: 36, height: 36, cursor: "pointer" }}
+                      />
+                    </IconButton>
                   ) : (
                     <Button
                       onClick={handleOpenAuth}
@@ -352,28 +369,6 @@ export default function Header() {
                       Login
                     </Button>
                   )}
-
-                  <Button
-                    onClick={handleOpenAuth}
-                    variant="contained"
-                    size="small"
-                    sx={{
-                      borderRadius: 2,
-                      textTransform: "none",
-                      fontWeight: 600,
-                      background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${alpha(
-                        theme.palette.primary.main,
-                        0.8,
-                      )})`,
-                      boxShadow: `0 4px 8px ${alpha(theme.palette.primary.main, 0.3)}`,
-                      "&:hover": {
-                        transform: "translateY(-2px)",
-                        boxShadow: `0 6px 12px ${alpha(theme.palette.primary.main, 0.4)}`,
-                      },
-                    }}
-                  >
-                    Login
-                  </Button>
                 </>
               )}
 
@@ -417,6 +412,38 @@ export default function Header() {
           </Box>
         </Container>
       </Box>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+        sx={{
+          borderRadius: 2,
+          minWidth: 220,
+        }}
+      >
+        <Box sx={{ px: 2, py: 1 }}>
+          <Typography fontWeight={600}>
+            {user?.displayName || "User"}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {user?.email}
+          </Typography>
+        </Box>
+
+        <Divider />
+
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+
+        <MenuItem
+          onClick={async () => {
+            await logout(); 
+            handleMenuClose();
+          }}
+        >
+          Logout
+        </MenuItem>
+      </Menu>
     </>
   );
 }
