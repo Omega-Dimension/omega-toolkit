@@ -343,7 +343,7 @@ export default function Header() {
                       <Avatar
                         src={user.photoURL || ""}
                         alt={user.email || ""}
-                        sx={{ width: 36, height: 36, cursor: "pointer" }}
+                        sx={{ width: 45, height: 45, cursor: "pointer" }}
                       />
                     </IconButton>
                   ) : (
@@ -412,33 +412,98 @@ export default function Header() {
           </Box>
         </Container>
       </Box>
-
       <Menu
         anchorEl={anchorEl}
         open={isMenuOpen}
         onClose={handleMenuClose}
-        sx={{
-          borderRadius: 2,
-          minWidth: 220,
+        slotProps={{
+          paper: {
+            elevation: 0,
+            sx: {
+              mt: 1.5,
+              minWidth: 260,
+              borderRadius: 1.5,
+              overflow: "hidden",
+
+              backdropFilter: "blur(20px)",
+              backgroundColor:
+                theme.palette.mode === "light"
+                  ? "rgba(255,255,255,0.8)"
+                  : "rgba(15,23,42,0.85)",
+
+              border: `1px solid ${theme.palette.divider}`,
+              boxShadow: theme.shadows[3],
+            },
+          },
         }}
       >
-        <Box sx={{ px: 2, py: 1 }}>
-          <Typography fontWeight={600}>
-            {user?.displayName || "User"}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {user?.email}
-          </Typography>
+        {/* Profile Header */}
+        <Box
+          sx={{
+            px: 2,
+            py: 2,
+            display: "flex",
+            alignItems: "center",
+            gap: 1.5,
+          }}
+        >
+          <Avatar
+            src={user?.photoURL || ""}
+            sx={{
+              width: 42,
+              height: 42,
+              boxShadow: theme.shadows[2],
+            }}
+          />
+
+          <Box>
+            <Typography fontWeight={600} fontSize={14}>
+              {user?.displayName || "User"}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {user?.email}
+            </Typography>
+          </Box>
         </Box>
 
         <Divider />
 
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        {/* Menu Items */}
+        <MenuItem
+          onClick={handleMenuClose}
+          sx={{
+            px: 2,
+            py: 1.2,
+            borderRadius: 2,
+            mx: 1,
+            mt: 1,
+            transition: "all 0.2s ease",
+            "&:hover": {
+              background: alpha(theme.palette.primary.main, 0.1),
+              transform: "translateX(4px)",
+            },
+          }}
+        >
+          Profile
+        </MenuItem>
 
         <MenuItem
           onClick={async () => {
-            await logout(); 
+            await logout();
             handleMenuClose();
+          }}
+          sx={{
+            px: 2,
+            py: 1.2,
+            borderRadius: 2,
+            mx: 1,
+            mb: 1,
+            color: theme.palette.error.main,
+            transition: "all 0.2s ease",
+            "&:hover": {
+              background: alpha(theme.palette.error.main, 0.1),
+              transform: "translateX(4px)",
+            },
           }}
         >
           Logout
