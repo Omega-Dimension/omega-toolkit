@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { routes, type RouteItem } from "./routes/routes";
 import { AuthProvider } from "./hooks/useAuth";
+import { ModalProvider } from "./hooks/useModal";
 
 export default function App() {
   function renderRoutes(routeList: RouteItem[]) {
@@ -19,9 +20,11 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Routes>{renderRoutes(routes)}</Routes>
-      </AuthProvider>
+      <ModalProvider>
+        <AuthProvider>
+          <Routes>{renderRoutes(routes)}</Routes>
+        </AuthProvider>
+      </ModalProvider>
     </BrowserRouter>
   );
 }

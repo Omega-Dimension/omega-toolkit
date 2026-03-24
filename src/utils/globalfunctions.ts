@@ -1,5 +1,5 @@
 function buildPath(base: string, path?: string){
-  if (!path) return "";
+  if (!path) return base;
   return `${base}/${path}`.replace(/\/\/+/g, "/");
 };
 

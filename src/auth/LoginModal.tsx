@@ -27,6 +27,8 @@ import {
   signInWithEmail,
 } from "../config/firebase";
 import type { AuthFormData } from "../types/authForm";
+import { useNavigate } from "react-router-dom";
+import { buildPath } from "../utils/globalfunctions";
 
 interface LoginModalProps {
   onSignUpClick?: () => void;
@@ -34,6 +36,7 @@ interface LoginModalProps {
 
 export default function LoginModal({ onSignUpClick }: LoginModalProps) {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { closeModal } = useModal();
   const {
     showPassword,
@@ -101,6 +104,7 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
         setSuccess(`Logged in with ${provider} successfully!`);
         setTimeout(() => {
           closeModal();
+          navigate(buildPath("/dashboard"))
         }, 1500);
       }
     } catch (err: any) {

@@ -27,6 +27,8 @@ import {
   signUpWithEmail,
 } from "../config/firebase";
 import type { SignUpFormData } from "../types/authForm";
+import { useNavigate } from "react-router-dom";
+import { buildPath } from "../utils/globalfunctions";
 
 interface SignUpModalProps {
   onLoginClick?: () => void;
@@ -51,6 +53,8 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
     password: "",
     confirmPassword: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -88,6 +92,7 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
         setSuccess("Account created successfully!");
         setTimeout(() => {
           closeModal();
+          navigate(buildPath("/dashboard"))
         }, 1500);
       }
     } catch (err: any) {
@@ -115,6 +120,7 @@ export default function SignUpModal({ onLoginClick }: SignUpModalProps) {
         setSuccess(`Account created with ${provider} successfully!`);
         setTimeout(() => {
           closeModal();
+          
         }, 1500);
       }
     } catch (err: any) {

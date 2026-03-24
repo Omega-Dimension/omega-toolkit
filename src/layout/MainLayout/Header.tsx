@@ -424,13 +424,7 @@ export default function Header() {
               minWidth: 260,
               borderRadius: 1.5,
               overflow: "hidden",
-
               backdropFilter: "blur(20px)",
-              backgroundColor:
-                theme.palette.mode === "light"
-                  ? "rgba(255,255,255,0.8)"
-                  : "rgba(15,23,42,0.85)",
-
               border: `1px solid ${theme.palette.divider}`,
               boxShadow: theme.shadows[3],
             },
