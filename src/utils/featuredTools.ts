@@ -10,7 +10,7 @@ export const getFeaturedTools = (menuItems: MenuItemProps[]): ToolsProps[] => {
   const featuredPaths = [
     "/file/json-csv",
     "/image/jpg-png", 
-    "/dev/json-formatter",
+    "/dev/json-formatter",    
     "/dev/jwt-decoder"
   ];
 
@@ -49,7 +49,6 @@ export const getFeaturedTools = (menuItems: MenuItemProps[]): ToolsProps[] => {
       "URL Tools": "Parse, encode, and decode URL components with ease.",
       "MP3 Converter": "Convert audio files to MP3 format in the browser.",
     };
-
     return descMap[label] || `${label} - A powerful browser-based tool.`;
   };
 
@@ -58,7 +57,6 @@ export const getFeaturedTools = (menuItems: MenuItemProps[]): ToolsProps[] => {
   featuredPaths.forEach(path => {
     const menuItem = findMenuItemByPath(menuItems, path);
     if (menuItem) {
-      // Find category by traversing up the tree
       const findCategory = (items: MenuItemProps[], targetLabel: string): string | undefined => {
         for (const item of items) {
           if (item.children) {
