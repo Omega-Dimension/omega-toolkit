@@ -8,7 +8,7 @@ import {
   Box,
 } from "@mui/material";
 import { ContentCopy } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 function hexToRgbValues(hex: string) {
   const clean = hex.replace("#", "");
@@ -23,21 +23,9 @@ function hexToRgbValues(hex: string) {
   };
 }
 
-function hexToRgb(hex: string) {
-  const rgb = hexToRgbValues(hex);
-  if (!rgb) return "";
-  return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-}
-
-function hexToRgba(hex: string, alpha: number) {
-  const rgb = hexToRgbValues(hex);
-  if (!rgb) return "";
-  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
-}
-
 function hexToHsl(hex: string) {
   const clean = hex.replace("#", "");
-  if (clean.length !== 6) return { h: 0, s: 0, l: 0 };
+  if (clean.length !== 6) return null;
 
   let r = parseInt(clean.substring(0, 2), 16) / 255;
   let g = parseInt(clean.substring(2, 4), 16) / 255;
@@ -45,12 +33,14 @@ function hexToHsl(hex: string) {
 
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
+
   let h = 0,
     s = 0,
     l = (max + min) / 2;
 
   if (max !== min) {
     const d = max - min;
+
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 
     switch (max) {
@@ -75,24 +65,70 @@ function hexToHsl(hex: string) {
   };
 }
 
-function hexToHsla(hex: string, alpha: number) {
-  const hsl = hexToHsl(hex);
-  if (!hsl) return "";
-  return `hsla(${hsl.h}, ${hsl.s}%, ${hsl.l}%, ${alpha})`;
+function ColorField({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange?: (val: string) => void;
+}) {
+  const handleCopy = () => {
+    if (!value) return;
+    navigator.clipboard.writeText(value);
+  };
+
+  return (
+    <Box display="flex" gap={1}>
+      <TextField
+        fullWidth
+        label={label}
+        value={value}
+        onChange={(e) => onChange?.(e.target.value)}
+        slotProps={{
+          input: {
+            readOnly: !onChange,
+          },
+        }}
+      />
+      <Tooltip title={`Copy ${label}`} placement="right">
+        <IconButton
+          onClick={handleCopy}
+          sx={{
+            width: 45,
+            height: 45,
+            padding: 2.5,
+            borderRadius: "50%",
+            transition: "all 0.2s ease",
+            "&:hover": {
+              transform: "scale(1.1)",
+            },
+          }}
+        >
+          <ContentCopy />
+        </IconButton>
+      </Tooltip>
+    </Box>
+  );
 }
 
 export default function ColorPickerPage() {
   const [color, setColor] = useState("#1976d2");
   const [opacity, setOpacity] = useState(1);
 
-  const rgb = hexToRgb(color);
-  const rgba = hexToRgba(color, opacity);
-  const hsl = hexToHsl(color);
-  const hsla = hexToHsla(color, opacity);
+  const formats = useMemo(() => {
+    const rgb = hexToRgbValues(color);
+    const hsl = hexToHsl(color);
 
-  const copy = (val: string) => {
-    navigator.clipboard.writeText(val);
-  };
+    return {
+      hex: color,
+      rgb: rgb ? `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})` : "",
+      rgba: rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})` : "",
+      hsl: hsl ? `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)` : "",
+      hsla: hsl ? `hsla(${hsl.h}, ${hsl.s}%, ${hsl.l}%, ${opacity})` : "",
+    };
+  }, [color, opacity]);
 
   return (
     <Box sx={{ py: 10 }}>
@@ -110,12 +146,9 @@ export default function ColorPickerPage() {
           }}
         >
           <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
             sx={{
               width: 250,
-              height: 250,
+              aspectRatio: "1 / 1",
               borderRadius: "50%",
               background: color,
               cursor: "pointer",
@@ -139,82 +172,24 @@ export default function ColorPickerPage() {
               onChange={(e) => setColor(e.target.value)}
               style={{
                 position: "absolute",
-                width: "100%",
-                height: "100%",
+                inset: 0,
                 opacity: 0,
                 cursor: "pointer",
-                top: 0,
-                left: 0,
-                borderRadius: "50%",
               }}
             />
           </Box>
 
           {/* Inputs */}
           <Box display="flex" flexDirection="column" gap={2}>
-            {/* HEX (editable) */}
-            <Box display="flex" gap={1}>
-              <TextField
-                fullWidth
-                label="HEX"
-                value={color}
-                onChange={(e) => setColor(e.target.value)}
-              />
-              <Tooltip title="Copy HEX">
-                <IconButton onClick={() => copy(color)}>
-                  <ContentCopy />
-                </IconButton>
-              </Tooltip>
-            </Box>
-
-            {/* RGB */}
-            <Box display="flex" gap={1}>
-              <TextField fullWidth label="RGB" value={rgb} />
-              <Tooltip title="Copy RGB">
-                <IconButton onClick={() => copy(rgb)}>
-                  <ContentCopy />
-                </IconButton>
-              </Tooltip>
-            </Box>
-
-            {/* RGBA */}
-            <Box display="flex" gap={1}>
-              <TextField fullWidth label="RGBA" value={rgba} />
-              <Tooltip title="Copy RGBA">
-                <IconButton onClick={() => copy(rgba)}>
-                  <ContentCopy />
-                </IconButton>
-              </Tooltip>
-            </Box>
-
-            {/* HSL */}
-            <Box display="flex" gap={1}>
-              <TextField
-                fullWidth
-                label="HSL"
-                value={hsl ? `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)` : ""}
-              />
-              <Tooltip title="Copy HSL">
-                <IconButton
-                  onClick={() => copy(`hsl(${hsl?.h}, ${hsl?.s}%, ${hsl?.l}%)`)}
-                >
-                  <ContentCopy />
-                </IconButton>
-              </Tooltip>
-            </Box>
-
-            {/* HSLA */}
-            <Box display="flex" gap={1}>
-              <TextField fullWidth label="HSLA" value={hsla} />
-              <Tooltip title="Copy HSLA">
-                <IconButton onClick={() => copy(hsla)}>
-                  <ContentCopy />
-                </IconButton>
-              </Tooltip>
-            </Box>
+            <ColorField label="HEX" value={formats.hex} onChange={setColor} />
+            <ColorField label="RGB" value={formats.rgb} />
+            <ColorField label="RGBA" value={formats.rgba} />
+            <ColorField label="HSL" value={formats.hsl} />
+            <ColorField label="HSLA" value={formats.hsla} />
           </Box>
         </Box>
 
+        {/* Opacity */}
         <Box mt={4}>
           <Typography gutterBottom>Opacity ({opacity})</Typography>
           <Slider
@@ -226,6 +201,7 @@ export default function ColorPickerPage() {
           />
         </Box>
 
+        {/* Preview */}
         <Box
           mt={4}
           sx={{
@@ -243,7 +219,7 @@ export default function ColorPickerPage() {
             sx={{
               position: "absolute",
               inset: 0,
-              background: rgba,
+              background: formats.rgba,
               transition: "all 0.3s ease",
             }}
           />
