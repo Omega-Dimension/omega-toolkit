@@ -1,11 +1,10 @@
-// utils/featuredTools.ts
 import type { MenuItemProps } from "../data/menuItems";
 
 export interface ToolsProps {
   title: string;
   desc: string;
   tech: string[];
-  path?: string; // Add path to ToolsProps
+  path?: string;
 }
 export const getFeaturedTools = (menuItems: MenuItemProps[]): ToolsProps[] => {
   const featuredPaths = [

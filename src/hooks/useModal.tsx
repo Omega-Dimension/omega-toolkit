@@ -8,7 +8,6 @@ import {
   useState,
   forwardRef,
   type ReactNode,
-  useEffect,
   type MouseEvent,
 } from "react";
 import { useGSAP } from "@gsap/react";
@@ -34,7 +33,6 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 
   const isOpen = Boolean(content);
 
-  // Animate modal open
   useGSAP(() => {
     if (isOpen && modalBoxRef.current) {
       gsap.fromTo(
@@ -74,7 +72,6 @@ export function ModalProvider({ children }: { children: ReactNode }) {
       onComplete: () => setContent(null),
     });
 
-    // modal fade out
     tl.to(modalBoxRef.current, {
       opacity: 0,
       scale: 0.97,
@@ -82,7 +79,6 @@ export function ModalProvider({ children }: { children: ReactNode }) {
       ease: "power2.in",
     });
 
-    // keep your button animation
     if (closeBtnRef.current) {
       tl.to(
         closeBtnRef.current,
@@ -90,7 +86,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
           y: -20,
           rotate: 180,
           opacity: 0,
-          duration: 0.25,
+          duration: 0.2,
           ease: "power2.in",
         },
         0,
@@ -113,6 +109,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
           open={isOpen}
           onClose={closeModal}
           onClick={handleBackdropClick}
+          keepMounted
           sx={{ zIndex: 2000 }}
         >
           <Box
@@ -176,8 +173,6 @@ const CloseButton = forwardRef<HTMLButtonElement, { onClose: () => void }>(
           boxShadow: 2,
           "&:hover": {
             bgcolor: "background.paper",
-            transform: "rotate(90deg)",
-            transition: "transform 0.3s ease",
           },
         }}
       >
