@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   List,
@@ -24,10 +24,16 @@ import {
   ExpandLess,
   ExpandMore,
   ChevronRight,
+  Star,
+  StarBorder,
 } from "@mui/icons-material";
 import { buildPath } from "../../utils/globalfunctions";
+import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { toggleFavorite } from "../../store/favoriteSlice";
 
 interface MenuItemProps {
+  id?: string;
   label: string;
   path?: string;
   icon?: React.ReactNode;
@@ -51,11 +57,28 @@ export const menuItems: MenuItemProps[] = [
         icon: <FileIcon />,
         category: "file",
         children: [
-          { label: "JSON to CSV Files", path: "/file/json-csv" },
-          { label: "CSV to JSON Files", path: "/file/csv-json" },
-          { label: "Excel to CSV Files", path: "/file/excel-csv" },
-          { label: "CSV to Excel Files", path: "/file/csv-excel" },
           {
+            id: "d7e8d6d7-b1ec-421f-8caa-197c5ce9741c",
+            label: "JSON to CSV Files",
+            path: "/file/json-csv",
+          },
+          {
+            id: "bdbf3554-2224-4f86-8d01-d47ab4b2a5e2",
+            label: "CSV to JSON Files",
+            path: "/file/csv-json",
+          },
+          {
+            id: "eb29478c-9aaf-4872-b779-b6d5d59aa3fb",
+            label: "Excel to CSV Files",
+            path: "/file/excel-csv",
+          },
+          {
+            id: "25155e76-8827-4add-939d-62e9ca79d577",
+            label: "CSV to Excel Files",
+            path: "/file/csv-excel",
+          },
+          {
+            id: "4a9dfb56-66f1-4bd6-b636-58347ada243e",
             label: "Zawgyi ⇄ Unicode Converter",
             path: "/file/myanmar-font-converter",
           },
@@ -66,33 +89,95 @@ export const menuItems: MenuItemProps[] = [
         icon: <ImageIcon />,
         category: "image",
         children: [
-          { label: "JPG to PNG Image", path: "/image/jpg-png" },
-          { label: "Resize Image", path: "/image/resize-image" },
-          { label: "Favicon Generator", path: "/image/favicon-generator" },
-          { label: "Image Crop", path: "/image/image-crop" },
-          { label: "Image to Base64", path: "/image/image-base64" },
-          { label: "Base64 to Image", path: "/image/base64-image" },
-          { label: "QR Scanner", path: "/image/qr-scanner" },
+          {
+            id: "476c7f41-be1c-4a5f-be82-6787da81b235",
+            label: "JPG to PNG Image",
+            path: "/image/jpg-png",
+          },
+          {
+            id: "a58ab084-5189-44ea-a604-cc488fcb8e9f",
+            label: "Resize Image",
+            path: "/image/resize-image",
+          },
+          {
+            id: "f84a076e-d04f-484d-a367-a247b32317ac",
+            label: "Favicon Generator",
+            path: "/image/favicon-generator",
+          },
+          {
+            id: "036771e4-ca5a-4d41-98cb-207198d34bca",
+            label: "Image Crop",
+            path: "/image/image-crop",
+          },
+          {
+            id: "480e6c2a-4e65-45e9-aad9-c6a50a110416",
+            label: "Image to Base64",
+            path: "/image/image-base64",
+          },
+          {
+            id: "a0c36a9d-9007-40c3-a0e5-03a803b7e508",
+            label: "Base64 to Image",
+            path: "/image/base64-image",
+          },
+          {
+            id: "e903cd73-d92d-4e7e-a4ca-ffeecb213f6e",
+            label: "QR Scanner",
+            path: "/image/qr-scanner",
+          },
         ],
       },
       {
         label: "Media Tools",
         icon: <MediaIcon />,
         category: "media",
-        children: [{ label: "MP3 Converter", path: "/media/mp3-converter" }],
+        children: [
+          {
+            id: "ccdc1965-3868-4f6c-807c-0d715d21fd54",
+            label: "MP3 Converter",
+            path: "/media/mp3-converter",
+          },
+        ],
       },
       {
         label: "Dev Tools",
         icon: <CodeIcon />,
         category: "dev",
         children: [
-          { label: "JSON Formatter", path: "/dev/json-formatter" },
-          { label: "Hash Generator", path: "/dev/hash-generator" },
-          { label: "Base64 Tool", path: "/dev/base64-tool" },
-          { label: "UUID Generator", path: "/dev/uuid-generator" },
-          { label: "JWT Decoder", path: "/dev/jwt-decoder" },
-          { label: "Regex Tester", path: "/dev/regex-tester" },
-          { label: "URL Tools", path: "/dev/url-tool" },
+          {
+            id: "d90f2cf4-96f9-41b9-939d-102ecf38b37c",
+            label: "JSON Formatter",
+            path: "/dev/json-formatter",
+          },
+          {
+            id: "926b3be2-4791-4e63-b166-f78c89d274b7",
+            label: "Hash Generator",
+            path: "/dev/hash-generator",
+          },
+          {
+            id: "df18ec53-fe8a-4efe-9408-94733cd7a6ae",
+            label: "Base64 Tool",
+            path: "/dev/base64-tool",
+          },
+          {
+            id: "e4a980b4-8894-4b6d-aab6-ce6fa4a2a1c5",
+            label: "UUID Generator",
+            path: "/dev/uuid-generator",
+          },
+          {
+            id: "72f63a00-9249-4634-a7e8-0df8766f77ab",
+            label: "JWT Decoder",
+            path: "/dev/jwt-decoder",
+          },
+          {
+            id: "9abacd67-92fc-4c10-acc0-f40f695bd9e0",
+            label: "Regex Tester",
+            path: "/dev/regex-tester",
+          },
+          {
+            id: "d9b137e2-4780-44d8-9fdc-ce55d46c45b9",
+            label: "URL Tools",
+            path: "/dev/url-tool",
+          },
         ],
       },
     ],
@@ -109,6 +194,7 @@ interface MenuItemComponentProps {
   depth?: number;
   onNavigate: (path: string) => void;
   currentPath: string;
+  favorites: string[];
 }
 
 const MenuItemComponent = ({
@@ -116,11 +202,25 @@ const MenuItemComponent = ({
   depth = 0,
   onNavigate,
   currentPath,
+  favorites,
 }: MenuItemComponentProps) => {
   const [open, setOpen] = useState(false);
   const hasChildren = item.children && item.children.length > 0;
   const isSelected = item.path === currentPath;
   const theme = useTheme();
+
+  const dispatch = useAppDispatch();
+  const isFavorite = item.id && favorites.includes(item.id);
+
+  const isChildActive = item.children?.some(
+  (child) => child.path === currentPath
+);
+
+useEffect(() => {
+  if (isChildActive) {
+    setOpen(true);
+  }
+}, [currentPath]);
 
   const handleClick = () => {
     if (hasChildren) {
@@ -161,6 +261,24 @@ const MenuItemComponent = ({
           },
         }}
       >
+        {item.id && (
+          <Box
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(toggleFavorite(item.id!));
+            }}
+            sx={{
+              ml: "auto",
+              display: "flex",
+              alignItems: "center",
+              color: isFavorite
+                ? theme.palette.warning.main
+                : theme.palette.action.disabled,
+            }}
+          >
+            {item.id && (isFavorite ? <Star /> : <StarBorder />)}
+          </Box>
+        )}
         {item.icon && (
           <ListItemIcon
             sx={{
@@ -199,6 +317,7 @@ const MenuItemComponent = ({
                 depth={depth + 1}
                 onNavigate={onNavigate}
                 currentPath={currentPath}
+                favorites={favorites}
               />
             ))}
           </List>
@@ -208,10 +327,32 @@ const MenuItemComponent = ({
   );
 };
 
+function getAllTools(items: MenuItemProps[]): MenuItemProps[] {
+  let result: MenuItemProps[] = [];
+
+  for (const item of items) {
+    if (item.children) {
+      result = result.concat(getAllTools(item.children));
+    } else if (item.id) {
+      result.push(item);
+    }
+  }
+
+  return result;
+}
+
 export default function DashboardSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
+
+  const favorites = useAppSelector((state) => state.favorite.items);
+
+  const allTools = getAllTools(menuItems);
+
+  const favoriteItems = allTools.filter((tool) => favorites.includes(tool.id!));
+
+  
 
   const handleNavigate = (path: string) => {
     navigate(buildPath("/dashboard", path));
@@ -273,6 +414,30 @@ export default function DashboardSidebar() {
           },
         }}
       >
+        {favoriteItems.length > 0 && (
+          <Box sx={{ px: 2, pt: 2 }}>
+            <Typography
+              variant="caption"
+              sx={{ color: theme.palette.text.secondary, px: 1 }}
+            >
+              Favorites
+            </Typography>
+
+            <List disablePadding>
+              {favoriteItems.map((item) => (
+                <MenuItemComponent
+                  key={item.id}
+                  item={item}
+                  onNavigate={handleNavigate}
+                  currentPath={location.pathname}
+                  favorites={favorites}
+                />
+              ))}
+            </List>
+
+            <Divider sx={{ my: 2 }} />
+          </Box>
+        )}
         <List component="nav" disablePadding>
           {menuItems.map((item, index) => (
             <Box key={index}>
@@ -283,6 +448,7 @@ export default function DashboardSidebar() {
                 item={item}
                 onNavigate={handleNavigate}
                 currentPath={location.pathname}
+                favorites={favorites}
               />
             </Box>
           ))}
