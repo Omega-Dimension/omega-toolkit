@@ -23,12 +23,10 @@ import {
   Info as InfoIcon,
   ExpandLess,
   ExpandMore,
-  ChevronRight,
   Star,
   StarBorder,
 } from "@mui/icons-material";
 import { buildPath } from "../../utils/globalfunctions";
-import { useDispatch } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { toggleFavorite } from "../../store/favoriteSlice";
 
@@ -213,14 +211,14 @@ const MenuItemComponent = ({
   const isFavorite = item.id && favorites.includes(item.id);
 
   const isChildActive = item.children?.some(
-  (child) => child.path === currentPath
-);
+    (child) => child.path === currentPath,
+  );
 
-useEffect(() => {
-  if (isChildActive) {
-    setOpen(true);
-  }
-}, [currentPath]);
+  useEffect(() => {
+    if (isChildActive) {
+      setOpen(true);
+    }
+  }, [currentPath]);
 
   const handleClick = () => {
     if (hasChildren) {
@@ -351,8 +349,6 @@ export default function DashboardSidebar() {
   const allTools = getAllTools(menuItems);
 
   const favoriteItems = allTools.filter((tool) => favorites.includes(tool.id!));
-
-  
 
   const handleNavigate = (path: string) => {
     navigate(buildPath("/dashboard", path));

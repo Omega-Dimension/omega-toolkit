@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { 
-  getAuth, 
-  GoogleAuthProvider, 
+import {
+  getAuth,
+  GoogleAuthProvider,
   GithubAuthProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
@@ -15,7 +15,7 @@ const firebaseConfig = {
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 //! Initialize Firebase
@@ -27,14 +27,27 @@ export const googleProvider = new GoogleAuthProvider();
 export const githubProvider = new GithubAuthProvider();
 
 //! Add scopes if needed
-googleProvider.addScope('profile');
-googleProvider.addScope('email');
-githubProvider.addScope('user:email');
+googleProvider.addScope("profile");
+googleProvider.addScope("email");
+githubProvider.addScope("user:email");
+googleProvider.addScope("https://www.googleapis.com/auth/calendar");
+googleProvider.setCustomParameters({
+  prompt: "consent",
+});
 
 //! Auth functions
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
+
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+
+    const token = credential?.accessToken;
+
+    if(token) {
+      localStorage.setItem("google_access_token", token);
+    }
+
     return { user: result.user, error: null };
   } catch (error: any) {
     return { user: null, error: error.message };
