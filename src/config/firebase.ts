@@ -8,6 +8,11 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import { useAppDispatch } from "../store/hooks";
+import { setToken } from "../store/googleAuthSlice";
+
+//! state management
+const dispatch = useAppDispatch();
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -44,8 +49,10 @@ export const signInWithGoogle = async () => {
 
     const token = credential?.accessToken;
 
+
+
     if(token) {
-      localStorage.setItem("google_access_token", token);
+      dispatch(setToken(token));
     }
 
     return { user: result.user, error: null };

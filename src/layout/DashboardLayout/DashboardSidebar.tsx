@@ -25,6 +25,7 @@ import {
   ExpandMore,
   Star,
   StarBorder,
+  CalendarMonth,
 } from "@mui/icons-material";
 import { buildPath } from "../../utils/globalfunctions";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -178,6 +179,12 @@ export const menuItems: MenuItemProps[] = [
           },
         ],
       },
+      {
+        label : "Calendar Tools",
+        icon: <CalendarMonth />,
+        category: "calendar",
+        path: "/google-calendar",
+      }
     ],
   },
   {

@@ -12,6 +12,7 @@ import ExcelToCsv from "../pages/files/ExcelToCsvPage";
 import JsonFormatter from "../pages/files/JsonFormatterPage";
 import JsonToCsvPage from "../pages/files/JsonToCsvPage";
 import MyanmarFontConverter from "../pages/files/MyanmarFontConverterPage";
+import CalendarPage from "../pages/google-calendar/CalendarPage";
 
 import Base64ToImagePage from "../pages/images/Base64ToImagePage";
 import FaviconGeneratorPage from "../pages/images/FaviconGeneratorPage";
@@ -56,5 +57,8 @@ export const toolRoutes = [
   { path: "media/mp3-converter", element: <Mp3ConverterPage /> },
 
   // COLOR
-  {path : "colors/picker", element : <ColorPickerPage />}
+  {path : "colors/picker", element : <ColorPickerPage />},
+
+  //CALENDAR
+  {path : "google-calendar", element : <CalendarPage />,}
 ];
