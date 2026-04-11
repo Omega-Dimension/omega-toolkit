@@ -12,7 +12,6 @@ import { useAppDispatch } from "../store/hooks";
 import { setToken } from "../store/googleAuthSlice";
 
 //! state management
-const dispatch = useAppDispatch();
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -42,16 +41,15 @@ googleProvider.setCustomParameters({
 
 //! Auth functions
 export const signInWithGoogle = async () => {
+  const dispatch = useAppDispatch();
+
   try {
     const result = await signInWithPopup(auth, googleProvider);
 
     const credential = GoogleAuthProvider.credentialFromResult(result);
 
     const token = credential?.accessToken;
-
-
-
-    if(token) {
+    if (token) {
       dispatch(setToken(token));
     }
 
