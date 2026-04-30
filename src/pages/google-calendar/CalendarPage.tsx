@@ -1,32 +1,43 @@
-import { useEffect } from "react";
-import { useAppSelector } from "../../store/hooks";
+// import FullCalendar from "@fullcalendar/react";
+// import dayGridPlugin from "@fullcalendar/daygrid";
+// import timeGridPlugin from "@fullcalendar/timegrid";
+// import interactionPlugin from "@fullcalendar/interaction";
+// import { useEffect, useState } from "react";
+// import { fetchCalendarEvents } from "../../services/googleCalendarService";
+// import { useAppSelector } from "../../store/hooks";
 
-export default function CalendarPage() {
-  const accessToken = useAppSelector((state) => state.googleAuth.accessToken);
+// const CalendarPage = () => {
+//   const token = useAppSelector((state) => state.googleAuth.accessToken);
+//   const [events, setEvents] = useState([]);
 
-  async function getCalendarEvents() {
-    const token = accessToken;
+//   useEffect(() => {
+//     if (!token) return;
+//     fetchCalendarEvents(token).then((data) => {
+//       const formatted = data.items.map((event: any) => ({
+//         id: event.id,
+//         title: event.summary,
+//         start: event.start.dateTime ?? event.start.date,
+//         end: event.end?.dateTime ?? event.end?.date,
+//       }));
+//       setEvents(formatted);
+//     });
+//   }, [token]);
 
-    if (!token) return { error: "No access token found" };
+//   if (!token) return <p>Please sign in with Google to view your calendar.</p>;
 
-    try {
-      const response = await fetch(
-        "https://www.googleapis.com/calendar/v3/calendars/primary/events",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const data = await response.json();
-      return data.items; // This returns the array of events
-    } catch (error) {
-      console.error("Error fetching calendar:", error);
-    }
-  }
+//   return (
+//     <FullCalendar
+//       plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+//       initialView="dayGridMonth"
+//       headerToolbar={{
+//         left: "prev,next today",
+//         center: "title",
+//         right: "dayGridMonth,timeGridWeek,timeGridDay",
+//       }}
+//       events={events}
+//       height="700px"
+//     />
+//   );
+// };
 
-  useEffect(() => {
-    getCalendarEvents();
-  }, []);
-  return <div>fwefwefwe</div>;
-}
+// export default CalendarPage;

@@ -1,50 +1,54 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 /* ---------------- Types ---------------- */
+interface UserInfo {
+  email: string | null;
+}
 
 interface GoogleAuthState {
   accessToken: string | null;
+  user: UserInfo | null; // Added user object
 }
 
-const GOOGLE_KEY = "google-auth";
+const TOKEN_KEY = "google-access-token";
+const USER_KEY = "google-user-info";
 
 /* ---------------- Storage Helpers ---------------- */
 
-function saveToken(token: string | null) {
-  if (token) {
-    localStorage.setItem(GOOGLE_KEY, token);
-  } else {
-    localStorage.removeItem(GOOGLE_KEY);
-  }
+function loadInitialState(): GoogleAuthState {
+  const token = localStorage.getItem(TOKEN_KEY);
+  const userJson = localStorage.getItem(USER_KEY);
+  return {
+    accessToken: token,
+    user: userJson ? JSON.parse(userJson) : null,
+  };
 }
-
-function loadToken(): GoogleAuthState {
-  const token = localStorage.getItem(GOOGLE_KEY);
-  return { accessToken: token };
-}
-
-/* ---------------- Initial State ---------------- */
-
-const initialState: GoogleAuthState = loadToken();
 
 /* ---------------- Slice ---------------- */
 
 const googleAuthSlice = createSlice({
-  name: GOOGLE_KEY,
-  initialState,
+  name: "googleAuth",
+  initialState: loadInitialState(),
   reducers: {
-    setToken: (state, action: PayloadAction<string>) => {
-      state.accessToken = action.payload;
-      saveToken(action.payload);
+    // Modified to accept both token and user info
+    setAuthData: (
+      state,
+      action: PayloadAction<{ token: string; email: string | null }>,
+    ) => {
+      state.accessToken = action.payload.token;
+      state.user = { email: action.payload.email };
+
+      localStorage.setItem(TOKEN_KEY, action.payload.token);
+      localStorage.setItem(USER_KEY, JSON.stringify(state.user));
     },
-    clearToken: (state) => {
+    clearAuth: (state) => {
       state.accessToken = null;
-      saveToken(null);
+      state.user = null;
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
     },
   },
 });
 
-/* ---------------- Exports ---------------- */
-
-export const { setToken, clearToken } = googleAuthSlice.actions;
+export const { setAuthData, clearAuth } = googleAuthSlice.actions;
 export default googleAuthSlice.reducer;

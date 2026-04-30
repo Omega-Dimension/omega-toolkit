@@ -29,6 +29,7 @@ import {
 import type { AuthFormData } from "../types/authForm";
 import { useNavigate } from "react-router-dom";
 import { buildPath } from "../utils/globalfunctions";
+import { useAppDispatch } from "../store/hooks";
 
 interface LoginModalProps {
   onSignUpClick?: () => void;
@@ -48,6 +49,8 @@ export default function LoginModal({ onSignUpClick }: LoginModalProps) {
     success,
     setSuccess,
   } = useAuthForm();
+
+  const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState<AuthFormData>({
     email: "",

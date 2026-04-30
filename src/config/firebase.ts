@@ -8,8 +8,8 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { useAppDispatch } from "../store/hooks";
-import { setToken } from "../store/googleAuthSlice";
+import { setAuthData } from "../store/googleAuthSlice";
+import type { AppDispatch } from "../store/store";
 
 //! state management
 
@@ -34,24 +34,25 @@ export const githubProvider = new GithubAuthProvider();
 googleProvider.addScope("profile");
 googleProvider.addScope("email");
 githubProvider.addScope("user:email");
-googleProvider.addScope("https://www.googleapis.com/auth/calendar");
+// googleProvider.addScope("https://www.googleapis.com/auth/calendar");
 googleProvider.setCustomParameters({
   prompt: "consent",
 });
 
 //! Auth functions
 export const signInWithGoogle = async () => {
-  const dispatch = useAppDispatch();
-
   try {
     const result = await signInWithPopup(auth, googleProvider);
 
     const credential = GoogleAuthProvider.credentialFromResult(result);
 
-    const token = credential?.accessToken;
-    if (token) {
-      dispatch(setToken(token));
-    }
+    const accessToken = credential?.accessToken;
+    // if (accessToken) {
+    //   dispatch(setAuthData({
+    //     token : accessToken,
+    //     email : result.user.email
+    //   }));
+    // }
 
     return { user: result.user, error: null };
   } catch (error: any) {
