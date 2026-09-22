@@ -12,17 +12,13 @@ import {
   Collapse,
   useMediaQuery,
   alpha,
-  Button,
-  Avatar,
-  Menu,
-  Divider,
-  MenuItem,
 } from "@mui/material";
 import {
   Nightlight,
   LightMode,
   ExpandLess,
   ExpandMore,
+  GitHub,
 } from "@mui/icons-material";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -30,16 +26,17 @@ import gsap from "gsap";
 import { menuItems } from "../../data/menuItems";
 import { NavItem } from "../../components/NavItem";
 import { useThemeMode } from "../../hooks/useThemeMode";
-import { useModal } from "../../hooks/useModal";
-import LoginModal from "../../auth/LoginModal";
-import SignUpModal from "../../auth/SignupModal";
 import { buildPath } from "../../utils/globalfunctions";
-import { onAuthStateChanged, type User } from "firebase/auth";
-import { auth, logout } from "../../config/firebase";
+
+// TODO: replace with your actual repository URL
+const GITHUB_REPO_URL = "https://github.com/Omega-Dimension/omega-toolkit";
+
+// Fired from anywhere (e.g. Hero "Explore Tools" button) to open the
+// tools dropdown / mobile drawer from the Header itself.
+export const OPEN_TOOLS_MENU_EVENT = "toolbox:open-tools-menu";
 
 export default function Header() {
   const theme = useTheme();
-  const { openModal, closeModal } = useModal();
 
   const { mode, toggleTheme } = useThemeMode();
   const navigate = useNavigate();
@@ -58,12 +55,8 @@ export default function Header() {
   const menuListRef = useRef<HTMLUListElement>(null);
   const desktopMenuRef = useRef<HTMLUListElement>(null);
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const isMenuOpen = Boolean(anchorEl);
-
   const location = useLocation();
   const [selectedPath, setSelectedPath] = useState<string>("");
-  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     setSelectedPath(location.pathname);
@@ -86,6 +79,22 @@ export default function Header() {
       prev.includes(key) ? prev.filter((item) => item !== key) : [...prev, key],
     );
   }, []);
+
+  // Let other parts of the app (e.g. Hero's "Explore Tools" button)
+  // open the first tools dropdown / mobile drawer without any prop drilling.
+  useEffect(() => {
+    const openToolsMenu = () => {
+      if (isMobile) {
+        setMobileOpen(true);
+        return;
+      }
+      const firstWithChildren = menuItems.find((item) => item.children?.length);
+      if (firstWithChildren) setActiveDropdown(firstWithChildren.label);
+    };
+
+    window.addEventListener(OPEN_TOOLS_MENU_EVENT, openToolsMenu);
+    return () => window.removeEventListener(OPEN_TOOLS_MENU_EVENT, openToolsMenu);
+  }, [isMobile]);
 
   useEffect(() => {
     if (isMobile) return;
@@ -112,6 +121,7 @@ export default function Header() {
 
     return () => ctx.revert();
   }, [isMobile]);
+
   useEffect(() => {
     if (!line1Ref.current || !line2Ref.current || !line3Ref.current) return;
 
@@ -191,47 +201,6 @@ export default function Header() {
     }),
     [theme.palette.primary.main],
   );
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      console.log("firebase user...", firebaseUser);
-      setUser(firebaseUser);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleOpenAuth = useCallback(() => {
-    openModal(
-      <LoginModal
-        onSignUpClick={() => {
-          closeModal();
-
-          setTimeout(() => {
-            openModal(
-              <SignUpModal
-                onLoginClick={() => {
-                  closeModal();
-
-                  setTimeout(() => {
-                    handleOpenAuth();
-                  }, 250);
-                }}
-              />,
-            );
-          }, 250); // match GSAP duration
-        }}
-      />,
-    );
-  }, [openModal, closeModal]);
 
   const renderMobileItem = (
     item: (typeof menuItems)[number],
@@ -331,49 +300,29 @@ export default function Header() {
             )}
 
             {/* Right Section */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <IconButton
+                component="a"
+                href={GITHUB_REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View source on GitHub"
+              >
+                <GitHub />
+              </IconButton>
+
               {!isMobile && (
+                <IconButton onClick={toggleTheme}>
+                  {isLight ? <Nightlight /> : <LightMode />}
+                </IconButton>
+              )}
+
+              {isMobile && (
                 <>
                   <IconButton onClick={toggleTheme}>
                     {isLight ? <Nightlight /> : <LightMode />}
                   </IconButton>
 
-                  {user ? (
-                    <IconButton onClick={handleMenuOpen}>
-                      <Avatar
-                        src={user.photoURL || ""}
-                        alt={user.email || ""}
-                        sx={{ width: 45, height: 45, cursor: "pointer" }}
-                      />
-                    </IconButton>
-                  ) : (
-                    <Button
-                      onClick={handleOpenAuth}
-                      variant="contained"
-                      size="small"
-                      sx={{
-                        borderRadius: 2,
-                        textTransform: "none",
-                        fontWeight: 600,
-                        background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${alpha(
-                          theme.palette.primary.main,
-                          0.8,
-                        )})`,
-                        boxShadow: `0 4px 8px ${alpha(theme.palette.primary.main, 0.3)}`,
-                        "&:hover": {
-                          transform: "translateY(-2px)",
-                          boxShadow: `0 6px 12px ${alpha(theme.palette.primary.main, 0.4)}`,
-                        },
-                      }}
-                    >
-                      Login
-                    </Button>
-                  )}
-                </>
-              )}
-
-              {isMobile && (
-                <>
                   <IconButton onClick={toggleDrawer}>
                     <Box sx={{ width: 24, height: 18, position: "relative" }}>
                       {[line1Ref, line2Ref, line3Ref].map((ref, i) => (
@@ -400,9 +349,9 @@ export default function Header() {
                   >
                     <Box sx={{ p: 2, mt: 5, width: 280 }}>
                       <List ref={menuListRef}>
-                        {/* {menuItems.map((item) =>
+                        {menuItems.map((item) =>
                           renderMobileItem(item, item.label, 0),
-                        )} */}
+                        )}
                       </List>
                     </Box>
                   </Drawer>
@@ -412,97 +361,6 @@ export default function Header() {
           </Box>
         </Container>
       </Box>
-      <Menu
-        anchorEl={anchorEl}
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-        slotProps={{
-          paper: {
-            elevation: 0,
-            sx: {
-              mt: 1.5,
-              minWidth: 260,
-              borderRadius: 1.5,
-              overflow: "hidden",
-              backdropFilter: "blur(20px)",
-              border: `1px solid ${theme.palette.divider}`,
-              boxShadow: theme.shadows[3],
-            },
-          },
-        }}
-      >
-        {/* Profile Header */}
-        <Box
-          sx={{
-            px: 2,
-            py: 2,
-            display: "flex",
-            alignItems: "center",
-            gap: 1.5,
-          }}
-        >
-          <Avatar
-            src={user?.photoURL || ""}
-            sx={{
-              width: 42,
-              height: 42,
-              boxShadow: theme.shadows[2],
-            }}
-          />
-
-          <Box>
-            <Typography fontWeight={600} fontSize={14}>
-              {user?.displayName || "User"}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {user?.email}
-            </Typography>
-          </Box>
-        </Box>
-
-        <Divider />
-
-        {/* Menu Items */}
-        <MenuItem
-          onClick={handleMenuClose}
-          sx={{
-            px: 2,
-            py: 1.2,
-            borderRadius: 2,
-            mx: 1,
-            mt: 1,
-            transition: "all 0.2s ease",
-            "&:hover": {
-              background: alpha(theme.palette.primary.main, 0.1),
-              transform: "translateX(4px)",
-            },
-          }}
-        >
-          Profile
-        </MenuItem>
-
-        <MenuItem
-          onClick={async () => {
-            await logout();
-            handleMenuClose();
-          }}
-          sx={{
-            px: 2,
-            py: 1.2,
-            borderRadius: 2,
-            mx: 1,
-            mb: 1,
-            color: theme.palette.error.main,
-            transition: "all 0.2s ease",
-            "&:hover": {
-              background: alpha(theme.palette.error.main, 0.1),
-              transform: "translateX(4px)",
-            },
-          }}
-        >
-          Logout
-        </MenuItem>
-      </Menu>
     </>
   );
 }

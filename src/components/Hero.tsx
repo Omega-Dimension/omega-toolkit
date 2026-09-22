@@ -1,7 +1,10 @@
 import { Box, Button, Typography, Container } from "@mui/material";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { useNavigate } from "react-router-dom";
+import { GitHub } from "@mui/icons-material";
+import { OPEN_TOOLS_MENU_EVENT } from "../layout/MainLayout/Header";
+
+const GITHUB_REPO_URL = "https://github.com/Omega-Dimension/omega-toolkit";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
@@ -9,11 +12,10 @@ export default function Hero() {
   const subtitleRef = useRef<HTMLParagraphElement | null>(null);
   const buttonsRef = useRef<HTMLDivElement | null>(null);
 
-  const navigate = useNavigate();
   function handleExploreClick() {
-    navigate("/dashboard");
+    window.dispatchEvent(new Event(OPEN_TOOLS_MENU_EVENT));
   }
-  
+
   useEffect(() => {
     if (!sectionRef.current) return;
 
@@ -86,13 +88,14 @@ export default function Hero() {
             color="text.secondary"
             sx={{ mb: 4 }}
           >
-            Tools & Features That Actually Help People — convert files, work
-            with images, and use developer utilities directly in your browser.
+            A free, open-source collection of browser tools — convert files,
+            work with images, and use developer utilities. No sign-up, no
+            server upload, everything runs locally in your browser.
           </Typography>
 
           <Box
             ref={buttonsRef}
-            sx={{ display: "flex", gap: 2, justifyContent: "center" }}
+            sx={{ display: "flex", gap: 2, justifyContent: "center", flexWrap: "wrap" }}
           >
             <Button
               variant="contained"
@@ -101,8 +104,16 @@ export default function Hero() {
             >
               Explore Tools
             </Button>
-            <Button variant="outlined" size="large">
-              Learn More
+            <Button
+              variant="outlined"
+              size="large"
+              startIcon={<GitHub />}
+              component="a"
+              href={GITHUB_REPO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on GitHub
             </Button>
           </Box>
         </Box>
