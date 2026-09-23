@@ -298,7 +298,7 @@ export default function Header() {
                   flexShrink: 0,
                   background:
                     "linear-gradient(135deg, #1cd4fe 0%, #0d92ff 100%)",
-                  boxShadow: (theme) => `0 6px 16px ${alpha("#0d92ff", 0.35)}`,
+                  boxShadow: () => `0 6px 16px ${alpha("#0d92ff", 0.35)}`,
                   transition: "transform 0.3s ease",
                   "&:hover": { transform: "rotate(-6deg) scale(1.05)" },
                 }}

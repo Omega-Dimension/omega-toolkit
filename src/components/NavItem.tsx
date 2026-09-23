@@ -366,9 +366,9 @@ export function NavItem({
             <Paper
               ref={dropdownRef}
               elevation={0}
-              sx={dropdownPaperStyles(theme, isLight)}
+              sx={dropdownPaperStyles(isLight)}
             >
-              <Box sx={categoryColumnStyles(theme, isLight)}>
+              <Box sx={categoryColumnStyles(isLight)}>
                 <Typography
                   variant="subtitle2"
                   sx={{

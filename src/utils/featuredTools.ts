@@ -37,7 +37,7 @@ export const getFeaturedTools = (menuItems: MenuItemProps[]): ToolsProps[] => {
     return category ? techMap[category] || ["Web Tool"] : ["Web Tool"];
   };
 
-  const getDescription = (label: string, category?: string): string => {
+  const getDescription = (label: string): string => {
     const descMap: Record<string, string> = {
       "JSON to CSV Files": "Convert JSON data to CSV format instantly in your browser.",
       "CSV to JSON Files": "Transform CSV files to JSON format with full customization.",
@@ -76,7 +76,7 @@ export const getFeaturedTools = (menuItems: MenuItemProps[]): ToolsProps[] => {
       
       tools.push({
         title: menuItem.label,
-        desc: getDescription(menuItem.label, category),
+        desc: getDescription(menuItem.label),
         tech: getCategoryTech(category),
         path: menuItem.path
       });

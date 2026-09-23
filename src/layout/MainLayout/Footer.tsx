@@ -11,7 +11,6 @@ import {
 import {
   GitHub,
   LinkedIn,
-  Twitter,
   Favorite,
   BugReport,
   Forum,

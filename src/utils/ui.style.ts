@@ -37,7 +37,7 @@ export const navButtonStyles = (theme: Theme, isLight: boolean, isActive: boolea
   } : {},
 });
 
-export const dropdownPaperStyles = (theme: Theme, isLight: boolean) => ({
+export const dropdownPaperStyles = (isLight: boolean) => ({
   position: "absolute",
   top: "100%",
   left: "50%",
@@ -58,7 +58,7 @@ export const dropdownPaperStyles = (theme: Theme, isLight: boolean) => ({
   p: 0,
 });
 
-export const categoryColumnStyles = (theme: Theme, isLight: boolean) => ({
+export const categoryColumnStyles = (isLight: boolean) => ({
   p: 3,
   borderRight: "1px solid",
   borderColor: isLight

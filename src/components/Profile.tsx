@@ -1,7 +1,6 @@
 import { Box, Container, Typography, Avatar, Chip, IconButton, Button } from "@mui/material";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
 import { person1 } from "../assets";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
