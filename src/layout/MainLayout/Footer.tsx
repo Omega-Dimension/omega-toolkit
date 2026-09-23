@@ -73,9 +73,16 @@ export default function Footer() {
   ];
 
   const socialLinks: SocialLinkItem[] = [
-    { Icon: GitHub, url: "https://github.com", label: "GitHub" },
-    { Icon: Twitter, url: "https://twitter.com", label: "Twitter" },
-    { Icon: LinkedIn, url: "https://linkedin.com", label: "LinkedIn" },
+    {
+      Icon: GitHub,
+      url: "https://github.com/Omega-Dimension/omega-toolkit",
+      label: "GitHub",
+    },
+    {
+      Icon: LinkedIn,
+      url: "https://www.linkedin.com/in/pyae-sone-tun-4a42bb277/",
+      label: "LinkedIn",
+    },
   ];
 
   const linkStyles = {
