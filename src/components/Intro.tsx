@@ -11,7 +11,7 @@ export default function Intro() {
   const imageRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
+useEffect(() => {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
@@ -27,7 +27,7 @@ export default function Intro() {
             scrollTrigger: {
               trigger: imageRef.current,
               start: "top 80%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
             },
           },
         );
@@ -51,7 +51,7 @@ export default function Intro() {
           scrollTrigger: {
             trigger: contentRef.current,
             start: "top 80%",
-            toggleActions: "play none none reverse",
+            toggleActions: "play none none none",
           },
         });
       }
