@@ -93,7 +93,8 @@ export default function Header() {
     };
 
     window.addEventListener(OPEN_TOOLS_MENU_EVENT, openToolsMenu);
-    return () => window.removeEventListener(OPEN_TOOLS_MENU_EVENT, openToolsMenu);
+    return () =>
+      window.removeEventListener(OPEN_TOOLS_MENU_EVENT, openToolsMenu);
   }, [isMobile]);
 
   useEffect(() => {
@@ -275,10 +276,77 @@ export default function Header() {
             }}
           >
             {/* Logo */}
-            <Box onClick={() => handleNavigate("/")} sx={{ cursor: "pointer" }}>
-              <Typography fontWeight={700}>ToolBox</Typography>
-            </Box>
+            <Box
+              onClick={() => handleNavigate("/")}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1.25,
+                cursor: "pointer",
+                userSelect: "none",
+              }}
+            >
+              {/* Icon mark */}
+              <Box
+                sx={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                  background:
+                    "linear-gradient(135deg, #1cd4fe 0%, #0d92ff 100%)",
+                  boxShadow: (theme) => `0 6px 16px ${alpha("#0d92ff", 0.35)}`,
+                  transition: "transform 0.3s ease",
+                  "&:hover": { transform: "rotate(-6deg) scale(1.05)" },
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: "1.15rem",
+                    color: "#0b1320",
+                    lineHeight: 1,
+                  }}
+                >
+                  Ω
+                </Typography>
+              </Box>
 
+              {/* Wordmark */}
+              <Box
+                sx={{ display: "flex", flexDirection: "column", lineHeight: 1 }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: "1.15rem",
+                    letterSpacing: "-0.02em",
+                    background:
+                      "linear-gradient(135deg, #1cd4fe 0%, #0d92ff 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  Omega Toolkit
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "0.65rem",
+                    fontWeight: 500,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    color: "text.secondary",
+                    display: { xs: "none", sm: "block" },
+                  }}
+                >
+                  Everyday Dev Tools
+                </Typography>
+              </Box>
+            </Box>
             {/* Desktop Navigation */}
             {!isMobile && (
               <Box

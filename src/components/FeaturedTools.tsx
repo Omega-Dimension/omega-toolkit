@@ -77,24 +77,20 @@ export default function FeaturedTools() {
                 width: { xs: "100%", sm: "calc(50% - 16px)" },
                 p: 3.5,
                 borderRadius: 2,
-                background:
-                  "linear-gradient(165deg, #0f172a7c 0%, #21cfff3a 100%)",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-                transition: "transform 0.4s, box-shadow 0.4s",
+                border: "1px solid",
+                borderColor: "divider",
+                background: (theme) =>
+                  theme.palette.mode === "dark"
+                    ? "linear-gradient(165deg, rgba(15,23,42,0.6) 0%, rgba(33,207,255,0.08) 100%)"
+                    : "linear-gradient(165deg, rgba(255,255,255,0.9) 0%, rgba(33,207,255,0.06) 100%)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                transition: "transform 0.35s, box-shadow 0.35s",
                 cursor: "pointer",
                 willChange: "transform",
-
                 "&:hover": {
-                  transform: "translateY(-8px) rotate3d(1, 1, 0, 5deg)",
-                  boxShadow: `
-      0 25px 50px -12px rgba(33, 207, 255, 0.25),
-      0 8px 25px rgba(0,0,0,0.15)
-    `,
-
-                  background: `
-      linear-gradient(165deg, #0f172a 0%, #21cfff4a 100%),
-      radial-gradient(circle at 50% 0%, rgba(33, 207, 255, 0.1), transparent 70%)
-    `,
+                  transform: "translateY(-6px)",
+                  boxShadow: "0 20px 40px -12px rgba(33, 207, 255, 0.25)",
+                  borderColor: "primary.main",
                 },
               }}
             >

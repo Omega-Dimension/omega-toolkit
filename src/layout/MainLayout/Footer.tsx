@@ -1,5 +1,21 @@
-import { Box, Container, Typography, useTheme, alpha, IconButton, Stack, Divider } from "@mui/material";
-import { GitHub, LinkedIn, Twitter, Favorite, BugReport, Forum } from "@mui/icons-material";
+import {
+  Box,
+  Container,
+  Typography,
+  useTheme,
+  alpha,
+  IconButton,
+  Stack,
+  Divider,
+} from "@mui/material";
+import {
+  GitHub,
+  LinkedIn,
+  Twitter,
+  Favorite,
+  BugReport,
+  Forum,
+} from "@mui/icons-material";
 
 // Define interfaces for type safety
 interface LinkItem {
@@ -20,20 +36,35 @@ interface LinkListProps {
 
 export default function Footer() {
   const theme = useTheme();
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === "light";
 
-  // Menu data arrays with proper typing
   const resourceLinks: LinkItem[] = [
     { name: "React Documentation", url: "https://react.dev", external: true },
-    { name: "MUI Documentation", url: "https://mui.com/material-ui/getting-started/", external: true },
-    { name: "API Reference", url: "https://mui.com/material-ui/api/", external: true },
-    { name: "Changelog", url: "https://github.com/mui/material-ui/releases", external: true },
+    {
+      name: "MUI Documentation",
+      url: "https://mui.com/material-ui/getting-started/",
+      external: true,
+    },
+    {
+      name: "API Reference",
+      url: "https://mui.com/material-ui/api/",
+      external: true,
+    },
+    {
+      name: "Changelog",
+      url: "https://github.com/mui/material-ui/releases",
+      external: true,
+    },
     { name: "Status", url: "https://status.mui.com", external: true },
   ];
 
   const companyLinks: LinkItem[] = [
-    { name: "About Us", url: "/about", external: false },
-    { name: "Contact", url: "/contact", external: false },
+    { name: "About Me", url: "/about-us", external: false },
+    {
+      name: "Source on GitHub",
+      url: "https://github.com/Omega-Dimension/omega-toolkit",
+      external: true,
+    },
   ];
 
   const bottomLinks: LinkItem[] = [
@@ -95,11 +126,11 @@ export default function Footer() {
         background: isLight
           ? `linear-gradient(145deg, ${alpha(theme.palette.background.default, 0.98)} 0%, ${alpha(
               theme.palette.background.paper,
-              0.95
+              0.95,
             )} 100%)`
           : `linear-gradient(145deg, ${alpha("#0a1929", 0.98)} 0%, ${alpha(
               "#001e3c",
-              0.95
+              0.95,
             )} 100%)`,
         borderTop: `1px solid ${alpha(isLight ? "#000" : "#fff", 0.08)}`,
         backdropFilter: "blur(20px)",
@@ -112,7 +143,7 @@ export default function Footer() {
           height: "1px",
           background: `linear-gradient(90deg, transparent, ${alpha(
             theme.palette.primary.main,
-            0.3
+            0.3,
           )}, transparent)`,
         },
       }}
@@ -168,7 +199,8 @@ export default function Footer() {
                 variant="h6"
                 sx={{
                   fontWeight: 700,
-                  background: "linear-gradient(135deg, #1976d2 0%, #35a4ff 100%)",
+                  background:
+                    "linear-gradient(135deg, #1976d2 0%, #35a4ff 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   letterSpacing: "-0.5px",
@@ -186,10 +218,10 @@ export default function Footer() {
                 lineHeight: 1.6,
               }}
             >
-              Your comprehensive toolkit for developers and creators. 
-              Streamline your workflow with our collection of powerful tools.
+              Your comprehensive toolkit for developers and creators. Streamline
+              your workflow with our collection of powerful tools.
             </Typography>
-            
+
             {/* Social Links */}
             <Stack direction="row" spacing={1.5}>
               {socialLinks.map(({ Icon, url, label }: SocialLinkItem) => (
@@ -210,7 +242,7 @@ export default function Footer() {
                     "&:hover": {
                       background: `linear-gradient(135deg, ${alpha(
                         theme.palette.primary.main,
-                        0.2
+                        0.2,
                       )}, ${alpha(theme.palette.primary.dark, 0.2)})`,
                       transform: "translateY(-3px)",
                       borderColor: alpha(theme.palette.primary.main, 0.3),
@@ -218,7 +250,9 @@ export default function Footer() {
                     },
                   }}
                 >
-                  <Icon sx={{ fontSize: 18, color: theme.palette.text.primary }} />
+                  <Icon
+                    sx={{ fontSize: 18, color: theme.palette.text.primary }}
+                  />
                 </IconButton>
               ))}
             </Stack>
@@ -245,7 +279,7 @@ export default function Footer() {
             <Typography variant="subtitle2" sx={sectionTitleStyles}>
               👋 Let's Connect
             </Typography>
-            
+
             <Typography
               variant="body2"
               sx={{
@@ -255,9 +289,10 @@ export default function Footer() {
                 fontStyle: "italic",
               }}
             >
-              "Found a bug? Have a suggestion? We're all ears! Your feedback makes ToolBox better for everyone."
+              "Found a bug? Have a suggestion? We're all ears! Your feedback
+              makes ToolBox better for everyone."
             </Typography>
-            
+
             <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
               <Box
                 component="a"
@@ -288,7 +323,7 @@ export default function Footer() {
                 <BugReport sx={{ fontSize: 18 }} />
                 Report Issue
               </Box>
-              
+
               <Box
                 component="a"
                 href="#"
@@ -319,7 +354,7 @@ export default function Footer() {
                 Share Ideas
               </Box>
             </Stack>
-            
+
             <Typography
               variant="caption"
               sx={{
@@ -329,7 +364,8 @@ export default function Footer() {
                 fontSize: "0.7rem",
               }}
             >
-              💡 Every report helps us improve. Thank you for being part of our journey!
+              💡 Every report helps us improve. Thank you for being part of our
+              journey!
             </Typography>
           </Box>
         </Box>
@@ -388,7 +424,7 @@ export default function Footer() {
                 {link.name}
               </Typography>
             ))}
-            
+
             <Typography
               variant="body2"
               sx={{
@@ -399,7 +435,11 @@ export default function Footer() {
                 ml: { xs: 0, sm: 2 },
               }}
             >
-              Built with <Favorite sx={{ fontSize: 14, color: theme.palette.error.main }} /> using React & MUI
+              Built with{" "}
+              <Favorite
+                sx={{ fontSize: 14, color: theme.palette.error.main }}
+              />{" "}
+              using React & MUI
             </Typography>
           </Box>
         </Box>

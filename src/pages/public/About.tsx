@@ -1,23 +1,13 @@
-import {
-  Box,
-  Container,
-  Typography,
-  Grid,
-  Paper,
-  Avatar,
-  Stack,
-  Chip,
-  useTheme,
-} from "@mui/material";
+import { Box, Container, Typography, Grid, Paper, Avatar, Stack, Chip, useTheme } from "@mui/material";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ArchitectureIcon from "@mui/icons-material/Architecture";
-import StorageIcon from "@mui/icons-material/Storage";
 import CodeIcon from "@mui/icons-material/Code";
-import DesignServicesIcon from "@mui/icons-material/DesignServices";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
-import SecurityIcon from "@mui/icons-material/Security";
+import LockIcon from "@mui/icons-material/Lock";
+import BoltIcon from "@mui/icons-material/Bolt";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import BuildIcon from "@mui/icons-material/Build";
+import GroupsIcon from "@mui/icons-material/Groups";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,67 +18,56 @@ export default function About() {
   const subtitleRef = useRef<HTMLParagraphElement | null>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const statsRef = useRef<(HTMLDivElement | null)[]>([]);
+
   const cards = [
     {
-      icon: <ArchitectureIcon sx={{ fontSize: 40 }} />,
-      title: "Microservice Architecture",
-      description: "Building scalable, resilient systems with distributed microservices that evolve with your business needs.",
-    },
-    {
-      icon: <StorageIcon sx={{ fontSize: 40 }} />,
-      title: "Robust Backend",
-      description:
-        "Enterprise-grade backend solutions using Nest.js and PostgreSQL, ensuring data integrity and peak performance.",
-    },
-    {
-      icon: <DesignServicesIcon sx={{ fontSize: 40 }} />,
-      title: "Modern Frontend",
-      description:
-        "Cutting-edge user interfaces built with Next.js, React, and Tailwind CSS for exceptional user experiences.",
-    },
-    {
       icon: <CodeIcon sx={{ fontSize: 40 }} />,
-      title: "Clean Code Philosophy",
+      title: "Built Solo",
       description:
-        "We believe in writing maintainable, scalable code that stands the test of time and team collaboration.",
+        "I design, build, and maintain every tool here by myself — no team, no funding, just a side project I keep growing because I use these tools too.",
+    },
+    {
+      icon: <LockIcon sx={{ fontSize: 40 }} />,
+      title: "Privacy First",
+      description:
+        "Everything runs client-side in your browser. Nothing you upload or convert ever touches a server — I simply don't want the liability or the data.",
+    },
+    {
+      icon: <BoltIcon sx={{ fontSize: 40 }} />,
+      title: "Made for Daily Use",
+      description:
+        "These aren't demo tools. They're built to solve the small, repetitive tasks devs, students, and office workers hit every day — fast and no sign-up.",
+    },
+    {
+      icon: <BuildIcon sx={{ fontSize: 40 }} />,
+      title: "Always Improving",
+      description:
+        "Omega Toolkit is open source and evolving. Bug reports and feature ideas from people who actually use it directly shape what gets built next.",
     },
   ];
 
   const stats = [
-    { value: "50+", label: "Projects Delivered", icon: <RocketLaunchIcon /> },
-    { value: "100%", label: "Client Satisfaction", icon: <SecurityIcon /> },
-    { value: "24/7", label: "Support & Maintenance", icon: <CodeIcon /> },
+    { value: "50+", label: "Tools Built", icon: <GroupsIcon /> },
+    { value: "100%", label: "Client-Side & Private", icon: <LockIcon /> },
+    { value: "1", label: "Person, No Team", icon: <FavoriteIcon /> },
   ];
 
   useEffect(() => {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Initial animations
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      tl.from(titleRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 0.9,
-      }).from(
+      tl.from(titleRef.current, { y: 40, opacity: 0, duration: 0.9 }).from(
         subtitleRef.current,
-        {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-        },
+        { y: 30, opacity: 0, duration: 0.8 },
         "-=0.4",
       );
 
       cardsRef.current.forEach((card, index) => {
         if (card) {
           gsap.from(card, {
-            scrollTrigger: {
-              trigger: card,
-              start: "top bottom-=100",
-              toggleActions: "play none none reverse",
-            },
+            scrollTrigger: { trigger: card, start: "top bottom-=100", toggleActions: "play none none reverse" },
             y: 50,
             opacity: 0,
             duration: 0.8,
@@ -101,11 +80,7 @@ export default function About() {
       statsRef.current.forEach((stat, index) => {
         if (stat) {
           gsap.from(stat, {
-            scrollTrigger: {
-              trigger: stat,
-              start: "top bottom-=50",
-              toggleActions: "play none none reverse",
-            },
+            scrollTrigger: { trigger: stat, start: "top bottom-=50", toggleActions: "play none none reverse" },
             scale: 0.8,
             opacity: 0,
             duration: 0.6,
@@ -122,7 +97,6 @@ export default function About() {
   return (
     <Box ref={sectionRef} component="section" sx={{ py: { xs: 8, md: 12 } }}>
       <Container maxWidth="xl">
-        {/* Hero Section */}
         <Box sx={{ maxWidth: 900, mx: "auto", textAlign: "center", mb: 8 }}>
           <Typography
             ref={titleRef}
@@ -136,60 +110,22 @@ export default function About() {
               mb: 3,
             }}
           >
-            Crafting Digital Excellence
+            Hey, I'm Pyae Sone Tun
           </Typography>
 
-          <Typography
-            ref={subtitleRef}
-            variant="h5"
-            color="text.secondary"
-            sx={{ maxWidth: 700, mx: "auto", mb: 4 }}
-          >
-            At Omega Dimensions, we don't just build applications — we engineer
-            experiences that combine robust backend architecture with stunning
-            frontend design.
+          <Typography ref={subtitleRef} variant="h5" color="text.secondary" sx={{ maxWidth: 700, mx: "auto", mb: 4 }}>
+            I build Omega Toolkit in my spare time — a growing collection of small,
+            fast utilities for the everyday work of developers, students, and anyone
+            stuck googling "convert X to Y" one too many times.
           </Typography>
 
-          <Stack
-            direction="row"
-            spacing={1}
-            justifyContent="center"
-            sx={{ flexWrap: "wrap", gap: 1 }}
-          >
-            <Chip
-              label="Microservices"
-              color="primary"
-              variant="outlined"
-              sx={{ borderRadius: 2 }}
-            />
-            <Chip
-              label="Nest.js"
-              color="primary"
-              variant="outlined"
-              sx={{ borderRadius: 2 }}
-            />
-            <Chip
-              label="Next.js"
-              color="primary"
-              variant="outlined"
-              sx={{ borderRadius: 2 }}
-            />
-            <Chip
-              label="React"
-              color="primary"
-              variant="outlined"
-              sx={{ borderRadius: 2 }}
-            />
-            <Chip
-              label="PostgreSQL"
-              color="primary"
-              variant="outlined"
-              sx={{ borderRadius: 2 }}
-            />
+          <Stack direction="row" spacing={1} justifyContent="center" sx={{ flexWrap: "wrap", gap: 1 }}>
+            {["React", "TypeScript", "MUI", "Tailwind", "GSAP"].map((t) => (
+              <Chip key={t} label={t} color="primary" variant="outlined" sx={{ borderRadius: 2 }} />
+            ))}
           </Stack>
         </Box>
 
-        {/* Cards Grid */}
         <Grid container spacing={4} sx={{ mb: 10 }}>
           {cards.map((card, index) => (
             <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
@@ -208,9 +144,7 @@ export default function About() {
                   backdropFilter: "blur(10px)",
                   border: `1px solid ${theme.palette.divider}`,
                   transition: "transform 0.3s ease-in-out",
-                  "&:hover": {
-                    transform: "translateY(-8px)",
-                  },
+                  "&:hover": { transform: "translateY(-8px)" },
                 }}
               >
                 <Box sx={{ color: "primary.main", mb: 2 }}>{card.icon}</Box>
@@ -230,7 +164,7 @@ export default function About() {
             By the Numbers
           </Typography>
           <Typography variant="h6" color="text.secondary" sx={{ mb: 6 }}>
-            Delivering excellence through measurable results
+            No team, no funding — just tools that get used
           </Typography>
 
           <Grid container spacing={4} justifyContent="center">
@@ -252,16 +186,7 @@ export default function About() {
                     border: `1px solid ${theme.palette.divider}`,
                   }}
                 >
-                  <Avatar
-                    sx={{
-                      width: 60,
-                      height: 60,
-                      mx: "auto",
-                      mb: 2,
-                      bgcolor: "primary.main",
-                      color: "white",
-                    }}
-                  >
+                  <Avatar sx={{ width: 60, height: 60, mx: "auto", mb: 2, bgcolor: "primary.main", color: "white" }}>
                     {stat.icon}
                   </Avatar>
                   <Typography variant="h3" color="primary.main" gutterBottom>
@@ -291,17 +216,14 @@ export default function About() {
           }}
         >
           <Typography variant="h3" gutterBottom>
-            Our Philosophy
+            Why I Keep Building This
           </Typography>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            sx={{ fontSize: "1.1rem" }}
-          >
-            We believe the best applications are born from the perfect harmony
-            between powerful backend architecture and intuitive frontend design.
-            At Omega Dimensions, we bridge this gap, creating digital solutions
-            that are not only technically superior but also a joy to use.
+          <Typography variant="body1" color="text.secondary" sx={{ fontSize: "1.1rem" }}>
+            I got tired of ad-heavy converter sites that ask you to sign up just to
+            resize an image or decode a JWT. Omega Toolkit is my answer: fast,
+            private, free tools that just work — built one weekend at a time, and
+            never finished, because there's always one more annoying task worth
+            solving.
           </Typography>
         </Box>
       </Container>

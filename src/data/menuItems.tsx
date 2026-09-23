@@ -101,7 +101,7 @@ export const tools: ToolsProps[] = [
 
 export const profiles: ProfileProps[] = [
   {
-    name: "Fento",
+    name: "Pyae Sone Tun",
     role: "Frontend Developer",
     image: "/profiles/fento.jpg",
     bio: "React, MUI, Tailwind. Focused on clean UI and smooth UX.",
