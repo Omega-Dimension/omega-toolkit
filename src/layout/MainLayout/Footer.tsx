@@ -180,39 +180,44 @@ export default function Footer() {
             >
               <Box
                 sx={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: "12px",
+                  width: 38,
+                  height: 38,
+                  borderRadius: "10px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  background: "linear-gradient(135deg, #1976d2, #35a4ff)",
-                  boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.3)}`,
+                  flexShrink: 0,
+                  background:
+                    "linear-gradient(135deg, #1cd4fe 0%, #0d92ff 100%)",
+                  boxShadow: () => `0 6px 16px ${alpha("#0d92ff", 0.35)}`,
+                  transition: "transform 0.3s ease",
+                  "&:hover": { transform: "rotate(-6deg) scale(1.05)" },
                 }}
               >
                 <Typography
                   sx={{
                     fontWeight: 800,
-                    fontSize: "1.2rem",
-                    color: "white",
-                    textShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                    fontSize: "1.15rem",
+                    color: "#0b1320",
+                    lineHeight: 1,
                   }}
                 >
-                  TB
+                  Ω
                 </Typography>
               </Box>
               <Typography
-                variant="h6"
                 sx={{
-                  fontWeight: 700,
+                  fontWeight: 800,
+                  fontSize: "1.15rem",
+                  letterSpacing: "-0.02em",
                   background:
-                    "linear-gradient(135deg, #1976d2 0%, #35a4ff 100%)",
+                    "linear-gradient(135deg, #1cd4fe 0%, #0d92ff 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
-                  letterSpacing: "-0.5px",
+                  backgroundClip: "text",
                 }}
               >
-                ToolBox
+                Omega Toolkit
               </Typography>
             </Box>
             <Typography
