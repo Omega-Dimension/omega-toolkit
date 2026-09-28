@@ -17,10 +17,10 @@ const creator = {
   bio: "Building Omega Toolkit on my own — a free, no-signup, no-tracking set of everyday utilities for developers, students, and anyone who just needs a tool to work without friction.",
   tech: ["React", "TypeScript", "MUI", "Tailwind", "GSAP"],
   social: {
-    linkedin: "#",
-    github: "https://github.com/Omega-Dimension/omega-toolkit",
+    linkedin: "https://www.linkedin.com/in/pyae-sone-tun-4a42bb277/",
+    github: "https://github.com/ScorpioFento",
     twitter: "#",
-    email: "fento@example.com",
+    email: "pyaesonetun.dev@gmail.com",
   },
 };
 
